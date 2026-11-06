@@ -1,0 +1,23 @@
+[
+  {
+    "metrica": "Receita líquida",
+    "periodo": "2T26 vs 2T25",
+    "unidade": "R$ milhões",
+    "valor": 12345.6,
+    "valor_como_aparece": "12.345,6",
+    "anterior": 11020.0,
+    "anterior_como_aparece": "11.020,0",
+    "variacao_pct": 12.0,
+    "pagina": 2,
+    "trecho": "receita líquida atingiu R$ 12.345,6 milhões"
+  },
+  {
+    "metrica": "Margem EBITDA",
+    "periodo": "2T26",
+    "unidade": "%",
+    "valor": 21.4,
+    "valor_como_aparece": "21,4%",
+    "pagina": 3,
+    "trecho": "margem EBITDA de 21,4%"
+  }
+]
