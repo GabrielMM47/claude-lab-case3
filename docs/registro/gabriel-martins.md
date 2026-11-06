@@ -10,9 +10,11 @@
 | 3 | Usiminas | D&A 9M26 | release (p. 45): 735.383 | DFC consolidada (p. 16): 735.386 | comparação DFC × release | diferença de R$ 3 mil; usamos a DFC nas DFs e o release no complementar, cada um com sua página |
 | 4 | Usiminas | Dívida bruta | soma das DFs: emprestimos_cp + emprestimos_lp = 6.181.166 | release (p. 32): 6.276.500 | comparação DFs × release | a reportada inclui tributos parcelados (95.333); o CASE-04 deve mostrar as duas e explicar |
 | 5 | Gerdau | EBITDA ajustado | a reconciliação da p. 74 sai com dígitos espaçados ("3 .7 7 0 .1 7 6"): o verificador não acha o token | p. 72 (coluna Consolidado, texto limpo): 3.770.176 | verificador | usamos a p. 72 |
-| 6 | Usiminas / Gerdau | Dívida (p. 32) / EBITDA e D&A por segmento (p. 72–73) | Usiminas p. 32 sem a palavra "consolidado"; Gerdau com cabeçalho de colunas espaçado ("3 0 /0 9 /2 0 2 6") | — | verificador marcou REVISAR (15 itens): não dá para provar por código qual coluna é qual período | revisão manual pendente |
+| 6 | Usiminas / Gerdau | Dívida (p. 32) / EBITDA e D&A por segmento (p. 72–73) | Usiminas p. 32 sem a palavra "consolidado"; Gerdau com cabeçalho de colunas espaçado ("3 0 /0 9 /2 0 2 6") | — | verificador marcou REVISAR (15 itens): não dá para provar por código qual coluna é qual período | conferência visual das páginas renderizadas + âncoras (receita = DRE; caixa da p. 32 = soma do BP consolidado p. 12); registrado em `revisao_manual` em cada fato |
 
 | 7 | Usiminas | EBITDA CVM 156 (3T26, 2T26, 3T25, 9M26, 9M25) | **o "156" de "Instrução CVM 156" foi lido como a coluna do 3T26**: 3T26 = 156, 2T26 = 588.039 (era o 3T26), 3T25 = 798.602 (era o 2T26); na linha acumulada, "(Instrução CVM 156)" virou o token "156)" | p. 28: 588.039 / 798.602 / (1.747.170); p. 45: 2.041.362 / (547.928) | o verificador original **aprovou** (cada número existia na linha); quem pegou foi a reconciliação recalculada a partir do JSON (CVM 156 + ajustes ≠ EBITDA ajustado) | verificador passou a exigir `cabecalho_colunas` e a conferir o rótulo da coluna contra o período; regex de número exige parênteses balanceados; testes `test_numero_no_nome_da_conta_nao_vira_coluna` e `test_parentese_sem_par_nao_e_numero` |
+
+| 8 | Usiminas | Dívida bruta | o texto extraído não deixa claro, mas a imagem da p. 32 mostra **três** medidas de dívida: "Dívida Bruta" 6.276.500 (com tributos parcelados), "Dívida Bruta (Somente Principal)" 6.121.577 e a soma das DFs 6.181.166 | p. 32 renderizada | conferência visual | usamos a "Dívida Bruta" (base da Dívida Líquida reportada); o CASE-04 deve dizer qual critério usa |
 
 ## Observações dos dados
 
@@ -32,16 +34,12 @@
 
 ## Estado e próximos passos (para retomar numa nova sessão)
 
-**CASE-02: código e dados prontos.** 129 testes passando no repo inteiro (`.venv/bin/pytest -q tests`).
-- `src/dfs_cvm.py`: parser CVM; `metricas/{gerdau,usiminas}_3T26_itr_dfs.json` 62/62 OK.
-- `metricas/*_itr_complementar.json` gerados por `scripts/montar_complementar_3T26.py`; Gerdau 9 REVISAR, Usiminas 23 OK + 6 REVISAR.
-- `src/verificar_numeros.py` endurecido (coluna × cabeçalho, unidade, escopo, `revisao_manual`, formato legado sem `chave` → REVISAR).
+**CASE-02 concluído** (PR aberto para o `main`). 129 testes passando (`.venv/bin/pytest -q tests`).
+- `metricas/{gerdau,usiminas}_3T26_itr_dfs.json`: 62/62 OK cada; `*_itr_complementar.json`: 9/9 e 29/29 OK (`--estrito`).
+- 15 itens com `revisao_manual` (conferência visual: Gerdau p. 72–73, Usiminas p. 32).
 
-**Pendências**
-1. A branch local foi rebaseada sobre o `main` e está à frente da remota: falta `git push --force-with-lease` (bloqueado pela permissão na sessão anterior).
-2. Revisão manual de 15 itens, depois registrar `"revisao_manual": {"por": "Gabriel Martins", "nota": "..."}` no script de montagem e regerar:
-   - Gerdau p. 72–73: cabeçalho espaçado; conferir que a 1ª coluna do bloco Consolidado é 30/09/2026 (a receita 18.690.518 bate com a DRE 3T26, p. 29).
-   - Usiminas p. 32: dívida bruta/líquida; confirmar que é consolidado (o release p. 24 diz "Valores Consolidados") e a ordem 30-set-26 / 30-jun-26 / 30-set-25.
-3. Abrir PR `feat/gabriel-martins` → `main` (fecha o CASE-02).
-4. Avisar o dono do CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"` no alerta de efeito pontual; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
-5. Depois: CASE-07 (`src/pipeline.py`), ver `docs/TAREFAS.md`.
+**Avisos para o time**
+- CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"` no alerta de efeito pontual; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
+- `extrair_balanco.py`: formato fora do contrato (o verificador marca REVISAR "fora do contrato"); o BP consolidado já está nos `*_itr_dfs.json`.
+
+**Próximo:** CASE-07 (`src/pipeline.py`), ver `docs/TAREFAS.md`.

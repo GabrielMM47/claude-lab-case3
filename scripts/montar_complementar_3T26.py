@@ -28,7 +28,7 @@ def linha(pasta, pagina, inicio):
 
 
 def fato(slug, doc_id, pasta, chave, metrica, pagina, inicio, cols, ev, tipo="fluxo", unidade="R$ mil",
-         criterio=None, obs=None, natureza=None):
+         criterio=None, obs=None, natureza=None, revisao=None):
     trecho, repet = linha(pasta, pagina, inicio)
     toks = valores_finais(trecho)
     out = []
@@ -48,6 +48,8 @@ def fato(slug, doc_id, pasta, chave, metrica, pagina, inicio, cols, ev, tipo="fl
             f["moeda"] = "BRL"
         if criterio:
             f["criterio"] = criterio
+        if revisao:  # o que o verificador não comprova sozinho, conferido por alguém (fica registrado)
+            f["revisao_manual"] = revisao
         if natureza:  # só em ajuste_ebitda: 'recorrente' (critério) ou 'pontual' (efeito não recorrente)
             f["natureza"] = natureza
         f |= {"valor": br_para_float(tok), "valor_como_aparece": tok, "pagina": pagina, "trecho": trecho,
@@ -69,22 +71,28 @@ def gerdau():
     ev9 = {"escopo": "lim inações e ajustes C onsolidado", "unidade": un,
            "periodo": "P eríodos de 9 m eses findos em :"}
     E3 = {"3T26": ev3, "3T25": ev3}
+    POR = "Claude Code, a pedido de Gabriel Martins (2026-11-06)"
+    R72 = {"por": POR, "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', "
+                               "colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"}
+    R73 = {"por": POR, "nota": "conferência visual da p. 73 renderizada: bloco 'Consolidado' de 'Períodos de 9 meses', "
+                               "colunas 30/09/2026 e 30/09/2025 (a 1ª coluna da linha é 'Eliminações'); âncora: receita "
+                               "53.276.811 = DRE 9M26 (p. 29)"}
     E9 = {"9M26": ev9, "9M25": ev9}
     nota = "Nota 22, informações por segmento, coluna Consolidado."
     F = []
     F += fato(slug, doc, pasta, "ebitda_ajustado", "EBITDA ajustado", 72, "3.770.176 ", {"3T26": 1, "3T25": 2},
-              E3, criterio="ajustado", obs=nota)
+              E3, criterio="ajustado", obs=nota, revisao=R72)
     F += fato(slug, doc, pasta, "ebitda_ajustado", "EBITDA ajustado", 73, "(260.691) 10.158.058",
               {"9M26": 2, "9M25": 3}, E9, criterio="ajustado",
-              obs=nota + " A coluna 1 da linha é 'Eliminações e ajustes' 9M25.")
+              obs=nota + " A coluna 1 da linha é 'Eliminações e ajustes' 9M25.", revisao=R73)
     F += fato(slug, doc, pasta, "depreciacao_amortizacao_tri", "Depreciação e amortização", 72, "937.901 ",
-              {"3T26": 1, "3T25": 2}, E3, obs=nota)
+              {"3T26": 1, "3T25": 2}, E3, obs=nota, revisao=R72)
     F += fato(slug, doc, pasta, "ajuste_ebitda", "Recuperação de créditos / provisões (itens não recorrentes)",
               72, "(60.412) -", {"3T26": 1}, E3, criterio="ajustado",
-              obs=nota + " Sem valor no 3T25 ('-'). Inclui itens não recorrentes, segundo a nota.", natureza="pontual")
+              obs=nota + " Sem valor no 3T25 ('-'). Inclui itens não recorrentes, segundo a nota.", natureza="pontual", revisao=R72)
     F += fato(slug, doc, pasta, "ajuste_ebitda", "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
               72, "193.594 229.349", {"3T26": 1, "3T25": 2}, E3, criterio="ajustado",
-              obs=nota + " Ajuste recorrente (critério), não efeito pontual.", natureza="recorrente")
+              obs=nota + " Ajuste recorrente (critério), não efeito pontual.", natureza="recorrente", revisao=R72)
     cob = [
         {"chave": "ebitda_contabil", "periodo": p, "status": "ausente",
          "motivo": "ITR não divulga o EBITDA CVM 156 consolidado; calculável como ebit + depreciacao_amortizacao_tri"}
@@ -113,6 +121,10 @@ def usiminas():
            "cabecalho_colunas": "em R$ milhões 3T26 2T26 ∆ 3T25 ∆"}
     E24 = {p: e24 for p in ("3T26", "2T26", "3T25")}
     e32 = {"unidade": "R$ mil"}
+    R32 = {"por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+           "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; "
+                   "consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) "
+                   "do BP consolidado (p. 12)"}
     E32 = {"3T26": e32 | {"periodo": "30-set-26"}, "2T26": e32 | {"periodo": "30-jun-26"},
            "3T25": e32 | {"periodo": "30-set-25"}}
     c3 = {"3T26": 1, "2T26": 2, "3T25": 3}
@@ -138,10 +150,10 @@ def usiminas():
     F += fato(slug, doc, pasta, "divida_bruta_reportada", "Dívida Bruta", 32, "Dívida Bruta 162.073",
               {"3T26": 3, "2T26": 5, "3T25": 7}, E32, tipo="saldo",
               obs="Release, tabela 'Endividamento'. Inclui tributos parcelados (por isso difere da soma de "
-                  "emprestimos_cp + emprestimos_lp das DFs). A página não traz a palavra 'consolidado'.")
+                  "emprestimos_cp + emprestimos_lp das DFs). A página não traz a palavra 'consolidado'.", revisao=R32)
     F += fato(slug, doc, pasta, "divida_liquida_reportada", "Dívida Líquida", 32, "Dívida Líquida - -",
               {"3T26": 3, "2T26": 5, "3T25": 7}, E32, tipo="saldo",
-              obs="Release, tabela 'Endividamento'. Negativa = caixa maior que a dívida.")
+              obs="Release, tabela 'Endividamento'. Negativa = caixa maior que a dívida.", revisao=R32)
     F += fato(slug, doc, pasta, "dl_ebitda_reportado", "Dívida Líquida/EBITDA Ajustado", 24,
               "Dívida Líquida/EBITDA Ajustado", {"3T26": 1, "2T26": 2, "3T25": 4}, E24, tipo="saldo", unidade="x",
               obs="Release, quadro de destaques. Critério da empresa (EBITDA ajustado dos últimos 12 meses).")

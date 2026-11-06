@@ -597,6 +597,10 @@
     "periodo_fim": "2026-09-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": 6276500.0,
     "valor_como_aparece": "6.276.500",
     "pagina": 32,
@@ -623,6 +627,10 @@
     "periodo_fim": "2026-06-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": 6323580.0,
     "valor_como_aparece": "6.323.580",
     "pagina": 32,
@@ -649,6 +657,10 @@
     "periodo_fim": "2025-09-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": 6363004.0,
     "valor_como_aparece": "6.363.004",
     "pagina": 32,
@@ -675,6 +687,10 @@
     "periodo_fim": "2026-09-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": -470669.0,
     "valor_como_aparece": "(470.669)",
     "pagina": 32,
@@ -701,6 +717,10 @@
     "periodo_fim": "2026-06-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": -498972.0,
     "valor_como_aparece": "(498.972)",
     "pagina": 32,
@@ -727,6 +747,10 @@
     "periodo_fim": "2025-09-30",
     "unidade": "R$ mil",
     "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 32 renderizada: colunas TOTAL 30-set-26, 30-jun-26 e 30-set-25; consolidado comprovado: Caixa e Aplicações 6.747.169 = 1.01.01 (4.071.514) + 1.01.02 (2.675.655) do BP consolidado (p. 12)"
+    },
     "valor": 327007.0,
     "valor_como_aparece": "327.007",
     "pagina": 32,
