@@ -1,0 +1,2052 @@
+{
+  "empresa": "gerdau",
+  "periodo": "3T26",
+  "setor": "siderurgia",
+  "unidade_monetaria": "R$ milhões",
+  "unidade_volume": "mil t",
+  "anualizacao": "9M26 × 4/3",
+  "saldos_medios": "média de 4T25 e 3T26",
+  "politica_tributaria": "ROIC usa a alíquota efetiva do 9M26 (-IR/CSLL ÷ LAIR), limitada entre 0% e 34%; com LAIR <= 0, usa 34%. Hipótese metodológica, não dado reportado",
+  "criterios_ebitda": [
+    "contabil",
+    "ajustado"
+  ],
+  "nota_criterio": "indicadores com EBITDA vêm nas duas versões (_contabil e _ajustado); o comparativo usa o mesmo critério para as duas empresas",
+  "legenda_status": {
+    "ok": "valor",
+    "ausente": "N/D",
+    "nao_comparavel": "N/C",
+    "nao_aplicavel": "N/A"
+  },
+  "cobertura": {
+    "ok": 34,
+    "ausente": 7,
+    "nao_comparavel": 0,
+    "nao_aplicavel": 0
+  },
+  "indicadores": [
+    {
+      "chave": "receita_liquida",
+      "nome": "Receita líquida",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 18690.518,
+        "3T25": 17983.143,
+        "2T26": null
+      },
+      "var_aa": 3.9335,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida (3.01)",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebit",
+      "nome": "EBIT",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 2715.64,
+        "3T25": 1658.749,
+        "2T26": null
+      },
+      "var_aa": 63.7161,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebit (3.05, inclui equivalência patrimonial)",
+      "insumos": [
+        {
+          "chave": "ebit",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "ebit",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "lucro_liquido",
+      "nome": "Lucro líquido consolidado",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 1563.097,
+        "3T25": 1089.88,
+        "2T26": null
+      },
+      "var_aa": 43.4192,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "lucro_liquido (3.11)",
+      "insumos": [
+        {
+          "chave": "lucro_liquido",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "lucro_liquido",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "lucro_liquido_controladores",
+      "nome": "Lucro líquido dos controladores",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 1554.156,
+        "3T25": 1079.395,
+        "2T26": null
+      },
+      "var_aa": 43.984,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "lucro_liquido_controladores (3.11.01)",
+      "insumos": [
+        {
+          "chave": "lucro_liquido_controladores",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 30
+        },
+        {
+          "chave": "lucro_liquido_controladores",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 30
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_contabil",
+      "nome": "EBITDA contábil",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 3653.541,
+        "3T25": 2596.303,
+        "2T26": null
+      },
+      "var_aa": 40.7209,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_contabil (reportado) ou ebit + D&A do período",
+      "insumos": [
+        {
+          "chave": "ebit",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "depreciacao_amortizacao_tri",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "ebit",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "depreciacao_amortizacao_tri",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_ajustado",
+      "nome": "EBITDA ajustado",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 3770.176,
+        "3T25": 2736.858,
+        "2T26": null
+      },
+      "var_aa": 37.7556,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado (reportado)",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "margem_bruta",
+      "nome": "Margem bruta",
+      "grupo": "margens",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 17.9286,
+        "3T25": 11.9117,
+        "2T26": null
+      },
+      "var_aa": 6.0169,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "lucro_bruto / receita_liquida",
+      "insumos": [
+        {
+          "chave": "lucro_bruto",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "lucro_bruto",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "margem_ebit",
+      "nome": "Margem EBIT",
+      "grupo": "margens",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 14.5295,
+        "3T25": 9.2239,
+        "2T26": null
+      },
+      "var_aa": 5.3056,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebit / receita_liquida",
+      "insumos": [
+        {
+          "chave": "ebit",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "ebit",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "margem_liquida",
+      "nome": "Margem líquida",
+      "grupo": "margens",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 8.363,
+        "3T25": 6.0606,
+        "2T26": null
+      },
+      "var_aa": 2.3024,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "lucro_liquido / receita_liquida",
+      "insumos": [
+        {
+          "chave": "lucro_liquido",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "lucro_liquido",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "margem_ebitda_contabil",
+      "nome": "Margem EBITDA contábil",
+      "grupo": "margens",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 19.5476,
+        "3T25": 14.4374,
+        "2T26": null
+      },
+      "var_aa": 5.1102,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebitda_contabil / receita_liquida",
+      "insumos": [
+        {
+          "chave": "ebit",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "depreciacao_amortizacao_tri",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "ebit",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "depreciacao_amortizacao_tri",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "margem_ebitda_ajustado",
+      "nome": "Margem EBITDA ajustada",
+      "grupo": "margens",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 20.1716,
+        "3T25": 15.219,
+        "2T26": null
+      },
+      "var_aa": 4.9526,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebitda_ajustado / receita_liquida",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "divida_bruta",
+      "nome": "Dívida bruta",
+      "grupo": "endividamento",
+      "unidade": "R$ milhões",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 13729.226,
+        "3T25": null,
+        "2T26": null,
+        "4T25": 14182.151
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": -3.1936,
+      "formula": "emprestimos_cp (2.01.04) + emprestimos_lp (2.02.01)",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "caixa_total",
+      "nome": "Caixa e aplicações",
+      "grupo": "endividamento",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 6043.463,
+        "3T25": null,
+        "2T26": null,
+        "4T25": 6374.797
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": -5.1976,
+      "formula": "caixa_equivalentes (1.01.01) + aplicacoes_financeiras (1.01.02)",
+      "insumos": [
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "divida_liquida",
+      "nome": "Dívida líquida",
+      "grupo": "endividamento",
+      "unidade": "R$ milhões",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 7685.763,
+        "3T25": null,
+        "2T26": null,
+        "4T25": 7807.354
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": -1.5574,
+      "formula": "divida_bruta - caixa_total",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "divida_liquida_pl",
+      "nome": "Dívida líquida / PL",
+      "grupo": "endividamento",
+      "unidade": "x",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 0.1401,
+        "3T25": null,
+        "2T26": null,
+        "4T25": 0.1451
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "x",
+      "periodo_ano": "4T25",
+      "var_ano": -0.005,
+      "formula": "divida_liquida / pl_total",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "dl_ebitda_contabil",
+      "nome": "Dívida líquida / EBITDA contábil",
+      "grupo": "endividamento",
+      "unidade": "x",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 0.5978,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "x",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "divida_liquida / (ebitda_contabil 9M26 × 4/3)",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "ebit",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "depreciacao_amortizacao",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "EBITDA anualizado (9M26 × 4/3); a empresa costuma divulgar com EBITDA dos últimos 12 meses"
+    },
+    {
+      "chave": "dl_ebitda_ajustado",
+      "nome": "Dívida líquida / EBITDA ajustado",
+      "grupo": "endividamento",
+      "unidade": "x",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 0.5675,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "x",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "divida_liquida / (ebitda_ajustado 9M26 × 4/3)",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 73
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "EBITDA anualizado (9M26 × 4/3); a empresa costuma divulgar com EBITDA dos últimos 12 meses"
+    },
+    {
+      "chave": "roe",
+      "nome": "ROE",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 9.8792,
+        "9M25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "lucro_liquido_controladores 9M26 × 4/3 / média de 4T25 e 3T26 de (pl_total - pl_nao_controladores)",
+      "insumos": [
+        {
+          "chave": "pl_total",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "pl_nao_controladores",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "pl_nao_controladores",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "lucro_liquido_controladores",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 30
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "roa",
+      "nome": "ROA",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 6.5083,
+        "9M25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "lucro_liquido 9M26 × 4/3 / média de 4T25 e 3T26 de ativo_total",
+      "insumos": [
+        {
+          "chave": "ativo_total",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "ativo_total",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "lucro_liquido",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "roi",
+      "nome": "ROI (antes de impostos)",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 14.7832,
+        "9M25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebit 9M26 × 4/3 / média de 4T25 e 3T26 de capital investido (divida_liquida + pl_total), antes de impostos",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "ebit",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "ROI não tem definição única; aqui é o retorno sobre capital investido antes de impostos"
+    },
+    {
+      "chave": "roic",
+      "nome": "ROIC",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 10.2628,
+        "9M25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebit 9M26 × 4/3 × (1 - alíquota efetiva 9M26, entre 0% e 34%) / média de 4T25 e 3T26 de capital investido",
+      "insumos": [
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "4T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "emprestimos_cp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "emprestimos_lp",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 27
+        },
+        {
+          "chave": "caixa_equivalentes",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "aplicacoes_financeiras",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 26
+        },
+        {
+          "chave": "pl_total",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 28
+        },
+        {
+          "chave": "ebit",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "lair",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "ir_csll",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "hipótese metodológica, não dado reportado: alíquota efetiva = -ir_csll / lair, limitada a 34%; LAIR <= 0 usa 34%"
+    },
+    {
+      "chave": "fco",
+      "nome": "Caixa das operações",
+      "grupo": "caixa",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 5741.24,
+        "9M25": 4840.38
+      },
+      "var_aa": 18.6113,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "fco (6.01)",
+      "insumos": [
+        {
+          "chave": "fco",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "fco",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capex",
+      "nome": "Capex",
+      "grupo": "caixa",
+      "unidade": "R$ milhões",
+      "melhor": "neutro",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 3333.013,
+        "9M25": 5211.509
+      },
+      "var_aa": -36.0451,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "capex (aquisição de imobilizado na DFC, em módulo)",
+      "insumos": [
+        {
+          "chave": "capex",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "capex",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "fcl",
+      "nome": "Fluxo de caixa livre",
+      "grupo": "caixa",
+      "unidade": "R$ milhões",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 2408.227,
+        "9M25": -371.129
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "fco - |capex|",
+      "insumos": [
+        {
+          "chave": "fco",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "capex",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "fco",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "capex",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "A/A: variação omitida: base negativa ou zero"
+    },
+    {
+      "chave": "capex_receita",
+      "nome": "Capex / receita",
+      "grupo": "caixa",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "consolidado",
+      "periodo": "9M26",
+      "periodo_aa": "9M25",
+      "periodo_tt": null,
+      "valores": {
+        "9M26": 6.256,
+        "9M25": 9.8546
+      },
+      "var_aa": -3.5986,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "|capex| / receita_liquida do acumulado",
+      "insumos": [
+        {
+          "chave": "capex",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "9M26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        },
+        {
+          "chave": "capex",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 32
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "9M25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 29
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_vendas 3T26 (consolidado)"
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_vendas 3T26 (consolidado)"
+    },
+    {
+      "chave": "custo_por_t",
+      "nome": "CPV por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "menor",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "|cpv| × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_vendas 3T26 (consolidado)"
+    },
+    {
+      "chave": "ebitda_por_t_contabil",
+      "nome": "EBITDA contábil por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_contabil × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_vendas 3T26 (consolidado)"
+    },
+    {
+      "chave": "ebitda_por_t_ajustado",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_vendas 3T26 (consolidado)"
+    },
+    {
+      "chave": "utilizacao_capacidade",
+      "nome": "Utilização da capacidade",
+      "grupo": "setor",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "consolidado",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "volume_producao × 4 / capacidade_instalada (trimestre anualizado, sem sazonalidade)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta volume_producao 3T26 (consolidado)"
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 6884.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 8
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 0.9,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 7
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "maior",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 7656.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 12
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "receita_por_t_reportada",
+      "nome": "Receita por tonelada (reportada)",
+      "grupo": "setor",
+      "unidade": null,
+      "melhor": "maior",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": null,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_por_t_reportada (reportado)",
+      "insumos": [],
+      "disponivel": false,
+      "status": "ausente",
+      "obs": "falta receita_por_t_reportada 3T26 (segmento:america_do_norte)"
+    },
+    {
+      "chave": "participacao_receita",
+      "nome": "Participação na receita",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 55.6209,
+        "3T25": 50.3068,
+        "2T26": null
+      },
+      "var_aa": 5.3141,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "receita_liquida do segmento / soma de receita_liquida dos segmentos",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    },
+    {
+      "chave": "participacao_receita",
+      "nome": "Participação na receita",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 7.6168,
+        "3T25": 7.5384,
+        "2T26": null
+      },
+      "var_aa": 0.0784,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "receita_liquida do segmento / soma de receita_liquida dos segmentos",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    },
+    {
+      "chave": "participacao_receita",
+      "nome": "Participação na receita",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 36.7623,
+        "3T25": 42.1549,
+        "2T26": null
+      },
+      "var_aa": -5.3926,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "receita_liquida do segmento / soma de receita_liquida dos segmentos",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    },
+    {
+      "chave": "participacao_ebitda",
+      "nome": "Participação no EBITDA ajustado",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 76.36,
+        "3T25": 64.6123,
+        "2T26": null
+      },
+      "var_aa": 11.7477,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebitda_ajustado do segmento / soma de ebitda_ajustado dos segmentos",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    },
+    {
+      "chave": "participacao_ebitda",
+      "nome": "Participação no EBITDA ajustado",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 4.1933,
+        "3T25": 8.322,
+        "2T26": null
+      },
+      "var_aa": -4.1287,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebitda_ajustado do segmento / soma de ebitda_ajustado dos segmentos",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    },
+    {
+      "chave": "participacao_ebitda",
+      "nome": "Participação no EBITDA ajustado",
+      "grupo": "segmentos",
+      "unidade": "%",
+      "melhor": "neutro",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 19.4467,
+        "3T25": 27.0657,
+        "2T26": null
+      },
+      "var_aa": -7.619,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "ebitda_ajustado do segmento / soma de ebitda_ajustado dos segmentos",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": "participação na soma dos segmentos, sem eliminações"
+    }
+  ],
+  "ajustes_ebitda": {
+    "3T25": [
+      {
+        "descricao": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
+        "valor": 229.34900000000002,
+        "unidade": "R$ milhões",
+        "chave": "ajuste_ebitda",
+        "periodo": "3T25",
+        "escopo": "consolidado",
+        "documento": "itr",
+        "pagina": 72
+      }
+    ],
+    "3T26": [
+      {
+        "descricao": "Recuperação de créditos / provisões (itens não recorrentes)",
+        "valor": -60.412,
+        "unidade": "R$ milhões",
+        "chave": "ajuste_ebitda",
+        "periodo": "3T26",
+        "escopo": "consolidado",
+        "documento": "itr",
+        "pagina": 72
+      },
+      {
+        "descricao": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
+        "valor": 193.594,
+        "unidade": "R$ milhões",
+        "chave": "ajuste_ebitda",
+        "periodo": "3T26",
+        "escopo": "consolidado",
+        "documento": "itr",
+        "pagina": 72
+      }
+    ]
+  },
+  "alertas": [
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T25 (segmento:brasil) ignorado: unidade não suportada: '1.000 toneladas'"
+    },
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T26 (segmento:brasil) ignorado: unidade não suportada: '1.000 toneladas'"
+    },
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T25 (segmento:america_do_norte) ignorado: unidade não suportada: '1.000 toneladas'"
+    },
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T26 (segmento:america_do_norte) ignorado: unidade não suportada: '1.000 toneladas'"
+    },
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T25 (segmento:america_do_sul) ignorado: unidade não suportada: '1.000 toneladas'"
+    },
+    {
+      "tipo": "unidade",
+      "texto": "volume_vendas 3T26 (segmento:america_do_sul) ignorado: unidade não suportada: '1.000 toneladas'"
+    }
+  ]
+}
