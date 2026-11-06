@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from src.localizar_paginas import localizar, normalizar
+from localizar_paginas import localizar, normalizar  # src/ já está no pythonpath (pyproject)
 
 
 def test_normalizar_remove_acentos_e_case():

@@ -16,6 +16,23 @@
 
 | 8 | Usiminas | Dívida bruta | o texto extraído não deixa claro, mas a imagem da p. 32 mostra **três** medidas de dívida: "Dívida Bruta" 6.276.500 (com tributos parcelados), "Dívida Bruta (Somente Principal)" 6.121.577 e a soma das DFs 6.181.166 | p. 32 renderizada | conferência visual | usamos a "Dívida Bruta" (base da Dívida Líquida reportada); o CASE-04 deve dizer qual critério usa |
 
+**CASE-07 (pipeline)**
+
+| # | Empresa | Etapa | O que o Claude/código fez | O que devia | Como pegamos | Correção |
+|---|---|---|---|---|---|---|
+| 9 | Gerdau / Usiminas | prompt genérico (etapa 4) | o `.replace("<slug>", slug)` do prompt também trocou o exemplo `segmento:<slug>` por `segmento:gerdau`: o prompt mandava usar o nome da empresa como segmento | `segmento:<segmento>` (ex.: `america_do_norte`) | lendo o prompt impresso na primeira rodada real | placeholder do exemplo renomeado |
+| 10 | — | assistidos sem PDF-fonte | faltando só o qualitativo (sem apresentação), o pipeline seguia e parava na verificação com "Verificação reprovada", sendo que nenhum fato tinha erro | parar com "insumo ausente" e dizer qual PDF falta | revisão do log da rodada real | pendência sem documento-fonte para com código 2 e cita `data/apresentacoes/<slug>_APRESENTACAO_<tri>.pdf` |
+| 11 | — | relatório no terminal | "PAROU em ..." (stderr) aparecia antes do log das etapas (stdout com buffer) | mensagem de parada no fim | primeira rodada real | `flush` no log antes da parada |
+| 12 | (teste) | helper do teste | o Claude converteu `(50)` com `float()` e quebrou a fixture | negativo entre parênteses = −50 | pytest | helper usa `br_para_float` do verificador |
+| 13 | — | modo rascunho | `--permitir-pendencias` **sobrescreveu os `metricas/*_indicadores.json` versionados do CASE-04** com uma versão sem os fatos reprovados | rascunho não pode tocar arquivo oficial | `git status` depois da rodada de 14h30 | derivados do rascunho vão para `saida/rascunho/<a>_x_<b>_<tri>/`; teste `test_rascunho_nao_toca_arquivos_oficiais` |
+| 14 | — | modo rascunho | o HTML do rascunho era idêntico ao final; só o nome do arquivo dizia "RASCUNHO" | rascunho identificado no próprio slide | abrindo o HTML gerado com o CASE-06 | faixa fixa "RASCUNHO — NÃO ENTREGAR" com nº de fatos reprovados |
+| 15 | — | troca de PDF | PDF republicado com o mesmo nome reaproveitava páginas e DFs antigas, e a verificação **passava** (comparava com as páginas velhas) | re-extrair quando o PDF muda | revisão do fluxo "trocar só os PDFs" | carimbo sha256 em `saida/<pdf>/_origem.sha256` (ITR: também o manifesto); teste `test_pdf_trocado_reextrai_e_refaz_dfs` |
+| 16 | Usiminas | alerta de efeito pontual (CASE-04) | "ajustes não recorrentes somam 544% do EBITDA do 3T25" somando itens recorrentes (participação em controladas, EBITDA proporcional) | só o impairment: 513% | lendo os alertas do comparativo | corrigido pelo Gabriel Patrício na `feat/gabriel-patricio` (filtra `natureza`); confirmado na rodada integrada |
+| 17 | Usiminas | Receita de mineração por t, 3T25 (CASE-03) | **US$ 87/t** | apresentação p. 28: **US$ 79** no 3T25 (os US$ 87 são do 4T25 e do 1T26) | o verificador acusou "valor fora do trecho"; a página renderizada mostrou que o número era de outro trimestre | valor 79, trecho literal da linha `2.503 2.463 2.469 $79 $78`, revisão manual registrada |
+| 18 | Gerdau | Volume, receita e EBITDA por segmento (apresentação p. 18–20, CASE-03) | `valor_como_aparece` nulo: "a extração fragmenta os dígitos" | o texto tem o número com cada caractere triplicado (negrito falso): `111...555888222` = 1.582 | verificador (contrato) | `tem_token` aceita a forma triplicada (só tokens de 3+ caracteres); 17 fatos com trecho literal e revisão manual após conferir as páginas renderizadas |
+| 19 | Usiminas | operacionais do ITR e da apresentação (CASE-03) | trecho = só o título da linha ("Volume de Vendas Aço (mil t)"), sem o número | a linha inteira, com a coluna provada pelo cabeçalho literal (`3T26 2T26 ∆ 3T25 ∆`) | verificador: "existe na página, mas não no trecho" | 21 fatos corrigidos com linha literal + `cabecalho_colunas` |
+| 20 | Gerdau / Usiminas | unidades e períodos fora do contrato (CASE-03) | `"1.000 toneladas"`, `"mil toneladas"`, `"milhões de toneladas/ano"`, período `"3T26 vs 2T26"` | vocabulário do contrato (`mil t`); período é um trimestre | `contrato.py` dentro do pipeline | `mil t`; capacidades em milhões de t/ano (laminados, não aço bruto) e a variação T/T foram para `metricas/cobertura/` com motivo |
+
 ## Observações dos dados
 
 - Gerdau e Usiminas usam códigos diferentes para D&A (`6.01.01.02` × `6.01.01.04`) e capex (`6.02.01 Adições de imobilizado` × `6.02.02 Compras de Imobilizado`): achados pela descrição, sem `if empresa`.
@@ -32,14 +49,23 @@
   - Gerdau 3T26: 3.350.950 − 532.654 − 119.203 + 937.901 + 193.594 − 60.412 = 3.770.176 (p. 72)
   - Usiminas dívida líquida 3T26: 6.276.500 − 6.747.169 = −470.669 (p. 32)
 
+- CASE-07: o pipeline gera o prompt de cada JSON assistido faltante a partir de `prompts/<arquivo>.md` (troca `<slug>`/`<tri>`) e anexa as páginas candidatas; o texto também fica salvo em `saida/prompts/<slug>_<tri>_<doc>_<tipo>.md`. Sem o arquivo do CASE-03, usa um prompt mínimo que aponta para o contrato.
+
 ## Estado e próximos passos (para retomar numa nova sessão)
 
-**CASE-02 concluído** (PR aberto para o `main`). 129 testes passando (`.venv/bin/pytest -q tests`).
-- `metricas/{gerdau,usiminas}_3T26_itr_dfs.json`: 62/62 OK cada; `*_itr_complementar.json`: 9/9 e 29/29 OK (`--estrito`).
-- 15 itens com `revisao_manual` (conferência visual: Gerdau p. 72–73, Usiminas p. 32).
+**CASE-02 concluído e mergeado** (PR #3). `*_itr_dfs.json` 62/62 OK cada; complementares 9/9 e 29/29 OK.
+
+**CASE-07 concluído: entrega gerada pelo pipeline.**
+- `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` (sem flag): verificação **APROVADA** (202/239 OK, 37 REVISAR, 0 ERRO) → `entrega/apresentacao_gerdau_x_usiminas_3T26.html` (8 slides, aviso "Não constitui recomendação", páginas na numeração do PDF). Invertido (`--a usiminas --b gerdau`) também entrega.
+- 824 testes passam (`pytest` e `python -m pytest`).
+- Para chegar lá, corrigi os 38 ERROs dos operacionais do CASE-03 (erros 17–20 acima): trecho e token copiados do `pagina_NN.txt` por script, nenhum número digitado.
+- Limites que os slides devem dizer: Gerdau sem volume consolidado (só por segmento) → R$/t e EBITDA/t da Gerdau N/D; R$/t da Usiminas N/C (receita consolidada inclui mineração); sem 2T26 da Gerdau no ITR (T/T só Usiminas).
+- 37 REVISAR (sem evidência literal de período/unidade/escopo) não bloqueiam; próximo passo: completar `evidencia` nesses fatos.
 
 **Avisos para o time**
-- CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"` no alerta de efeito pontual; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
-- `extrair_balanco.py`: formato fora do contrato (o verificador marca REVISAR "fora do contrato"); o BP consolidado já está nos `*_itr_dfs.json`.
+- CASE-04: aprovado, o pipeline regrava `metricas/<slug>_<tri>_indicadores.json` com a mesma serialização do CLI (byte a byte igual com os mesmos fatos); rascunho nunca toca esse arquivo.
+- CASE-06: o pipeline chama `apresentacao.py --comparativo --metricas --saida` e copia para `entrega/` só se a verificação estiver aprovada.
+- Testes: `pytest` puro não importa `tests/test_localizar_paginas.py` (`from src. ...`); use `python -m pytest`. `test_catalogo` falha por causa dos operacionais do CASE-03 (já falhava no main).
+- CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"`; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
 
-**Próximo:** CASE-07 (`src/pipeline.py`), ver `docs/TAREFAS.md`.
+**Próximo:** mergear o PR #5; CASE-08 usa o comando acima no README e os erros 13–20 no vídeo.

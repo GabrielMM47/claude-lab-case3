@@ -47,7 +47,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "cbfb49ee9ea94c209496897adb19af8a991e403af3235fc598bd863dbc08f3c0",
+      "sha256": "f3ee57b83d33e46d2127ad60c6fece301bd0a54a7dde9093a54d36f047599936",
       "n_registros": 94,
       "fonte": "gerdau_ITR_3T26",
       "fonte_defasada": false,
@@ -90,7 +90,7 @@
         "revisar": 94,
         "erro": 0,
         "texto": "saida/gerdau_ITR_3T26",
-        "json_sha256": "cbfb49ee9ea94c209496897adb19af8a991e403af3235fc598bd863dbc08f3c0"
+        "json_sha256": "f3ee57b83d33e46d2127ad60c6fece301bd0a54a7dde9093a54d36f047599936"
       },
       "criterio_ebitda": "n/a"
     },
@@ -118,7 +118,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "18b433356a99101be02d09b7474bebeee7e1a1b5314a9aab00bd6b187398bae1",
+      "sha256": "7f4cc3e23436f582fd7c45f1ee16773e2a51536c2953e0a6e86fcb81c64d866e",
       "n_registros": 88,
       "fonte": "gerdau_ITR_3T26",
       "fonte_defasada": false,
@@ -161,7 +161,7 @@
         "revisar": 88,
         "erro": 0,
         "texto": "saida/gerdau_ITR_3T26",
-        "json_sha256": "18b433356a99101be02d09b7474bebeee7e1a1b5314a9aab00bd6b187398bae1"
+        "json_sha256": "7f4cc3e23436f582fd7c45f1ee16773e2a51536c2953e0a6e86fcb81c64d866e"
       },
       "criterio_ebitda": "n/a"
     },
@@ -189,7 +189,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "0648ba77637be4e82aded4e0a3c102aa61cd2299ee1190beb736534d41673f9a",
+      "sha256": "597398c535c0bcae5646e460d4752c807f22bc701ed42eb621042028b3aeb313",
       "n_registros": 81,
       "fonte": "usiminas_ITR_3T26",
       "fonte_defasada": false,
@@ -231,7 +231,7 @@
         "revisar": 81,
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
-        "json_sha256": "0648ba77637be4e82aded4e0a3c102aa61cd2299ee1190beb736534d41673f9a"
+        "json_sha256": "597398c535c0bcae5646e460d4752c807f22bc701ed42eb621042028b3aeb313"
       },
       "criterio_ebitda": "n/a"
     },
@@ -259,7 +259,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "cd548c0a513ac09dd871784aa3c33259b99b2a7ef6db9a56f735c0610bcb92d6",
+      "sha256": "9bdd0d0ec628e24ad80415bb4fe33f54d395c424cef7fee7dc15277e79b1e3a4",
       "n_registros": 78,
       "fonte": "usiminas_ITR_3T26",
       "fonte_defasada": false,
@@ -301,7 +301,7 @@
         "revisar": 78,
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
-        "json_sha256": "cd548c0a513ac09dd871784aa3c33259b99b2a7ef6db9a56f735c0610bcb92d6"
+        "json_sha256": "9bdd0d0ec628e24ad80415bb4fe33f54d395c424cef7fee7dc15277e79b1e3a4"
       },
       "criterio_ebitda": "n/a"
     },
@@ -320,11 +320,11 @@
       "tipo": "fato",
       "schema": "fato",
       "contrato": {
-        "valido": false,
-        "n_erros": 24
+        "valido": true,
+        "n_erros": 0
       },
-      "sha256": "9117bceeccee2f248dbcf7a479eaa5ec1b4cb37b8bbeec08d6baf1bb71a56d80",
-      "n_registros": 22,
+      "sha256": "0d709a618f7732ac52556a859868ddb475ecd51ae49a7562ac4d61f0322626ca",
+      "n_registros": 21,
       "fonte": "gerdau_ITR_3T26",
       "fonte_defasada": null,
       "meta": null,
@@ -332,9 +332,8 @@
       "empresa": null,
       "visao": [],
       "unidade": [
-        "%",
-        "1.000 toneladas",
         "R$ milhões",
+        "mil t",
         "mil t/ano"
       ],
       "escala_original": null,
@@ -353,13 +352,13 @@
       "n_ambiguos": null,
       "autovalidacao": null,
       "verificador": {
-        "status": "0/22 conferem, 22 com erro",
+        "status": "0/21 conferem, 21 com erro",
         "ok": 0,
-        "total": 22,
+        "total": 21,
         "revisar": 0,
-        "erro": 22,
+        "erro": 21,
         "texto": "saida/gerdau_ITR_3T26",
-        "json_sha256": "9117bceeccee2f248dbcf7a479eaa5ec1b4cb37b8bbeec08d6baf1bb71a56d80"
+        "json_sha256": "0d709a618f7732ac52556a859868ddb475ecd51ae49a7562ac4d61f0322626ca"
       },
       "criterio_ebitda": "não informado"
     },
@@ -415,7 +414,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "097cf685db2eb06bd3483f207294a9fd9000ec0cf15e8ec6254d95a3bdaecbf7",
+      "sha256": "aa239e93f06c95f88da5d430e8cfd7a145af7787f9205af0a57c6dd7ee0f74b0",
       "n_registros": null,
       "fonte": null,
       "fonte_defasada": null,
@@ -437,7 +436,7 @@
         "ok": null,
         "total": null,
         "texto": null,
-        "json_sha256": "097cf685db2eb06bd3483f207294a9fd9000ec0cf15e8ec6254d95a3bdaecbf7"
+        "json_sha256": "aa239e93f06c95f88da5d430e8cfd7a145af7787f9205af0a57c6dd7ee0f74b0"
       },
       "criterio_ebitda": "não informado"
     },
@@ -449,7 +448,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "5c8cf36534fdddc8d05132f85b091d64aaaaf24ca9b62616975daf0084634d06",
+      "sha256": "9311fd2346b4ae18c38fa36662ca179edb57150f20771d5a59941c2a1bf50e69",
       "n_registros": 9,
       "fonte": "gerdau_ITR_3T26",
       "fonte_defasada": null,
@@ -478,7 +477,7 @@
         "revisar": 0,
         "erro": 0,
         "texto": "saida/gerdau_ITR_3T26",
-        "json_sha256": "5c8cf36534fdddc8d05132f85b091d64aaaaf24ca9b62616975daf0084634d06"
+        "json_sha256": "9311fd2346b4ae18c38fa36662ca179edb57150f20771d5a59941c2a1bf50e69"
       },
       "criterio_ebitda": "não informado"
     },
@@ -490,7 +489,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "3565cbce7f1384e063934a03a83fcc0f9cfcc5f2f1ef4aded27157d98ab0a70c",
+      "sha256": "f3a3f5c31a6c616a1714783467f78db3f67af3334fc6e643f4b735b7009ab8e3",
       "n_registros": 62,
       "fonte": "gerdau_ITR_3T26",
       "fonte_defasada": null,
@@ -523,7 +522,7 @@
         "revisar": 0,
         "erro": 0,
         "texto": "saida/gerdau_ITR_3T26",
-        "json_sha256": "3565cbce7f1384e063934a03a83fcc0f9cfcc5f2f1ef4aded27157d98ab0a70c"
+        "json_sha256": "f3a3f5c31a6c616a1714783467f78db3f67af3334fc6e643f4b735b7009ab8e3"
       },
       "criterio_ebitda": "não informado"
     },
@@ -572,8 +571,8 @@
       "tipo": "fato",
       "schema": "fato",
       "contrato": {
-        "valido": false,
-        "n_erros": 7
+        "valido": true,
+        "n_erros": 0
       },
       "sha256": "381a7dc3d16fd85ebc5a5b9679902155f06caf1eab51c40d3294dd98ada1290b",
       "n_registros": 13,
@@ -587,9 +586,8 @@
         "%",
         "R$/t",
         "US$/t",
-        "mil t/ano",
-        "mil toneladas",
-        "milhões de toneladas/ano"
+        "mil t",
+        "mil t/ano"
       ],
       "escala_original": null,
       "paginas": [
@@ -606,11 +604,11 @@
       "n_ambiguos": null,
       "autovalidacao": null,
       "verificador": {
-        "status": "0/13 conferem, 13 com erro",
+        "status": "0/10 conferem, 10 com erro",
         "ok": 0,
-        "total": 13,
+        "total": 10,
         "revisar": 0,
-        "erro": 13,
+        "erro": 10,
         "texto": "saida/usiminas_ITR_3T26",
         "json_sha256": "381a7dc3d16fd85ebc5a5b9679902155f06caf1eab51c40d3294dd98ada1290b"
       },
@@ -667,7 +665,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "2a6893ea44493e827476fab40255c6714aa0d7b3bad78ddae03f675d0902022c",
+      "sha256": "bc62136e8072d2ef975b303fc162274c7320f3776c9584eac721724e282c9f64",
       "n_registros": null,
       "fonte": null,
       "fonte_defasada": null,
@@ -689,7 +687,7 @@
         "ok": null,
         "total": null,
         "texto": null,
-        "json_sha256": "2a6893ea44493e827476fab40255c6714aa0d7b3bad78ddae03f675d0902022c"
+        "json_sha256": "bc62136e8072d2ef975b303fc162274c7320f3776c9584eac721724e282c9f64"
       },
       "criterio_ebitda": "não informado"
     },
@@ -701,7 +699,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "9dbaca100c28a4178c565e87d59bd682e459f4f5352177094c7e55a528dd7806",
+      "sha256": "63a11cd2529fd5fdb55d1519e125593c39aea13f3054ded5004cc2bf6b802d6f",
       "n_registros": 29,
       "fonte": "usiminas_ITR_3T26",
       "fonte_defasada": null,
@@ -733,7 +731,7 @@
         "revisar": 0,
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
-        "json_sha256": "9dbaca100c28a4178c565e87d59bd682e459f4f5352177094c7e55a528dd7806"
+        "json_sha256": "63a11cd2529fd5fdb55d1519e125593c39aea13f3054ded5004cc2bf6b802d6f"
       },
       "criterio_ebitda": "não informado"
     },
@@ -745,7 +743,7 @@
         "valido": true,
         "n_erros": 0
       },
-      "sha256": "6f60e7fdb0a88d3af69e5fc5a61bc019ac7e81174c6ecf04ad9190786540d9e0",
+      "sha256": "2a6e7fa4564aff1e2a9f100b040d4f040935b15bcba510862931de8ee4a2aa2a",
       "n_registros": 62,
       "fonte": "usiminas_ITR_3T26",
       "fonte_defasada": null,
@@ -776,7 +774,7 @@
         "revisar": 0,
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
-        "json_sha256": "6f60e7fdb0a88d3af69e5fc5a61bc019ac7e81174c6ecf04ad9190786540d9e0"
+        "json_sha256": "2a6e7fa4564aff1e2a9f100b040d4f040935b15bcba510862931de8ee4a2aa2a"
       },
       "criterio_ebitda": "não informado"
     },
@@ -785,8 +783,8 @@
       "tipo": "fato",
       "schema": "fato",
       "contrato": {
-        "valido": false,
-        "n_erros": 6
+        "valido": true,
+        "n_erros": 0
       },
       "sha256": "bd2d97cfbb920f724fba648744452adf794d5c5fa564fd2e5c95501c5e05868e",
       "n_registros": 19,
@@ -797,7 +795,6 @@
       "empresa": null,
       "visao": [],
       "unidade": [
-        "Mil toneladas",
         "R$ milhões",
         "R$/t",
         "mil t"
@@ -817,11 +814,11 @@
       "n_ambiguos": null,
       "autovalidacao": null,
       "verificador": {
-        "status": "0/19 conferem, 7 para revisar, 12 com erro",
-        "ok": 0,
+        "status": "3/19 conferem, 16 para revisar",
+        "ok": 3,
         "total": 19,
-        "revisar": 7,
-        "erro": 12,
+        "revisar": 16,
+        "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
         "json_sha256": "bd2d97cfbb920f724fba648744452adf794d5c5fa564fd2e5c95501c5e05868e"
       },

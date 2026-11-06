@@ -231,6 +231,37 @@ def test_destaque_ignora_variacao_com_efeito_pontual(dados):
     assert neg and neg.startswith("Margem EBITDA ajustada")
 
 
+def test_efeito_pontual_citando_so_ebitda_tambem_tira_linhas_contabeis(dados):
+    # Como o comparar.py real faz: o alerta cita só as linhas de EBITDA. O impairment do 3T25,
+    # porém, está no lucro e na margem líquida (o EBITDA ajustado já o exclui).
+    real = copy.deepcopy(dados)
+    for alerta in real.comp["alertas"]:
+        if alerta["tipo"] == "efeito_pontual":
+            alerta["chaves"] = ["ebitda_ajustado", "margem_ebitda"]
+    pos, neg, _ = ap.destaques_numericos(real, "b")
+    assert pos is None or "Margem líquida" not in pos
+    # sem margem que piorou fora das distorcidas: cai na pior linha financeira do trimestre
+    assert neg and neg.startswith(("Receita líquida", "EBITDA")) and "A/A" in neg
+
+
+def test_efeito_pontual_sem_linhas_nao_tira_nada(dados):
+    # alerta de outro período (o comparativo não cita linhas): a margem líquida volta a valer
+    sem = copy.deepcopy(dados)
+    for alerta in sem.comp["alertas"]:
+        if alerta["tipo"] == "efeito_pontual":
+            alerta["chaves"] = []
+    pos, _, _ = ap.destaques_numericos(sem, "b")
+    assert pos and pos.startswith("Margem líquida")
+
+
+def test_perfil_usa_rotulo_do_segmento(dados):
+    com_rotulo = copy.deepcopy(dados)
+    seg = com_rotulo.comp["segmentos"]["a"][0]
+    seg["rotulo"] = "Rótulo Legível"
+    perfil = next(s for s in secoes(ap.gerar_html(com_rotulo, None)) if 'id="perfil"' in s)
+    assert "Segmentos: Rótulo Legível " in perfil and f"Segmentos: {seg['segmento']} " not in perfil
+
+
 def test_resolver_formata_e_registra_fonte(dados):
     fontes = ap.Fontes()
     texto = ap.resolver("{a.nome}: {a.margem_ebitda} ({a.margem_ebitda.var_aa} A/A), {b.dl_ebitda}", dados, fontes)

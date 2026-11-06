@@ -39,6 +39,14 @@ TABELA = ["receita_liquida", "ebitda_ajustado", "ebitda_contabil", "margem_ebitd
           "margem_liquida", "dl_ebitda", "roe", "roic"]
 GRUPOS_SETOR = {"setor"}
 EXTRA_SETOR = ["dl_ebitda"]
+# Linhas contábeis que carregam os ajustes pontuais (impairment, venda de ativo...). O EBITDA
+# ajustado os exclui; EBIT, lucro e EBITDA contábil não. Um alerta de efeito pontual da empresa
+# distorce a variação A/A delas, mesmo que o comparativo só cite as linhas de EBITDA.
+LINHAS_COM_PONTUAIS = ["ebitda_contabil", "margem_ebitda_contabil", "margem_ebit", "lucro_liquido",
+                       "margem_liquida"]
+# Sem indicador de margem/retorno que piorou (ou melhorou), o destaque cai para a variação A/A de
+# uma linha financeira do trimestre: queda de receita é notícia, mesmo sem eleger vencedor.
+LINHAS_DESTAQUE_ABSOLUTO = ["receita_liquida", "ebitda_ajustado", "ebitda_contabil", "lucro_liquido"]
 
 RE_FONTE = re.compile(r"^(?P<doc>.+?) p\. ?(?P<pag>\d+)$")
 RE_PLACEHOLDER = re.compile(r"\{([^{}]+)\}")
@@ -322,7 +330,7 @@ def slide_perfil(d, n, fontes):
                 fontes.add_fato(e, fato)
         segs = d.comp.get("segmentos", {}).get(e, [])
         if segs:
-            mix = ", ".join(f"{s['segmento']} {fmt_br(s['pct_receita'], 0)}% da receita / "
+            mix = ", ".join(f"{s.get('rotulo') or s['segmento']} {fmt_br(s['pct_receita'], 0)}% da receita / "
                             f"{fmt_br(s['pct_ebitda'], 0)}% do EBITDA" for s in segs)
             itens.append(f"Segmentos: {esc(mix)}")
             for s in segs:
@@ -400,19 +408,30 @@ def slide_setor(d, n, fontes):
 def destaques_numericos(d: Dados, e: str) -> tuple[str | None, str | None, Fontes]:
     """Melhor e pior variação A/A entre as linhas com direção definida (p.p. primeiro).
 
-    Linhas citadas em alerta de efeito pontual da empresa ficam de fora: a variação A/A delas
-    engana e o próprio alerta aparece no slide.
+    Linhas afetadas por efeito pontual da empresa ficam de fora: a variação A/A delas engana e
+    o próprio alerta aparece no slide. Afetadas = as que o alerta cita + as contábeis
+    (LINHAS_COM_PONTUAIS), quando o alerta vale para esta comparação (cita alguma linha).
+    Sem candidato num dos lados, usa a variação A/A de uma linha financeira do trimestre.
     """
     fontes = Fontes()
-    distorcidas = {c for a in d.alertas(e) if a.get("tipo") == "efeito_pontual" for c in a.get("chaves", [])}
+    distorcidas = set()
+    for alerta in d.alertas(e):
+        if alerta.get("tipo") == "efeito_pontual" and alerta.get("chaves"):
+            distorcidas |= set(alerta["chaves"]) | set(LINHAS_COM_PONTUAIS)
+
+    def tem_var(linha):
+        lado = linha[e]
+        return linha["chave"] not in distorcidas and lado.get("disponivel") and lado.get("var_aa") is not None
+
     cands = []
     for linha in d.comp["linhas"]:
-        lado = linha[e]
-        if linha["chave"] in distorcidas:
-            continue
-        if linha.get("melhor") in ("maior", "menor") and lado.get("disponivel") and lado.get("var_aa") is not None:
+        if linha.get("melhor") in ("maior", "menor") and tem_var(linha):
+            lado = linha[e]
             score = lado["var_aa"] if linha["melhor"] == "maior" else -lado["var_aa"]
             cands.append((lado.get("unidade_var") != "p.p.", score, linha))
+    absolutos = [(True, d.linhas[c][e]["var_aa"], d.linhas[c]) for c in LINHAS_DESTAQUE_ABSOLUTO
+                 if c in d.linhas and d.linhas[c].get("periodo", d.comp["periodo"]) == d.comp["periodo"]
+                 and tem_var(d.linhas[c])]
 
     def frase(item):
         _, _, linha = item
@@ -420,9 +439,14 @@ def destaques_numericos(d: Dados, e: str) -> tuple[str | None, str | None, Fonte
         fontes.add(e, lado.get("fontes"))
         return f"{linha['nome']}: {lado['texto']} ({fmt_var(lado['var_aa'], lado['unidade_var'])} A/A)"
 
-    pos = sorted([c for c in cands if c[1] > 0], key=lambda c: (c[0], -c[1]))
-    neg = sorted([c for c in cands if c[1] < 0], key=lambda c: (c[0], c[1]))
-    return (frase(pos[0]) if pos else None), (frase(neg[0]) if neg else None), fontes
+    def escolher(sinal):
+        for grupo in (cands, absolutos):
+            achados = sorted([c for c in grupo if c[1] * sinal > 0], key=lambda c: (c[0], -sinal * c[1]))
+            if achados:
+                return frase(achados[0])
+        return None
+
+    return escolher(+1), escolher(-1), fontes
 
 
 def slide_destaques_riscos(d, n, fontes):
