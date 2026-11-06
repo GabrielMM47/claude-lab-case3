@@ -82,7 +82,7 @@ LINHAS_DL_EBITDA = ("dl_ebitda", "dl_ebitda_reportado")   # base = EBITDA
 ROTULO_METODOLOGIA = {"anualizacao": "anualização", "saldos_medios": "saldos médios"}
 TIPOS_REPASSADOS = ("efeito_pontual", "divergencia", "divergencia_definicao")
 
-OBS_INEXISTENTE = "indicador não calculado pelo CASE-04"
+OBS_INEXISTENTE = "não disponível nos documentos analisados"  # texto vai para o slide: sem jargão interno
 OBS_SEM_CRITERIO = "sem EBITDA de mesmo critério nas duas empresas"
 OBS_POR_T_SEGMENTO = (
     "consolidado inclui mineração e o volume é de aço; "
