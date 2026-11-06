@@ -1,0 +1,22 @@
+{
+  "documento_id": "usiminas_ITR_3T26",
+  "empresa": "usiminas",
+  "tipo": "itr",
+  "caminho": "data/itrs/usiminas_ITR_3T26.pdf",
+  "sha256": "4bc2fcd69480d772320a0a797c256bf241f54b7d2aea21a1b03ecc4cf2fd516b",
+  "data_referencia": "2026-09-30",
+  "paginas_usadas": {
+    "BP": [
+      12,
+      13
+    ],
+    "DRE": [
+      14
+    ],
+    "DFC": [
+      16,
+      17
+    ]
+  },
+  "gerado_por": "src/dfs_cvm.py"
+}

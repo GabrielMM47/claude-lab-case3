@@ -1,0 +1,173 @@
+{
+  "script": "extrair_balanco.py",
+  "versao_script": "1.0.0",
+  "gerado_em": "2026-11-06T12:40:20",
+  "empresa": "usiminas",
+  "pdf": "data/itrs/usiminas_ITR_3T26.pdf",
+  "pdf_sha256": "4bc2fcd69480d772320a0a797c256bf241f54b7d2aea21a1b03ecc4cf2fd516b",
+  "textos_dir": "saida/usiminas_ITR_3T26",
+  "visao": "controladora",
+  "paginas": {
+    "ativo": [
+      3
+    ],
+    "passivo": [
+      4
+    ]
+  },
+  "localizacao": "automatica",
+  "escala_original": "Reais Mil",
+  "unidade": "R$ mil",
+  "data_atual": "2026-09-30",
+  "data_anterior": "2025-12-31",
+  "n_contas": {
+    "ativo": 35,
+    "passivo": 43,
+    "total": 78
+  },
+  "n_ambiguos": 17,
+  "status": "aprovado",
+  "validacoes": [
+    {
+      "id": "V01",
+      "descricao": "contas obrigatórias presentes",
+      "severidade": "erro",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "V02",
+      "descricao": "códigos únicos",
+      "severidade": "erro",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "V03",
+      "descricao": "códigos do Ativo começam com 1 e do Passivo com 2",
+      "severidade": "erro",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "V04",
+      "descricao": "Ativo Total (1) = Passivo Total (2)",
+      "severidade": "erro",
+      "coluna": "atual",
+      "ok": true,
+      "esperado": 30968623,
+      "obtido": 30968623,
+      "detalhe": ""
+    },
+    {
+      "id": "V04",
+      "descricao": "Ativo Total (1) = Passivo Total (2)",
+      "severidade": "erro",
+      "coluna": "anterior",
+      "ok": true,
+      "esperado": 31624842,
+      "obtido": 31624842,
+      "detalhe": ""
+    },
+    {
+      "id": "V05",
+      "descricao": "Ativo Total (1) = 1.01 + 1.02",
+      "severidade": "erro",
+      "coluna": "atual",
+      "ok": true,
+      "esperado": 30968623,
+      "obtido": 30968623,
+      "detalhe": ""
+    },
+    {
+      "id": "V05",
+      "descricao": "Ativo Total (1) = 1.01 + 1.02",
+      "severidade": "erro",
+      "coluna": "anterior",
+      "ok": true,
+      "esperado": 31624842,
+      "obtido": 31624842,
+      "detalhe": ""
+    },
+    {
+      "id": "V06",
+      "descricao": "Passivo Total (2) = 2.01 + 2.02 + 2.03",
+      "severidade": "erro",
+      "coluna": "atual",
+      "ok": true,
+      "esperado": 30968623,
+      "obtido": 30968623,
+      "detalhe": ""
+    },
+    {
+      "id": "V06",
+      "descricao": "Passivo Total (2) = 2.01 + 2.02 + 2.03",
+      "severidade": "erro",
+      "coluna": "anterior",
+      "ok": true,
+      "esperado": 31624842,
+      "obtido": 31624842,
+      "detalhe": ""
+    },
+    {
+      "id": "V07",
+      "descricao": "nº de linhas com código = nº de contas extraídas",
+      "severidade": "erro",
+      "coluna": null,
+      "ok": true,
+      "esperado": 78,
+      "obtido": 78,
+      "detalhe": ""
+    },
+    {
+      "id": "V08",
+      "descricao": "autoverificação: trecho e literais na página, valores batem",
+      "severidade": "erro",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "A01",
+      "descricao": "soma dos filhos diretos = conta pai",
+      "severidade": "aviso",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "A02",
+      "descricao": "toda conta tem o pai no bloco",
+      "severidade": "aviso",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    },
+    {
+      "id": "A03",
+      "descricao": "códigos em ordem crescente",
+      "severidade": "aviso",
+      "coluna": null,
+      "ok": true,
+      "esperado": null,
+      "obtido": null,
+      "detalhe": ""
+    }
+  ],
+  "avisos": []
+}

@@ -6,7 +6,7 @@ Resumo de tudo o que importa para o case, extraído do repositório oficial do w
 O Diretor de Research quer uma **apresentação de 6 a 8 slides** para o comitê de investimentos, comparando **Gerdau e Usiminas** lado a lado no 3T26. Nós somos os analistas de siderurgia.
 
 - Métricas: **receita, EBITDA, margem, lucro, endividamento** e as **métricas de siderurgia** (volume vendido, receita/preço por tonelada, dívida líquida/EBITDA).
-- **Todo número com a página do ITR** de onde saiu.
+- **Todo número com a página do ITR** de onde saiu (índice do PDF, não o número impresso na folha).
 - **Nada de tabelão.** O **título de cada slide é a mensagem** ("Gerdau amplia margem enquanto Usiminas sofre com o minério", e não "Margem EBITDA").
 
 ## 2. Estrutura dos slides
@@ -23,12 +23,14 @@ O Diretor de Research quer uma **apresentação de 6 a 8 slides** para o comitê
 
 Roteiro em [../templates/roteiro_apresentacao.md](../templates/roteiro_apresentacao.md). Formato: `.pptx` (python-pptx) ou slides HTML. **O artefato público é a apresentação publicada (HTML ou PDF).**
 
-## 3. Mapa de páginas (números impressos; confirmar no `pagina_NN.txt`)
+## 3. Mapa de páginas (índice do PDF, o mesmo número do `pagina_NN.txt`)
 | O quê | Gerdau | Usiminas |
 |---|---|---|
 | DRE consolidada | pág. 29–30 | pág. 14 |
 | Comentário / release | pág. 2+ (é da **holding**!) | pág. 21–47 (release completo, EBITDA ajustado, por unidade) |
 | Segmentos / EBITDA ajustado | notas, pág. 71–74 | dentro do release |
+
+Os números impressos na folha são outros (a DRE da Gerdau está impressa como 24 e "PÁGINA: 16 de 65"). Nos JSONs e nos slides vale sempre o índice do PDF.
 
 ## 4. Os 7 cuidados com os dados (a banca olha)
 1. **Holding ≠ consolidado.** Usar sempre o **consolidado**.

@@ -1,0 +1,24 @@
+{
+  "documento_id": "gerdau_ITR_3T26",
+  "empresa": "gerdau",
+  "tipo": "itr",
+  "caminho": "data/itrs/gerdau_ITR_3T26.pdf",
+  "sha256": "1bb773ec9178633d01c205047f4babfed8df731d71dc4694b837113c1d733f59",
+  "data_referencia": "2026-09-30",
+  "paginas_usadas": {
+    "BP": [
+      26,
+      27,
+      28
+    ],
+    "DRE": [
+      29,
+      30
+    ],
+    "DFC": [
+      32,
+      33
+    ]
+  },
+  "gerado_por": "src/dfs_cvm.py"
+}
