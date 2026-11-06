@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-lab-case3.invalid/schemas/comparativo.schema.json",
+  "title": "Comparativo entre duas empresas (CASE-05)",
+  "description": "Forma de saida/comparativo/<a>_x_<b>_<tri>/comparativo.json, gerado por src/comparar.py a partir de dois indicadores.json do CASE-04 e consumido pelo CASE-06 (apresentação). Só os campos essenciais são obrigatórios; campos extras são permitidos no topo, nas linhas e nos lados para não quebrar consumidores com versões anteriores do formato. 'fontes' usam a numeração do PDF (índice a partir de 1), nunca o número impresso na folha.",
+  "type": "object",
+  "required": [
+    "periodo",
+    "criterio_ebitda",
+    "empresas",
+    "linhas",
+    "segmentos",
+    "insights",
+    "alertas",
+    "graficos",
+    "verificacao"
+  ],
+  "properties": {
+    "periodo": {
+      "description": "Trimestre comparado, ex.: '3T26'.",
+      "type": "string",
+      "pattern": "^[1-4]T[0-9]{2}$"
+    },
+    "criterio_ebitda": {
+      "description": "Critério de EBITDA usado nas duas empresas; null quando não há critério comum.",
+      "enum": ["ajustado", "contabil", null]
+    },
+    "empresas": {
+      "description": "Identificação dos lados 'a' e 'b' (nome, ticker e cor vêm de config/empresas.toml).",
+      "type": "object",
+      "required": ["a", "b"],
+      "properties": {
+        "a": {"$ref": "#/$defs/empresa"},
+        "b": {"$ref": "#/$defs/empresa"}
+      }
+    },
+    "metodologia": {
+      "description": "Premissas comuns: unidade monetária, anualização, saldos médios e política tributária por lado.",
+      "type": ["object", "null"],
+      "properties": {
+        "unidade_monetaria": {"type": ["string", "null"]},
+        "anualizacao": {"type": ["string", "object", "null"]},
+        "saldos_medios": {"type": ["string", "object", "null"]},
+        "politica_tributaria": {"type": ["object", "null"]}
+      }
+    },
+    "linhas": {
+      "description": "Uma linha por indicador comparado (escopo consolidado).",
+      "type": "array",
+      "items": {"$ref": "#/$defs/linha"}
+    },
+    "segmentos": {
+      "description": "Participação de cada segmento na receita e no EBITDA, por lado.",
+      "type": "object",
+      "required": ["a", "b"],
+      "properties": {
+        "a": {"type": "array", "items": {"$ref": "#/$defs/segmento"}},
+        "b": {"type": "array", "items": {"$ref": "#/$defs/segmento"}}
+      }
+    },
+    "insights": {
+      "description": "Frases determinísticas geradas a partir das linhas.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "texto"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "texto": {"type": "string", "minLength": 1},
+          "chaves": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "alertas": {
+      "description": "Alertas repassados dos indicadores ou gerados pelo comparativo.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tipo", "texto"],
+        "properties": {
+          "tipo": {"type": "string", "minLength": 1},
+          "empresa": {"enum": ["a", "b", null]},
+          "texto": {"type": "string", "minLength": 1},
+          "chaves": {"type": "array", "items": {"type": "string"}},
+          "fontes": {"$ref": "#/$defs/fontes"}
+        }
+      }
+    },
+    "graficos": {
+      "description": "Imagens geradas por src/graficos.py (lista vazia com --sem-graficos).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "arquivo"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "arquivo": {"type": "string", "minLength": 1},
+          "descricao": {"type": "string"},
+          "fontes": {
+            "type": "object",
+            "properties": {
+              "a": {"$ref": "#/$defs/fontes"},
+              "b": {"$ref": "#/$defs/fontes"}
+            }
+          }
+        }
+      }
+    },
+    "verificacao": {
+      "description": "Resultado da verificação (CASE-07); null enquanto não verificado.",
+      "type": ["object", "null"]
+    }
+  },
+  "$defs": {
+    "fontes": {
+      "description": "Páginas de origem, ex.: 'ITR p.29', 'Apresentação p.12' (índice do PDF).",
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "empresa": {
+      "type": "object",
+      "required": ["slug", "nome"],
+      "properties": {
+        "slug": {"type": "string", "minLength": 1},
+        "nome": {"type": "string", "minLength": 1},
+        "ticker": {"type": ["string", "null"]},
+        "cor": {"type": ["string", "null"], "pattern": "^#[0-9a-fA-F]{6}$"}
+      }
+    },
+    "status": {
+      "description": "ok = valor; ausente = N/D; nao_comparavel = N/C; nao_aplicavel = N/A.",
+      "enum": ["ok", "ausente", "nao_comparavel", "nao_aplicavel"]
+    },
+    "lado": {
+      "description": "Valor de uma empresa numa linha. Ausência nunca vira zero: status != ok leva valor null.",
+      "type": "object",
+      "properties": {
+        "valor": {"type": ["number", "null"]},
+        "texto": {"type": "string"},
+        "valores": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "var_aa": {"type": ["number", "null"]},
+        "var_tt": {"type": ["number", "null"]},
+        "unidade_var": {"type": ["string", "null"]},
+        "texto_var_aa": {"type": "string"},
+        "texto_var_tt": {"type": "string"},
+        "fontes": {"$ref": "#/$defs/fontes"},
+        "disponivel": {"type": "boolean"},
+        "status": {"$ref": "#/$defs/status"},
+        "obs": {"type": ["string", "null"]}
+      }
+    },
+    "linha": {
+      "type": "object",
+      "required": ["chave", "nome", "unidade", "a", "b"],
+      "properties": {
+        "chave": {"type": "string", "minLength": 1},
+        "nome": {"type": "string", "minLength": 1},
+        "grupo": {"type": "string"},
+        "unidade": {"type": ["string", "null"]},
+        "periodo": {"type": "string"},
+        "melhor": {"enum": ["maior", "menor", null]},
+        "vencedor": {"enum": ["a", "b", null]},
+        "motivo_sem_vencedor": {"type": ["string", "null"]},
+        "a": {"$ref": "#/$defs/lado"},
+        "b": {"$ref": "#/$defs/lado"}
+      }
+    },
+    "segmento": {
+      "type": "object",
+      "required": ["segmento"],
+      "properties": {
+        "segmento": {"type": "string", "minLength": 1},
+        "pct_receita": {"type": ["number", "null"]},
+        "pct_ebitda": {"type": ["number", "null"]},
+        "fontes": {"$ref": "#/$defs/fontes"}
+      }
+    }
+  }
+}

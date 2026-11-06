@@ -1,0 +1,37 @@
+# Identificação das empresas para o comparativo (CASE-05, src/comparar.py).
+# slug (o mesmo de metricas/<slug>_<tri>_indicadores.json) -> nome, ticker e cor (hex) nos gráficos.
+# Slug ausente aqui: nome = slug capitalizado, ticker = null, cor de uma paleta de reserva
+# e um alerta tipo "config" no comparativo.
+
+[empresas.gerdau]
+nome = "Gerdau"
+ticker = "GGBR4"
+cor = "#1f5fa8"
+
+[empresas.usiminas]
+nome = "Usiminas"
+ticker = "USIM5"
+cor = "#d9822b"
+
+# Empresas FICTÍCIAS usadas só nos testes (tests/fixtures_comparar/).
+# empresa_c fica de fora de propósito, para testar o fallback de slug ausente.
+
+[empresas.empresa_a]
+nome = "Empresa A"
+ticker = "FCTA3"
+cor = "#2a9d8f"
+
+[empresas.empresa_b]
+nome = "Empresa B"
+ticker = "FCTB3"
+cor = "#8e44ad"
+
+# Rótulos legíveis dos segmentos (escopo "segmento:<slug>" dos indicadores) para gráficos e insights.
+# Segmento ausente aqui: slug sem "_" e com a primeira letra maiúscula.
+[segmentos]
+brasil = "Brasil"
+america_do_norte = "América do Norte"
+america_do_sul = "América do Sul"
+siderurgia = "Siderurgia"
+mineracao = "Mineração"
+"mineração" = "Mineração"

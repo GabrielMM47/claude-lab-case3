@@ -316,6 +316,98 @@
       }
     },
     {
+      "caminho": "metricas/gerdau_3T26_apresentacao_operacional.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": false,
+        "n_erros": 27
+      },
+      "sha256": "81b8985d4eba416e862f7066cc7d845f0a91d150cf3aa2c9d059127a105a2ad5",
+      "n_registros": 22,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "%",
+        "1.000 toneladas",
+        "MT",
+        "R$ milhões"
+      ],
+      "escala_original": null,
+      "paginas": [
+        7,
+        8,
+        12,
+        18,
+        19,
+        20
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/22 conferem, 22 com erro",
+        "ok": 0,
+        "total": 22,
+        "revisar": 0,
+        "erro": 22,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "81b8985d4eba416e862f7066cc7d845f0a91d150cf3aa2c9d059127a105a2ad5"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/gerdau_3T26_apresentacao_qualitativo.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "dd4a47850ef759d88702d1e7faab016ed5c156728bfff9a4fa868fe07e7a603d",
+      "n_registros": 8,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [],
+      "escala_original": null,
+      "paginas": [
+        7,
+        8,
+        12,
+        15,
+        18,
+        29,
+        43
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/8 conferem, 8 com erro",
+        "ok": 0,
+        "total": 8,
+        "revisar": 0,
+        "erro": 8,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "dd4a47850ef759d88702d1e7faab016ed5c156728bfff9a4fa868fe07e7a603d"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
       "caminho": "metricas/gerdau_3T26_itr_complementar.json",
       "tipo": "fato",
       "schema": "fato",
@@ -398,6 +490,138 @@
         "erro": 0,
         "texto": "saida/gerdau_ITR_3T26",
         "json_sha256": "f3a3f5c31a6c616a1714783467f78db3f67af3334fc6e643f4b735b7009ab8e3"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/gerdau_3T26_itr_operacional.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "a16dde1cef1d8bf2a9f150f7dbfa46a75026cf5b79edb3b4980b1e053a8122a3",
+      "n_registros": 12,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "R$ mil"
+      ],
+      "escala_original": null,
+      "paginas": [
+        72
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/12 conferem, 12 para revisar",
+        "ok": 0,
+        "total": 12,
+        "revisar": 12,
+        "erro": 0,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "a16dde1cef1d8bf2a9f150f7dbfa46a75026cf5b79edb3b4980b1e053a8122a3"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/usiminas_3T26_apresentacao_operacional.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": false,
+        "n_erros": 11
+      },
+      "sha256": "ca641a2718e6651d80fb6d45ad99212cfc21c960a9998319254725ac68844402",
+      "n_registros": 13,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "%",
+        "R$/t",
+        "US$/t",
+        "mil t/ano",
+        "mil toneladas",
+        "milhões de toneladas/ano"
+      ],
+      "escala_original": null,
+      "paginas": [
+        16,
+        17,
+        18,
+        26,
+        28
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/13 conferem, 13 com erro",
+        "ok": 0,
+        "total": 13,
+        "revisar": 0,
+        "erro": 13,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "ca641a2718e6651d80fb6d45ad99212cfc21c960a9998319254725ac68844402"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/usiminas_3T26_apresentacao_qualitativo.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "97c1c7861d11d9657642ac99145fa4d42e0451559365b70b7a559d73dad679e9",
+      "n_registros": 7,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [],
+      "escala_original": null,
+      "paginas": [
+        14,
+        16,
+        18,
+        21,
+        27,
+        39
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/7 conferem, 7 com erro",
+        "ok": 0,
+        "total": 7,
+        "revisar": 0,
+        "erro": 7,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "97c1c7861d11d9657642ac99145fa4d42e0451559365b70b7a559d73dad679e9"
       },
       "criterio_ebitda": "não informado"
     },
@@ -485,6 +709,54 @@
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
         "json_sha256": "2a6e7fa4564aff1e2a9f100b040d4f040935b15bcba510862931de8ee4a2aa2a"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/usiminas_3T26_itr_operacional.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": false,
+        "n_erros": 20
+      },
+      "sha256": "cd93f34f187340ce39ee8ce268148728db8f8a4c10e26982c4e0fc6beddb19bc",
+      "n_registros": 19,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "Mil toneladas",
+        "R$ milhão",
+        "R$/t",
+        "kton",
+        "mil t"
+      ],
+      "escala_original": null,
+      "paginas": [
+        24,
+        33,
+        34,
+        36,
+        38
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/19 conferem, 7 para revisar, 12 com erro",
+        "ok": 0,
+        "total": 19,
+        "revisar": 7,
+        "erro": 12,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "cd93f34f187340ce39ee8ce268148728db8f8a4c10e26982c4e0fc6beddb19bc"
       },
       "criterio_ebitda": "não informado"
     }

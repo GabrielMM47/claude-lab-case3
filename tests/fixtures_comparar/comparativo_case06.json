@@ -1,0 +1,663 @@
+{
+  "_ficticio": "Fixture provisória do CASE-06. Empresas, números e páginas inventados.",
+  "periodo": "3T26",
+  "criterio_ebitda": "ajustado",
+  "empresas": {
+    "a": {
+      "slug": "empresa_a",
+      "nome": "Empresa A",
+      "ticker": "FCTA3",
+      "cor": "#1f5fa8"
+    },
+    "b": {
+      "slug": "empresa_b",
+      "nome": "Empresa B",
+      "ticker": "FCTB3",
+      "cor": "#d9822b"
+    }
+  },
+  "linhas": [
+    {
+      "chave": "receita_liquida",
+      "nome": "Receita líquida",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "periodo": "3T26",
+      "melhor": null,
+      "vencedor": null,
+      "a": {
+        "valor": 15000.0,
+        "texto": "R$ 15.000,0 mi",
+        "var_aa": 5.63,
+        "var_tt": 1.35,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.29"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 6000.0,
+        "texto": "R$ 6.000,0 mi",
+        "var_aa": -4.76,
+        "var_tt": 1.69,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.14"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      }
+    },
+    {
+      "chave": "ebitda_ajustado",
+      "nome": "EBITDA ajustado",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "periodo": "3T26",
+      "melhor": null,
+      "vencedor": null,
+      "a": {
+        "valor": 2400.0,
+        "texto": "R$ 2.400,0 mi",
+        "var_aa": 26.32,
+        "var_tt": 4.35,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.71"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 600.0,
+        "texto": "R$ 600,0 mi",
+        "var_aa": -20.0,
+        "var_tt": 5.26,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.24"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      }
+    },
+    {
+      "chave": "margem_ebitda",
+      "nome": "Margem EBITDA ajustada",
+      "grupo": "margens",
+      "unidade": "%",
+      "periodo": "3T26",
+      "melhor": "maior",
+      "vencedor": "a",
+      "a": {
+        "valor": 16.0,
+        "texto": "16,0%",
+        "var_aa": 2.62,
+        "var_tt": 0.46,
+        "unidade_var": "p.p.",
+        "fontes": [
+          "ITR p.29",
+          "ITR p.71"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 10.0,
+        "texto": "10,0%",
+        "var_aa": -1.9,
+        "var_tt": 0.34,
+        "unidade_var": "p.p.",
+        "fontes": [
+          "ITR p.14",
+          "ITR p.24"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      }
+    },
+    {
+      "chave": "lucro_liquido",
+      "nome": "Lucro líquido",
+      "grupo": "escala",
+      "unidade": "R$ milhões",
+      "periodo": "3T26",
+      "melhor": null,
+      "vencedor": null,
+      "a": {
+        "valor": 1200.0,
+        "texto": "R$ 1.200,0 mi",
+        "var_aa": 50.0,
+        "var_tt": 9.09,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.30"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 150.0,
+        "texto": "R$ 150,0 mi",
+        "var_aa": null,
+        "var_tt": 25.0,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.14"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "A/A: variação omitida: base -R$ 400,0 mi negativa ou zero"
+      }
+    },
+    {
+      "chave": "margem_liquida",
+      "nome": "Margem líquida",
+      "grupo": "margens",
+      "unidade": "%",
+      "periodo": "3T26",
+      "melhor": "maior",
+      "vencedor": "a",
+      "a": {
+        "valor": 8.0,
+        "texto": "8,0%",
+        "var_aa": 2.37,
+        "var_tt": 0.57,
+        "unidade_var": "p.p.",
+        "fontes": [
+          "ITR p.29",
+          "ITR p.30"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 2.5,
+        "texto": "2,5%",
+        "var_aa": 8.85,
+        "var_tt": 0.47,
+        "unidade_var": "p.p.",
+        "fontes": [
+          "ITR p.14",
+          "ITR p.14"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      }
+    },
+    {
+      "chave": "divida_liquida",
+      "nome": "Dívida líquida",
+      "grupo": "endividamento",
+      "unidade": "R$ milhões",
+      "periodo": "3T26",
+      "melhor": null,
+      "vencedor": null,
+      "a": {
+        "valor": 9000.0,
+        "texto": "R$ 9.000,0 mi",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.25",
+          "ITR p.26"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": -300.0,
+        "texto": "-R$ 300,0 mi",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.11",
+          "ITR p.12"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "negativa = caixa líquido"
+      }
+    },
+    {
+      "chave": "dl_ebitda",
+      "nome": "Dívida líquida / EBITDA ajustado",
+      "grupo": "endividamento",
+      "unidade": "x",
+      "periodo": "3T26",
+      "melhor": "menor",
+      "vencedor": "b",
+      "a": {
+        "valor": 0.98,
+        "texto": "0,98x",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.25",
+          "ITR p.26",
+          "ITR p.71"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "EBITDA ajustado 9M26 anualizado (× 4/3)"
+      },
+      "b": {
+        "valor": -0.13,
+        "texto": "-0,13x",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.11",
+          "ITR p.12",
+          "ITR p.24"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "EBITDA ajustado 9M26 anualizado (× 4/3)"
+      }
+    },
+    {
+      "chave": "roe",
+      "nome": "ROE",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "periodo": "9M26",
+      "melhor": "maior",
+      "vencedor": "a",
+      "a": {
+        "valor": 12.5,
+        "texto": "12,5%",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.26",
+          "ITR p.30"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "9M26 anualizado; PL médio 4T25–3T26"
+      },
+      "b": {
+        "valor": 4.0,
+        "texto": "4,0%",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.12",
+          "ITR p.14"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "9M26 anualizado; PL médio 4T25–3T26"
+      }
+    },
+    {
+      "chave": "roic",
+      "nome": "ROIC",
+      "grupo": "rentabilidade",
+      "unidade": "%",
+      "periodo": "9M26",
+      "melhor": "maior",
+      "vencedor": null,
+      "a": {
+        "valor": 10.1,
+        "texto": "10,1%",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.25",
+          "ITR p.26",
+          "ITR p.29"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": "9M26 anualizado; alíquota efetiva limitada a 34%"
+      },
+      "b": {
+        "valor": null,
+        "texto": "N/D",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [],
+        "disponivel": false,
+        "status": "ausente",
+        "obs": "falta ir_csll 9M26 (consolidado)"
+      }
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido de aço",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "periodo": "3T26",
+      "melhor": null,
+      "vencedor": null,
+      "a": {
+        "valor": 3000.0,
+        "texto": "3.000 mil t",
+        "var_aa": 1.69,
+        "var_tt": 0.67,
+        "unidade_var": "%",
+        "fontes": [
+          "Apresentação p.12"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": 1000.0,
+        "texto": "1.000 mil t",
+        "var_aa": -4.76,
+        "var_tt": 2.04,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.27"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      }
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "periodo": "3T26",
+      "melhor": "maior",
+      "vencedor": null,
+      "a": {
+        "valor": 5000.0,
+        "texto": "R$ 5.000/t",
+        "var_aa": 3.87,
+        "var_tt": 0.68,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.29",
+          "Apresentação p.12"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": null,
+        "texto": "N/C",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.14",
+          "ITR p.27"
+        ],
+        "disponivel": false,
+        "status": "nao_comparavel",
+        "obs": "valor da receita consolidado inclui mineração e o volume é só de aço; usar o indicador do segmento siderúrgico"
+      }
+    },
+    {
+      "chave": "ebitda_por_t",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "periodo": "3T26",
+      "melhor": "maior",
+      "vencedor": null,
+      "a": {
+        "valor": 800.0,
+        "texto": "R$ 800/t",
+        "var_aa": 24.21,
+        "var_tt": 3.65,
+        "unidade_var": "%",
+        "fontes": [
+          "ITR p.71",
+          "Apresentação p.12"
+        ],
+        "disponivel": true,
+        "status": "ok",
+        "obs": null
+      },
+      "b": {
+        "valor": null,
+        "texto": "N/C",
+        "var_aa": null,
+        "var_tt": null,
+        "unidade_var": null,
+        "fontes": [
+          "ITR p.24",
+          "ITR p.27"
+        ],
+        "disponivel": false,
+        "status": "nao_comparavel",
+        "obs": "valor do EBITDA consolidado inclui mineração e o volume é só de aço; usar o indicador do segmento siderúrgico"
+      }
+    }
+  ],
+  "segmentos": {
+    "a": [
+      {
+        "segmento": "brasil",
+        "pct_receita": 60.0,
+        "pct_ebitda": 55.0,
+        "fontes": [
+          "ITR p.72"
+        ]
+      },
+      {
+        "segmento": "exterior",
+        "pct_receita": 40.0,
+        "pct_ebitda": 45.0,
+        "fontes": [
+          "ITR p.72"
+        ]
+      }
+    ],
+    "b": [
+      {
+        "segmento": "siderurgia",
+        "pct_receita": 85.0,
+        "pct_ebitda": 70.0,
+        "fontes": [
+          "ITR p.31"
+        ]
+      },
+      {
+        "segmento": "mineracao",
+        "pct_receita": 15.0,
+        "pct_ebitda": 30.0,
+        "fontes": [
+          "ITR p.31"
+        ]
+      }
+    ]
+  },
+  "insights": [
+    {
+      "id": "margem",
+      "chaves": [
+        "margem_ebitda"
+      ],
+      "texto": "Empresa A tem margem EBITDA ajustada 6,0 p.p. acima da Empresa B (16,0% × 10,0%)"
+    },
+    {
+      "id": "crescimento",
+      "chaves": [
+        "receita_liquida"
+      ],
+      "texto": "Receita da Empresa A varia 5,6% A/A; a da Empresa B, -4,8%"
+    },
+    {
+      "id": "alavancagem",
+      "chaves": [
+        "dl_ebitda",
+        "divida_liquida"
+      ],
+      "texto": "Empresa B tem caixa líquido (DL/EBITDA -0,13x); Empresa A, 0,98x"
+    },
+    {
+      "id": "mineracao",
+      "chaves": [],
+      "fontes": {
+        "b": [
+          "ITR p.31"
+        ]
+      },
+      "texto": "Mineração responde por 30% do EBITDA da Empresa B"
+    }
+  ],
+  "alertas": [
+    {
+      "tipo": "efeito_pontual",
+      "empresa": "b",
+      "fontes": [
+        "ITR p.33"
+      ],
+      "chaves": [
+        "lucro_liquido",
+        "margem_liquida"
+      ],
+      "texto": "Prejuízo de R$ 400,0 mi no 3T25 inclui impairment de R$ 500,0 mi: a variação A/A do lucro da Empresa B engana"
+    },
+    {
+      "tipo": "negocios_diferentes",
+      "empresa": "b",
+      "fontes": [
+        "ITR p.31"
+      ],
+      "texto": "Empresa B tem mineração (15% da receita): receita e EBITDA por tonelada consolidados não são comparáveis"
+    },
+    {
+      "tipo": "indisponivel",
+      "empresa": "b",
+      "fontes": [],
+      "texto": "ROIC da Empresa B indisponível: falta IR/CSLL do 9M26"
+    },
+    {
+      "tipo": "divergencia_definicao",
+      "empresa": "a",
+      "fontes": [
+        "ITR p.26",
+        "Apresentação p.18"
+      ],
+      "texto": "Dívida líquida calculada (R$ 9.000,0 mi) difere da reportada (R$ 8.200,0 mi) em 9,8%: a reportada exclui arrendamentos"
+    }
+  ],
+  "graficos": [
+    {
+      "id": "receita_ebitda",
+      "arquivo": "graficos/receita_ebitda.png",
+      "descricao": "Receita e EBITDA ajustado, 3T26 × 3T25 (A/A)",
+      "fontes": {
+        "a": [
+          "ITR p.29",
+          "ITR p.71"
+        ],
+        "b": [
+          "ITR p.14",
+          "ITR p.24"
+        ]
+      }
+    },
+    {
+      "id": "margens",
+      "arquivo": "graficos/margens.png",
+      "descricao": "Margem EBITDA ajustada e margem líquida, 3T26",
+      "fontes": {
+        "a": [
+          "ITR p.29",
+          "ITR p.71"
+        ],
+        "b": [
+          "ITR p.14",
+          "ITR p.24"
+        ]
+      }
+    },
+    {
+      "id": "dl_ebitda",
+      "arquivo": "graficos/dl_ebitda.png",
+      "descricao": "Alavancagem em 30/09 (3T26)",
+      "fontes": {
+        "a": [
+          "ITR p.26",
+          "ITR p.71"
+        ],
+        "b": [
+          "ITR p.12",
+          "ITR p.24"
+        ]
+      }
+    },
+    {
+      "id": "volume_rpt",
+      "arquivo": "graficos/volume_rpt.png",
+      "descricao": "Volume e receita por tonelada, 3T26",
+      "fontes": {
+        "a": [
+          "Apresentação p.12",
+          "ITR p.29"
+        ],
+        "b": [
+          "ITR p.27",
+          "ITR p.14"
+        ]
+      }
+    },
+    {
+      "id": "mix_segmentos",
+      "arquivo": "graficos/mix_segmentos.png",
+      "descricao": "Participação de cada segmento no EBITDA, 3T26",
+      "fontes": {
+        "a": [
+          "ITR p.72"
+        ],
+        "b": [
+          "ITR p.31"
+        ]
+      }
+    }
+  ],
+  "verificacao": {
+    "total": 52,
+    "ok": 52,
+    "por_arquivo": {
+      "empresa_a_3T26_itr_dfs.json": {
+        "total": 20,
+        "ok": 20
+      },
+      "empresa_a_3T26_itr_complementar.json": {
+        "total": 6,
+        "ok": 6
+      },
+      "empresa_b_3T26_itr_dfs.json": {
+        "total": 20,
+        "ok": 20
+      },
+      "empresa_b_3T26_itr_complementar.json": {
+        "total": 6,
+        "ok": 6
+      }
+    }
+  }
+}

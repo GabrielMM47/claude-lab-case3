@@ -134,15 +134,26 @@ def test_c_t3_artefatos_por_tipo(raiz):
     assert _gerar(raiz) == 0
     cat = _catalogo(raiz)
     tipos = [a["tipo"] for a in cat["artefatos"]]
-    n_fatos = len([p for p in (RAIZ / "metricas").glob("*_*_itr_*.json")])
+    # fatos = um arquivo por documento-fonte (itr e apresentacao); indicadores = saída do CASE-04
+    metricas = RAIZ / "metricas"
+    n_fatos = len([*metricas.glob("*_*_itr_*.json"), *metricas.glob("*_*_apresentacao_*.json")])
+    n_indicadores = len(list(metricas.glob("*_*_indicadores.json")))
     assert n_fatos >= 1
-    assert len(cat["artefatos"]) == 12 + n_fatos
+    assert len(cat["artefatos"]) == 12 + n_fatos + n_indicadores
     assert tipos.count("fato") == n_fatos
-    assert all(a["contrato"]["valido"] for a in cat["artefatos"] if a["tipo"] == "fato")
+    assert tipos.count("indicadores") == n_indicadores
     assert tipos.count("balanco") == 4
     assert tipos.count("meta") == 4
     assert tipos.count("csv") == 4
     assert not any(a["caminho"].endswith("catalogo.json") for a in cat["artefatos"])
+
+
+def test_c_t3b_fatos_dentro_do_contrato(raiz):
+    """Todo arquivo de fatos em metricas/ passa no schema `fato`; a mensagem lista os que não passam."""
+    assert _gerar(raiz) == 0
+    invalidos = {a["caminho"]: a["contrato"]["n_erros"] for a in _catalogo(raiz)["artefatos"]
+                 if a["tipo"] in ("fato", "indicadores") and not a["contrato"]["valido"]}
+    assert invalidos == {}, f"fora do contrato (rode python src/contrato.py <arquivo>): {invalidos}"
 
 
 # C-T4 ----------------------------------------------------------------------
