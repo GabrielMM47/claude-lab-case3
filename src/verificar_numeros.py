@@ -60,10 +60,23 @@ def br_para_float(s: str) -> float:
     return -float(s) if negativo else float(s)
 
 
+def triplicado(token: str) -> str:
+    """Forma do token num PDF com "negrito falso" (cada caractere desenhado 3 vezes):
+    '1.582' é extraído como '111...555888222' (apresentação da Gerdau, p. 18-20)."""
+    return "".join(c * 3 for c in token)
+
+
 def tem_token(token: str, texto: str) -> bool:
-    """O token aparece inteiro? ('1.554' não casa dentro de '11.554.156' nem de '1.554,2')."""
-    padrao = r"(?<![\d.,])" + re.escape(normalizar(token)) + r"(?![\d]|[.,]\d)"
-    return re.search(padrao, normalizar(texto)) is not None
+    """O token aparece inteiro? ('1.554' não casa dentro de '11.554.156' nem de '1.554,2').
+    Aceita também a forma triplicada do negrito falso, só para tokens com 3+ caracteres (o
+    triplicado tem 9+ sem separador, o que não ocorre como número legítimo). O sentido inverso
+    (desfazer triplicação no texto) não é aplicado."""
+    t, tok = normalizar(texto), normalizar(token)
+    formas = [tok] + ([triplicado(tok)] if len(tok) >= 3 else [])  # '1' → '111' seria ambíguo
+    for forma in formas:
+        if re.search(r"(?<![\d.,])" + re.escape(forma) + r"(?![\d]|[.,]\d)", t):
+            return True
+    return False
 
 
 def valores_finais(trecho: str) -> list[str]:
