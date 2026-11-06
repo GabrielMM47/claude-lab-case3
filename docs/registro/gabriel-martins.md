@@ -24,6 +24,10 @@
 | 10 | — | assistidos sem PDF-fonte | faltando só o qualitativo (sem apresentação), o pipeline seguia e parava na verificação com "Verificação reprovada", sendo que nenhum fato tinha erro | parar com "insumo ausente" e dizer qual PDF falta | revisão do log da rodada real | pendência sem documento-fonte para com código 2 e cita `data/apresentacoes/<slug>_APRESENTACAO_<tri>.pdf` |
 | 11 | — | relatório no terminal | "PAROU em ..." (stderr) aparecia antes do log das etapas (stdout com buffer) | mensagem de parada no fim | primeira rodada real | `flush` no log antes da parada |
 | 12 | (teste) | helper do teste | o Claude converteu `(50)` com `float()` e quebrou a fixture | negativo entre parênteses = −50 | pytest | helper usa `br_para_float` do verificador |
+| 13 | — | modo rascunho | `--permitir-pendencias` **sobrescreveu os `metricas/*_indicadores.json` versionados do CASE-04** com uma versão sem os fatos reprovados | rascunho não pode tocar arquivo oficial | `git status` depois da rodada de 14h30 | derivados do rascunho vão para `saida/rascunho/<a>_x_<b>_<tri>/`; teste `test_rascunho_nao_toca_arquivos_oficiais` |
+| 14 | — | modo rascunho | o HTML do rascunho era idêntico ao final; só o nome do arquivo dizia "RASCUNHO" | rascunho identificado no próprio slide | abrindo o HTML gerado com o CASE-06 | faixa fixa "RASCUNHO — NÃO ENTREGAR" com nº de fatos reprovados |
+| 15 | — | troca de PDF | PDF republicado com o mesmo nome reaproveitava páginas e DFs antigas, e a verificação **passava** (comparava com as páginas velhas) | re-extrair quando o PDF muda | revisão do fluxo "trocar só os PDFs" | carimbo sha256 em `saida/<pdf>/_origem.sha256` (ITR: também o manifesto); teste `test_pdf_trocado_reextrai_e_refaz_dfs` |
+| 16 | Usiminas | alerta de efeito pontual (CASE-04) | "ajustes não recorrentes somam 544% do EBITDA do 3T25" somando itens recorrentes (participação em controladas, EBITDA proporcional) | só o impairment: 513% | lendo os alertas do comparativo | corrigido pelo Gabriel Patrício na `feat/gabriel-patricio` (filtra `natureza`); confirmado na rodada integrada |
 
 ## Observações dos dados
 
@@ -47,17 +51,16 @@
 
 **CASE-02 concluído e mergeado** (PR #3). `*_itr_dfs.json` 62/62 OK cada; complementares 9/9 e 29/29 OK.
 
-**CASE-07 em andamento** — `src/pipeline.py` + `tests/test_pipeline.py` (15 testes; 144 no total).
-- `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` hoje **para na etapa 4** (código 3): faltam `*_operacional.json` (imprime o prompt com páginas candidatas) e `*_qualitativo.json` (faltam os PDFs `data/apresentacoes/`). Tudo do CASE-03.
-- Com `--permitir-pendencias`: verificação 162/162 OK → `saida/verificacao_gerdau_x_usiminas_3T26.json` (RASCUNHO), indicadores calculados, **para na etapa 7** (código 4): falta `src/comparar.py` (CASE-05).
-- Idempotente (hashes e mtime iguais na 2ª rodada) e funciona com `--a/--b` invertidos.
-- Stubs até os outros cards: `contrato.validar` (CASE-01) → checagem mínima; `localizar_paginas.py` (CASE-03) → busca por palavras-chave; `prompts/extracao_operacional.md`/`qualitativa.md` → prompt mínimo; `comparar.py`/`apresentacao.py` → chamados pelas CLIs do contrato quando existirem.
+**CASE-07 pronto do lado do pipeline** — `src/pipeline.py` + `tests/test_pipeline.py` (22 testes).
+- Rodada de 14h45 (main + CASE-06 da `feat/gabriel-patricio` num worktree): `--permitir-pendencias` vai **até o fim** e gera os 8 slides em `saida/rascunho/gerdau_x_usiminas_3T26/RASCUNHO_*.html`, com faixa de rascunho, aviso "Não constitui recomendação" e páginas. Funciona com A/B invertidos e é idempotente.
+- Sem a flag, **bloqueia na verificação**: 177/243 OK, 38 ERROs, todos nos operacionais do CASE-03 (`gerdau_..._apresentacao_operacional` 17, `usiminas_..._itr_operacional` 12, `usiminas_..._apresentacao_operacional` 9: unidade fora do contrato, `valor_como_aparece` nulo, trecho sem o valor). Meus arquivos e os qualitativos: 100% OK e válidos no `contrato.py`.
+- Para a entrega final faltam: (1) CASE-03 corrigir os 38 ERROs; (2) CASE-06 mergeado (a `feat/gabriel-patricio` conflita com o main em `metricas/*_indicadores.json` e no registro dela: precisa de rebase).
 - Decisão: REVISAR não bloqueia (só ERRO); aparece no relatório.
 
 **Avisos para o time**
-- ⚠️ A branch `feat/contrato-catalogo-fixtures` (CASE-01) altera `src/verificar_numeros.py` (+247 linhas). O arquivo é do CASE-02/07; combinar antes do merge para não quebrar `avaliar`/`checar`.
-- CASE-04: o pipeline grava `metricas/<slug>_<tri>_indicadores.json` via `indicadores.calcular` só com fatos aprovados e acrescenta `verificacao_status`.
-- CASE-06: o pipeline espera `saida/apresentacao/<a>_x_<b>_<tri>.html` e copia para `entrega/` só se a verificação estiver aprovada; em rascunho, gera `RASCUNHO_<...>.html`.
+- CASE-04: aprovado, o pipeline regrava `metricas/<slug>_<tri>_indicadores.json` com a mesma serialização do CLI (byte a byte igual com os mesmos fatos); rascunho nunca toca esse arquivo.
+- CASE-06: o pipeline chama `apresentacao.py --comparativo --metricas --saida` e copia para `entrega/` só se a verificação estiver aprovada.
+- Testes: `pytest` puro não importa `tests/test_localizar_paginas.py` (`from src. ...`); use `python -m pytest`. `test_catalogo` falha por causa dos operacionais do CASE-03 (já falhava no main).
 - CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"`; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
 
-**Próximo:** quando CASE-01/03/05/06 mergearem, `git pull --rebase origin main`, trocar as fixtures próprias pelas de `tests/fixtures` se fizer sentido e rodar a M2 sem `--permitir-pendencias`.
+**Próximo:** depois que CASE-03 corrigir e CASE-06 mergear: `git pull --rebase origin main` e `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` (sem flag) até `entrega/apresentacao_gerdau_x_usiminas_3T26.html`.
