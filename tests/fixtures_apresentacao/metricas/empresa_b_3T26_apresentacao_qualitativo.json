@@ -1,0 +1,86 @@
+[
+  {
+    "chave": "qualitativo",
+    "metrica": "perfil",
+    "tema": "perfil",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Siderúrgica de aços planos com operação própria de minério de ferro.",
+    "pagina": 3,
+    "trecho": "produtora de aços planos com mineração própria"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "capacidade_footprint",
+    "tema": "capacidade_footprint",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Duas usinas e uma mina no Brasil.",
+    "pagina": 4,
+    "trecho": "2 usinas e 1 mina"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "mercados_produtos",
+    "tema": "mercados_produtos",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Vende para automotivo, linha branca e distribuição.",
+    "pagina": 5,
+    "trecho": "automotivo, linha branca e distribuição"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "estrategia",
+    "tema": "estrategia",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Foco em eficiência de custos e mix de maior valor agregado.",
+    "pagina": 7,
+    "trecho": "eficiência de custos e mix de maior valor agregado"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "guidance_perspectivas",
+    "tema": "guidance_perspectivas",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Espera volumes de aço estáveis e minério mais fraco no 4T.",
+    "pagina": 20,
+    "trecho": "volumes de aço estáveis e preço do minério mais fraco"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "riscos",
+    "tema": "riscos",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Preço do minério e importações de aço afetam resultado.",
+    "pagina": 21,
+    "trecho": "preço do minério de ferro e importações de aço"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "destaques_trimestre",
+    "tema": "destaques_trimestre",
+    "empresa": "empresa_b",
+    "documento": "apresentacao",
+    "data_documento": "2026-10-30",
+    "periodo": "3T26",
+    "resumo": "Volume menor e minério mais barato reduzem margem.",
+    "pagina": 2,
+    "trecho": "queda de volume e do preço do minério"
+  }
+]

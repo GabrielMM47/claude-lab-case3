@@ -1,0 +1,42 @@
+{
+  "slides": [
+    {
+      "id": "capa",
+      "titulo": "{a.nome} amplia margem para {a.margem_ebitda} enquanto {b.nome} recua para {b.margem_ebitda}",
+      "subtitulo": "Siderurgia no {periodo}: comparação de resultados"
+    },
+    {
+      "id": "resumo",
+      "titulo": "Três coisas que o comitê precisa saber",
+      "bullets": [
+        "Margem EBITDA {criterio_ebitda}: {a.margem_ebitda} na {a.nome} ({a.margem_ebitda.var_aa} A/A) contra {b.margem_ebitda} na {b.nome} ({b.margem_ebitda.var_aa} A/A)",
+        "{b.nome} tem caixa líquido ({b.dl_ebitda} de DL/EBITDA); {a.nome}, {a.dl_ebitda}",
+        "Lucro da {b.nome} ({b.lucro_liquido}) volta ao azul, mas a base do 3T25 tem impairment"
+      ]
+    },
+    {
+      "id": "perfil",
+      "titulo": "{a.nome} é maior e tem operação fora do Brasil; {b.nome} combina aço e mineração"
+    },
+    {
+      "id": "comparativo",
+      "titulo": "{a.nome} lidera em margem; {b.nome}, em alavancagem"
+    },
+    {
+      "id": "graficos",
+      "titulo": "Receita da {a.nome} cresce {a.receita_liquida.var_aa} A/A; a da {b.nome} varia {b.receita_liquida.var_aa}"
+    },
+    {
+      "id": "setor",
+      "titulo": "Por tonelada, só a {a.nome} é comparável: {a.receita_por_t}"
+    },
+    {
+      "id": "destaques_riscos",
+      "titulo": "Minério e importações são os riscos do próximo trimestre"
+    },
+    {
+      "id": "metodologia",
+      "titulo": "Como chegamos aos números"
+    }
+  ]
+}
