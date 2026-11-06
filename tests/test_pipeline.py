@@ -32,12 +32,14 @@ Estratégia: foco em produtos de maior valor agregado e redução de custos.
 
 STUB_COMPARAR = '''import argparse, json
 from pathlib import Path
-ap = argparse.ArgumentParser(); ap.add_argument("--a"); ap.add_argument("--b"); ap.add_argument("--tri")
+ap = argparse.ArgumentParser()
+for opt in ("--a", "--b", "--tri", "--metricas", "--saida"):
+    ap.add_argument(opt)
 a = ap.parse_args()
-pasta = Path("saida/comparativo") / f"{a.a}_x_{a.b}_{a.tri}"
+pasta = Path(a.saida) / f"{a.a}_x_{a.b}_{a.tri}"
 pasta.mkdir(parents=True, exist_ok=True)
 for s in (a.a, a.b):  # consome os indicadores gerados pelo pipeline
-    json.loads(Path(f"metricas/{s}_{a.tri}_indicadores.json").read_text(encoding="utf-8"))
+    json.loads((Path(a.metricas) / f"{s}_{a.tri}_indicadores.json").read_text(encoding="utf-8"))
 (pasta / "comparativo.json").write_text(json.dumps(
     {"periodo": a.tri, "empresas": {"a": {"slug": a.a}, "b": {"slug": a.b}}, "linhas": [],
      "verificacao": None}, indent=2), encoding="utf-8")
@@ -45,13 +47,17 @@ for s in (a.a, a.b):  # consome os indicadores gerados pelo pipeline
 
 STUB_APRESENTACAO = '''import argparse, json
 from pathlib import Path
-ap = argparse.ArgumentParser(); ap.add_argument("--comparativo"); ap.add_argument("--narrativa")
+ap = argparse.ArgumentParser()
+for opt in ("--comparativo", "--narrativa", "--metricas", "--saida"):
+    ap.add_argument(opt)
 a = ap.parse_args()
 comp = json.loads((Path(a.comparativo) / "comparativo.json").read_text(encoding="utf-8"))
-destino = Path("saida/apresentacao") / (Path(a.comparativo).name + ".html")
+quali = sorted(p.name for p in Path(a.metricas).glob("*_qualitativo.json"))
+destino = Path(a.saida)
 destino.parent.mkdir(parents=True, exist_ok=True)
 v = comp["verificacao"]
-destino.write_text(f"<html>{v['ok']}/{v['total']} verificados · {v['status']}</html>", encoding="utf-8")
+destino.write_text(f"<html>{v['ok']}/{v['total']} verificados · {v['status']} · {len(quali)} quali</html>",
+                   encoding="utf-8")
 '''
 
 
@@ -165,7 +171,8 @@ def test_fato_reprovado_bloqueia_com_mensagem_util(raiz, capsys):
     reprovar_receita(raiz)
     assert rodar(raiz) == pipeline.SAIDA_ERRO
     saida = capsys.readouterr()
-    assert "receita_liquida (3T26), p. 1 de saida/empresa_c_ITR_3T26" in saida.out
+    assert "metricas/empresa_c_3T26_itr_dfs.json (saida/empresa_c_ITR_3T26): 1 fato(s) com erro" in saida.out
+    assert "- receita_liquida (3T26), p. 1:" in saida.out
     assert "9.999" in saida.out and "PAROU em [5/8 verificação]" in saida.err
     rel = ler(raiz / "saida" / "verificacao_empresa_c_x_empresa_d_3T26.json")
     assert rel["status"] == "bloqueado" and rel["arquivos_com_erro"] == ["metricas/empresa_c_3T26_itr_dfs.json"]
@@ -178,11 +185,13 @@ def test_fato_reprovado_com_permitir_pendencias_vira_rascunho_sem_o_fato(raiz, c
     assert rodar(raiz, "empresa_c", "empresa_d", "--permitir-pendencias") == pipeline.SAIDA_OK
     assert "RASCUNHO (não entregar)" in capsys.readouterr().out
     assert ler(raiz / "saida" / "verificacao_empresa_c_x_empresa_d_3T26.json")["status"] == "rascunho"
-    ind = ler(raiz / "metricas" / "empresa_c_3T26_indicadores.json")
+    ind = ler(raiz / "saida" / "rascunho" / "empresa_c_x_empresa_d_3T26" / "metricas" /
+              "empresa_c_3T26_indicadores.json")
     assert ind["verificacao_status"] == "rascunho"
     insumos = [i["chave"] for x in ind["indicadores"] for i in x.get("insumos", [])]
     assert "receita_liquida" not in insumos  # fato reprovado fora dos cálculos
-    assert (raiz / "saida" / "apresentacao" / "RASCUNHO_empresa_c_x_empresa_d_3T26.html").exists()
+    assert (raiz / "saida" / "rascunho" / "empresa_c_x_empresa_d_3T26" /
+            "RASCUNHO_empresa_c_x_empresa_d_3T26.html").exists()
     assert not (raiz / "entrega").exists()
 
 
@@ -242,6 +251,76 @@ def test_sem_comparar_para_depois_dos_indicadores(raiz, capsys):
     assert rodar(raiz) == pipeline.SAIDA_AGUARDANDO
     assert "aguardando CASE-05" in capsys.readouterr().err
     assert (raiz / "metricas" / "empresa_d_3T26_indicadores.json").exists()
+
+
+def test_rascunho_nao_toca_arquivos_oficiais(raiz):
+    """Indicadores/comparativo oficiais (versionados pelo CASE-04/05) ficam intactos num rascunho."""
+    oficiais = {raiz / "metricas" / "empresa_c_3T26_indicadores.json": '{"oficial": "case-04"}',
+                raiz / "saida" / "comparativo" / "empresa_c_x_empresa_d_3T26" / "comparativo.json": "{}",
+                raiz / "entrega" / "apresentacao_empresa_c_x_empresa_d_3T26.html": "<html>oficial</html>"}
+    for p, conteudo in oficiais.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(conteudo, encoding="utf-8")
+    reprovar_receita(raiz)
+    assert rodar(raiz, "empresa_c", "empresa_d", "--permitir-pendencias") == pipeline.SAIDA_OK
+    for p, conteudo in oficiais.items():
+        assert p.read_text(encoding="utf-8") == conteudo, p
+    html = (raiz / "saida" / "rascunho" / "empresa_c_x_empresa_d_3T26" /
+            "RASCUNHO_empresa_c_x_empresa_d_3T26.html").read_text(encoding="utf-8")
+    assert "rascunho" in html and "2 quali" in html  # slides leem o qualitativo aprovado do rascunho
+
+
+def test_indicadores_aprovados_saem_iguais_ao_cli_do_case04(raiz):
+    import indicadores
+    assert rodar(raiz) == pipeline.SAIDA_OK
+    gerado = (raiz / "metricas" / "empresa_c_3T26_indicadores.json").read_bytes()
+    cli = raiz / "cli.json"
+    indicadores.main(["--empresa", "empresa_c", "--tri", TRI, "--metricas", str(raiz / "metricas"),
+                      "--saida", str(cli)])
+    assert cli.read_bytes() == gerado
+
+
+def test_pdf_trocado_reextrai_e_refaz_dfs(raiz, monkeypatch, capsys):
+    import types
+    pdf = raiz / "data" / "itrs" / "empresa_c_ITR_3T26.pdf"
+    pdf.parent.mkdir(parents=True)
+    pdf.write_bytes(b"versao 1")
+    chamadas = {"extrair": [], "dfs": []}
+
+    def extrair(caminho):
+        chamadas["extrair"].append(caminho.name)
+        destino = raiz / "saida" / caminho.stem
+        destino.mkdir(parents=True, exist_ok=True)
+        (destino / "pagina_01.txt").write_text(caminho.read_bytes().decode(), encoding="utf-8")
+        return destino
+
+    monkeypatch.setitem(sys.modules, "extrair_release", types.SimpleNamespace(extrair=extrair, SAIDA=None))
+    import dfs_cvm
+    monkeypatch.setattr(dfs_cvm, "main", lambda args: chamadas["dfs"].append(args[0]) or 0)
+
+    rodar(raiz)  # 1ª vez: pasta sem carimbo → re-extrai e grava o carimbo
+    assert chamadas["extrair"] == ["empresa_c_ITR_3T26.pdf"]
+    carimbo = raiz / "saida" / "empresa_c_ITR_3T26" / pipeline.CARIMBO
+    assert carimbo.read_text().strip() == pipeline.sha256(pdf)
+
+    chamadas["extrair"].clear(); chamadas["dfs"].clear()
+    rodar(raiz)  # mesmo PDF: nada a refazer
+    assert chamadas == {"extrair": [], "dfs": []}
+
+    pdf.write_bytes(b"versao 2 republicada")
+    capsys.readouterr()
+    rodar(raiz)  # PDF trocado com o mesmo nome: re-extrai e refaz o dfs_cvm
+    assert chamadas["extrair"] == ["empresa_c_ITR_3T26.pdf"] and len(chamadas["dfs"]) == 1
+    assert "mudou desde a última extração" in capsys.readouterr().out
+    assert (raiz / "saida" / "empresa_c_ITR_3T26" / "pagina_01.txt").read_text() == "versao 2 republicada"
+
+
+def test_prompt_qualitativo_aceita_os_dois_nomes(raiz, capsys):
+    (raiz / "prompts").mkdir()
+    (raiz / "prompts" / "extracao_qualitativo.md").write_text("PROMPT QUALI <slug>", encoding="utf-8")
+    (raiz / "metricas" / "empresa_c_3T26_apresentacao_qualitativo.json").unlink()
+    assert rodar(raiz) == pipeline.SAIDA_ASSISTIDO
+    assert "PROMPT QUALI empresa_c" in capsys.readouterr().out
 
 
 @pytest.mark.parametrize("args", [["--a", "Gerdau", "--b", "x"], ["--a", "x", "--b", "x"],

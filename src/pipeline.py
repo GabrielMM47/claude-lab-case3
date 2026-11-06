@@ -24,6 +24,7 @@ Idempotente: arquivos só são regravados quando o conteúdo muda; nada leva dat
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -56,17 +57,17 @@ class Assistido:
     """Um JSON preenchido com o Claude. `opcoes` = (documento, tipo) aceitos, em ordem de preferência."""
     nome: str
     tema: str        # tema do localizar_paginas.py
-    prompt: str      # arquivo em prompts/
+    prompts: tuple[str, ...]  # arquivos em prompts/, o primeiro que existir
     card: str
     opcoes: tuple[tuple[str, str], ...]
 
 
 ASSISTIDOS = (
-    Assistido("complementar", "ebitda", "extracao_financeira_complementar.md", "CASE-02",
+    Assistido("complementar", "ebitda", ("extracao_financeira_complementar.md",), "CASE-02",
               (("itr", "complementar"),)),
-    Assistido("operacional", "operacional", "extracao_operacional.md", "CASE-03",
+    Assistido("operacional", "operacional", ("extracao_operacional.md",), "CASE-03",
               (("itr", "operacional"), ("apresentacao", "operacional"))),
-    Assistido("qualitativo", "qualitativo", "extracao_qualitativa.md", "CASE-03",
+    Assistido("qualitativo", "qualitativo", ("extracao_qualitativo.md", "extracao_qualitativa.md"), "CASE-03",
               (("apresentacao", "qualitativo"),)),
 )
 
@@ -117,6 +118,7 @@ class Contexto:
     permitir_pendencias: bool = False
     pendencias: list[dict] = field(default_factory=list)
     log: list[str] = field(default_factory=list)
+    pdf_mudou: set[tuple[str, str]] = field(default_factory=set)
 
     @property
     def empresas(self) -> tuple[str, str]:
@@ -169,16 +171,54 @@ def conferir_insumos(ctx: Contexto) -> None:
                      "\n  Coloque o PDF com esse nome exato (slug minúsculo, sem acento) e rode de novo.")
 
 
-def extrair_paginas(ctx: Contexto) -> None:
-    import extrair_release  # pdfplumber/pandas: só carrega se precisar extrair
+CARIMBO = "_origem.sha256"  # sha256 do PDF de onde vieram os pagina_NN.txt
 
+
+def sha256(caminho: Path) -> str:
+    h = hashlib.sha256()
+    with caminho.open("rb") as f:
+        for bloco in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloco)
+    return h.hexdigest()
+
+
+def _sha_conhecido(ctx: Contexto, slug: str, documento: str) -> str | None:
+    """sha256 do PDF que gerou as páginas: carimbo da pasta ou, para o ITR, o manifesto do dfs_cvm."""
+    pasta = ctx.pasta_paginas(slug, documento)
+    if (pasta / CARIMBO).exists():
+        return (pasta / CARIMBO).read_text(encoding="utf-8").strip()
+    manifesto = ctx.metricas() / "manifesto" / f"{pasta.name}.json"
+    if documento == "itr" and manifesto.exists():
+        return json.loads(manifesto.read_text(encoding="utf-8")).get("sha256")
+    return None
+
+
+def extrair_paginas(ctx: Contexto) -> None:
+    """Extrai se a pasta não existe, com --forcar, ou se o PDF mudou desde a última extração."""
     for slug in ctx.empresas:
         for documento in DOCUMENTOS:
             pdf, pasta = ctx.pdf(slug, documento), ctx.pasta_paginas(slug, documento)
-            if not pdf.exists() or (pasta.is_dir() and not ctx.forcar):
+            if not pdf.exists():
                 continue
+            atual, conhecido = sha256(pdf), _sha_conhecido(ctx, slug, documento)
+            if pasta.is_dir() and not ctx.forcar:
+                if conhecido == atual:
+                    gravar_se_mudou(pasta / CARIMBO, atual + "\n")
+                    continue
+                if conhecido is None:  # extração antiga sem carimbo: não dá para provar a origem
+                    ctx.diz(f"  [aviso] {_rel(pasta, ctx.raiz)} sem carimbo de origem: re-extraindo")
+                else:
+                    ctx.diz(f"  [aviso] {_rel(pdf, ctx.raiz)} mudou desde a última extração: re-extraindo. "
+                            f"Os JSONs assistidos de {slug} ({documento}) podem estar desatualizados; "
+                            f"a verificação vai dizer.")
+                    ctx.pdf_mudou.add((slug, documento))
+            import extrair_release  # pdfplumber/pandas: só carrega se precisar extrair
+
+            for velho in pasta.glob("pagina_*.txt"):  # PDF novo pode ter menos páginas
+                velho.unlink()
             extrair_release.SAIDA = ctx.raiz / "saida"
             extrair_release.extrair(pdf)
+            gravar_se_mudou(pasta / CARIMBO, atual + "\n")
 
 
 def rodar_dfs(ctx: Contexto) -> None:
@@ -186,7 +226,7 @@ def rodar_dfs(ctx: Contexto) -> None:
 
     for slug in ctx.empresas:
         destino = ctx.metricas() / f"{slug}_{ctx.tri}_itr_dfs.json"
-        if destino.exists() and not ctx.forcar:
+        if destino.exists() and not ctx.forcar and (slug, "itr") not in ctx.pdf_mudou:
             continue
         pasta = ctx.pasta_paginas(slug, "itr")
         args = [str(pasta), "--empresa", slug, "--tri", ctx.tri,
@@ -221,11 +261,11 @@ def paginas_candidatas(ctx: Contexto, pasta: Path, tema: str, top: int = 10) -> 
 def montar_prompt(ctx: Contexto, slug: str, item: Assistido, documento: str, tipo: str) -> str:
     pasta = ctx.pasta_paginas(slug, documento)
     origem, ranking = paginas_candidatas(ctx, pasta, item.tema)
-    arq_prompt = ctx.raiz / "prompts" / item.prompt
-    if arq_prompt.exists():
+    arq_prompt = next((ctx.raiz / "prompts" / n for n in item.prompts if (ctx.raiz / "prompts" / n).exists()), None)
+    if arq_prompt is not None:
         corpo = arq_prompt.read_text(encoding="utf-8")
     else:
-        corpo = (f"(prompts/{item.prompt} ainda não existe — {item.card}.)\n\n"
+        corpo = (f"(prompts/{item.prompts[0]} ainda não existe — {item.card}.)\n\n"
                  f"Leia `docs/TAREFAS.md` (\"Contrato de dados\" e o card {item.card}) e os arquivos "
                  f"`{_rel(pasta, ctx.raiz)}/pagina_NN.txt` das páginas candidatas abaixo. Gere "
                  f"`metricas/<slug>_<tri>_{documento}_{tipo}.json` no contrato: lista JSON de fatos, "
@@ -365,16 +405,42 @@ def verificar(ctx: Contexto) -> tuple[dict, dict[str, list[dict]]]:
     return relatorio, aprovados
 
 
-def imprimir_reprovacoes(relatorio: dict) -> None:
+def imprimir_reprovacoes(relatorio: dict, por_arquivo: int = 3) -> None:
+    """Resumo por arquivo + os primeiros problemas; a lista completa fica no relatório JSON."""
     for nome, r in relatorio["por_arquivo"].items():
-        for e in r["erros_arquivo"]:
-            print(f"  [ERRO] {nome}: {e}")
-        for f in r["falhas"]:
-            print(f"  [ERRO] {nome} · {f['metrica']} ({f['periodo']}), p. {f['pagina']} de {r['pasta']}: "
-                  f"{'; '.join(f['erros'])}")
+        problemas = [f"contrato: {e[len('contrato: '):]}" if e.startswith("contrato: ") else e
+                     for e in r["erros_arquivo"]]
+        problemas += [f"{f['metrica']} ({f['periodo']}), p. {f['pagina']}: {'; '.join(f['erros'])}"
+                      for f in r["falhas"]]
+        if not problemas:
+            continue
+        print(f"  [ERRO] {nome} ({r['pasta']}): {r['erro']} fato(s) com erro, "
+              f"{len(r['erros_arquivo'])} problema(s) de contrato/arquivo")
+        for p in problemas[:por_arquivo]:
+            print(f"         - {p}")
+        if len(problemas) > por_arquivo:
+            print(f"         ... e mais {len(problemas) - por_arquivo} (ver o relatório)")
 
 
 # --------------------------------------------------------------------------- 6–8: indicadores, comparativo, apresentação
+
+@dataclass(frozen=True)
+class Destinos:
+    """Onde cada etapa derivada grava. Rascunho nunca toca metricas/, saida/comparativo/ nem entrega/."""
+    metricas: Path
+    comparativo: Path   # pasta-base passada ao comparar.py --saida
+    html: Path
+    final: Path | None  # cópia para entrega/ (só aprovado)
+
+
+def destinos(ctx: Contexto, status: str) -> Destinos:
+    if status == "aprovado":
+        return Destinos(ctx.metricas(), ctx.raiz / "saida" / "comparativo",
+                        ctx.raiz / "saida" / "apresentacao" / f"{ctx.par}.html",
+                        ctx.raiz / "entrega" / f"apresentacao_{ctx.par}.html")
+    base = ctx.raiz / "saida" / "rascunho" / ctx.par
+    return Destinos(base / "metricas", base / "comparativo", base / f"RASCUNHO_{ctx.par}.html", None)
+
 
 def _setor(ctx: Contexto, slug: str) -> str | None:
     cfg = ctx.raiz / "config" / "empresas.toml"
@@ -384,15 +450,21 @@ def _setor(ctx: Contexto, slug: str) -> str | None:
     return tomllib.loads(cfg.read_text(encoding="utf-8")).get(slug, {}).get("setor")
 
 
-def calcular_indicadores(ctx: Contexto, aprovados: dict[str, list[dict]], status: str) -> None:
+def calcular_indicadores(ctx: Contexto, aprovados: dict[str, list[dict]], dest: Destinos, status: str) -> None:
     import indicadores
 
     for slug in ctx.empresas:
         setor = _setor(ctx, slug) or indicadores.SETOR_SIDERURGIA
         resultado = indicadores.calcular(aprovados[slug], slug, ctx.tri, setor=setor)
-        resultado["verificacao_status"] = status
-        destino = ctx.metricas() / f"{slug}_{ctx.tri}_indicadores.json"
-        gravou = gravar_se_mudou(destino, json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
+        if status != "aprovado":
+            resultado["verificacao_status"] = status
+            # o slide de perfil/riscos lê o qualitativo de --metricas: só os fatos aprovados
+            quali = [f for f in aprovados[slug] if f.get("chave") == "qualitativo"]
+            gravar_se_mudou(dest.metricas / f"{slug}_{ctx.tri}_apresentacao_qualitativo.json",
+                            json.dumps(quali, ensure_ascii=False, indent=2) + "\n")
+        destino = dest.metricas / f"{slug}_{ctx.tri}_indicadores.json"
+        # mesma serialização do CLI do CASE-04: com os mesmos fatos, o arquivo sai byte a byte igual
+        gravou = gravar_se_mudou(destino, json.dumps(resultado, ensure_ascii=False, indent=2))
         c = resultado.get("cobertura", {})
         ctx.diz(f"  {slug}: {c.get('ok', '?')}/{len(resultado['indicadores'])} indicadores com valor → "
                 f"{_rel(destino, ctx.raiz)}{'' if gravou else ' (sem mudança)'}")
@@ -408,9 +480,11 @@ def _rodar_script(ctx: Contexto, nome: str, args: list[str], card: str) -> None:
         raise Parada(SAIDA_ERRO, f"src/{nome} terminou com código {r.returncode} (mensagem acima).")
 
 
-def rodar_comparativo(ctx: Contexto, relatorio: dict) -> Path:
-    _rodar_script(ctx, "comparar.py", ["--a", ctx.a, "--b", ctx.b, "--tri", ctx.tri], "CASE-05")
-    pasta = ctx.raiz / "saida" / "comparativo" / ctx.par
+def rodar_comparativo(ctx: Contexto, relatorio: dict, dest: Destinos) -> Path:
+    _rodar_script(ctx, "comparar.py", ["--a", ctx.a, "--b", ctx.b, "--tri", ctx.tri,
+                                       "--metricas", str(dest.metricas), "--saida", str(dest.comparativo)],
+                  "CASE-05")
+    pasta = dest.comparativo / ctx.par
     arq = pasta / "comparativo.json"
     if not arq.exists():
         raise Parada(SAIDA_ERRO, f"comparar.py não gerou {_rel(arq, ctx.raiz)}")
@@ -426,24 +500,20 @@ def rodar_comparativo(ctx: Contexto, relatorio: dict) -> Path:
     return pasta
 
 
-def rodar_apresentacao(ctx: Contexto, pasta_comp: Path, status: str) -> Path:
-    args = ["--comparativo", str(pasta_comp)]
+def rodar_apresentacao(ctx: Contexto, pasta_comp: Path, dest: Destinos) -> Path:
+    args = ["--comparativo", str(pasta_comp), "--metricas", str(dest.metricas), "--saida", str(dest.html)]
     narrativa = ctx.raiz / "narrativa" / f"{ctx.par}.json"
     if narrativa.exists():
         args += ["--narrativa", str(narrativa)]
     _rodar_script(ctx, "apresentacao.py", args, "CASE-06")
-    html = ctx.raiz / "saida" / "apresentacao" / f"{ctx.par}.html"
-    if not html.exists():
-        raise Parada(SAIDA_ERRO, f"apresentacao.py não gerou {_rel(html, ctx.raiz)}")
-    if status != "aprovado":
-        rascunho = html.with_name(f"RASCUNHO_{html.name}")
-        gravar_se_mudou(rascunho, html.read_text(encoding="utf-8"))
-        return rascunho
-    entrega = ctx.raiz / "entrega" / f"apresentacao_{ctx.par}.html"
-    if not entrega.exists() or entrega.read_bytes() != html.read_bytes():
-        entrega.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(html, entrega)
-    return entrega
+    if not dest.html.exists():
+        raise Parada(SAIDA_ERRO, f"apresentacao.py não gerou {_rel(dest.html, ctx.raiz)}")
+    if dest.final is None:
+        return dest.html
+    if not dest.final.exists() or dest.final.read_bytes() != dest.html.read_bytes():
+        dest.final.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(dest.html, dest.final)
+    return dest.final
 
 
 # --------------------------------------------------------------------------- orquestração
@@ -478,16 +548,20 @@ def executar(ctx: Contexto) -> int:
                                      "indicada e rode de novo. Para gerar só um rascunho (sem os fatos "
                                      "reprovados): --permitir-pendencias.")
         status = relatorio["status"]
+        dest = destinos(ctx, status)
+        if status != "aprovado":
+            ctx.diz(f"  [rascunho] derivados vão para {_rel(dest.metricas.parent, ctx.raiz)}/ "
+                    f"(metricas/, saida/comparativo/ e entrega/ não são tocados)")
 
         etapa = "6/8 indicadores"
         ctx.diz(f"[{etapa}]")
-        calcular_indicadores(ctx, aprovados, status)
+        calcular_indicadores(ctx, aprovados, dest, status)
         etapa = "7/8 comparativo"
         ctx.diz(f"[{etapa}]")
-        pasta_comp = rodar_comparativo(ctx, relatorio)
+        pasta_comp = rodar_comparativo(ctx, relatorio, dest)
         etapa = "8/8 apresentação"
         ctx.diz(f"[{etapa}]")
-        final = rodar_apresentacao(ctx, pasta_comp, status)
+        final = rodar_apresentacao(ctx, pasta_comp, dest)
     except Parada as p:
         sys.stdout.flush()
         print(f"\nPAROU em [{etapa}]: {p}", file=sys.stderr)
