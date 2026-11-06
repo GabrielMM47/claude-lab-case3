@@ -20,7 +20,7 @@
   },
   "cobertura": {
     "ok": 43,
-    "ausente": 7,
+    "ausente": 6,
     "nao_comparavel": 0,
     "nao_aplicavel": 0
   },
@@ -2312,30 +2312,6 @@
       "disponivel": true,
       "status": "ok",
       "obs": null
-    },
-    {
-      "chave": "receita_por_t_reportada",
-      "nome": "Receita por tonelada (reportada)",
-      "grupo": "setor",
-      "unidade": null,
-      "melhor": "maior",
-      "escopo": "segmento:america_do_norte",
-      "periodo": "3T26",
-      "periodo_aa": "3T25",
-      "periodo_tt": "2T26",
-      "valores": {
-        "3T26": null,
-        "3T25": null,
-        "2T26": null
-      },
-      "var_aa": null,
-      "var_tt": null,
-      "unidade_var": "%",
-      "formula": "receita_por_t_reportada (reportado)",
-      "insumos": [],
-      "disponivel": false,
-      "status": "ausente",
-      "obs": "falta receita_por_t_reportada 3T26 (segmento:america_do_norte)"
     },
     {
       "chave": "participacao_receita",

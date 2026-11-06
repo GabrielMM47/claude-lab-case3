@@ -19,7 +19,7 @@
     "nao_aplicavel": "N/A"
   },
   "cobertura": {
-    "ok": 49,
+    "ok": 47,
     "ausente": 1,
     "nao_comparavel": 4,
     "nao_aplicavel": 0
@@ -2174,78 +2174,6 @@
       "grupo": "setor",
       "unidade": "mil t/ano",
       "melhor": "neutro",
-      "escopo": "segmento:cubatao",
-      "periodo": "3T26",
-      "periodo_aa": "3T25",
-      "periodo_tt": "2T26",
-      "valores": {
-        "3T26": 2300.0,
-        "3T25": null,
-        "2T26": null,
-        "4T25": null
-      },
-      "var_aa": null,
-      "var_tt": null,
-      "unidade_var": "%",
-      "periodo_ano": "4T25",
-      "var_ano": null,
-      "formula": "capacidade_instalada (reportado)",
-      "insumos": [
-        {
-          "chave": "capacidade_instalada",
-          "periodo": "3T26",
-          "escopo": "segmento:cubatao",
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Capacidade instalada de Cubatão"
-        }
-      ],
-      "disponivel": true,
-      "status": "ok",
-      "obs": null
-    },
-    {
-      "chave": "capacidade_instalada",
-      "nome": "Capacidade instalada",
-      "grupo": "setor",
-      "unidade": "mil t/ano",
-      "melhor": "neutro",
-      "escopo": "segmento:ipatinga",
-      "periodo": "3T26",
-      "periodo_aa": "3T25",
-      "periodo_tt": "2T26",
-      "valores": {
-        "3T26": 4600.0,
-        "3T25": null,
-        "2T26": null,
-        "4T25": null
-      },
-      "var_aa": null,
-      "var_tt": null,
-      "unidade_var": "%",
-      "periodo_ano": "4T25",
-      "var_ano": null,
-      "formula": "capacidade_instalada (reportado)",
-      "insumos": [
-        {
-          "chave": "capacidade_instalada",
-          "periodo": "3T26",
-          "escopo": "segmento:ipatinga",
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Capacidade instalada de Ipatinga"
-        }
-      ],
-      "disponivel": true,
-      "status": "ok",
-      "obs": null
-    },
-    {
-      "chave": "capacidade_instalada",
-      "nome": "Capacidade instalada",
-      "grupo": "setor",
-      "unidade": "mil t/ano",
-      "melhor": "neutro",
       "escopo": "segmento:siderurgia",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -2288,10 +2216,10 @@
       "periodo_tt": "2T26",
       "valores": {
         "3T26": 75.0,
-        "3T25": 87.0,
+        "3T25": 79.0,
         "2T26": null
       },
-      "var_aa": -13.7931,
+      "var_aa": -5.0633,
       "var_tt": null,
       "unidade_var": "%",
       "formula": "receita_por_t_reportada (reportado)",
