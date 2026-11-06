@@ -1,0 +1,17 @@
+{
+  "documento_id": "usiminas_ITR_3T26",
+  "itens": [
+    {
+      "chave": "ajuste_ebitda:impairment",
+      "periodo": "3T26",
+      "status": "ausente",
+      "motivo": "célula '-' na p. 28: sem impairment no período"
+    },
+    {
+      "chave": "ajuste_ebitda:impairment",
+      "periodo": "2T26",
+      "status": "ausente",
+      "motivo": "célula '-' na p. 28: sem impairment no período"
+    }
+  ]
+}

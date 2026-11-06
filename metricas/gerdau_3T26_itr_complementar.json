@@ -1,0 +1,291 @@
+[
+  {
+    "chave": "ebitda_ajustado",
+    "metrica": "EBITDA ajustado",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T26",
+    "periodo_inicio": "2026-07-01",
+    "periodo_fim": "2026-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "valor": 3770176.0,
+    "valor_como_aparece": "3.770.176",
+    "pagina": 72,
+    "trecho": "3.770.176 2.736.858",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 1,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado."
+  },
+  {
+    "chave": "ebitda_ajustado",
+    "metrica": "EBITDA ajustado",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T25",
+    "periodo_inicio": "2025-07-01",
+    "periodo_fim": "2025-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "valor": 2736858.0,
+    "valor_como_aparece": "2.736.858",
+    "pagina": 72,
+    "trecho": "3.770.176 2.736.858",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 2,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado."
+  },
+  {
+    "chave": "ebitda_ajustado",
+    "metrica": "EBITDA ajustado",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "9M26",
+    "periodo_inicio": "2026-01-01",
+    "periodo_fim": "2026-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 73 renderizada: bloco 'Consolidado' de 'Períodos de 9 meses', colunas 30/09/2026 e 30/09/2025 (a 1ª coluna da linha é 'Eliminações'); âncora: receita 53.276.811 = DRE 9M26 (p. 29)"
+    },
+    "valor": 10158058.0,
+    "valor_como_aparece": "10.158.058",
+    "pagina": 73,
+    "trecho": "(260.691) 10.158.058 7.699.874",
+    "evidencia": {
+      "escopo": "lim inações e ajustes C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 9 m eses findos em :",
+      "coluna": 2,
+      "n_colunas": 3
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado. A coluna 1 da linha é 'Eliminações e ajustes' 9M25."
+  },
+  {
+    "chave": "ebitda_ajustado",
+    "metrica": "EBITDA ajustado",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "9M25",
+    "periodo_inicio": "2025-01-01",
+    "periodo_fim": "2025-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 73 renderizada: bloco 'Consolidado' de 'Períodos de 9 meses', colunas 30/09/2026 e 30/09/2025 (a 1ª coluna da linha é 'Eliminações'); âncora: receita 53.276.811 = DRE 9M26 (p. 29)"
+    },
+    "valor": 7699874.0,
+    "valor_como_aparece": "7.699.874",
+    "pagina": 73,
+    "trecho": "(260.691) 10.158.058 7.699.874",
+    "evidencia": {
+      "escopo": "lim inações e ajustes C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 9 m eses findos em :",
+      "coluna": 3,
+      "n_colunas": 3
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado. A coluna 1 da linha é 'Eliminações e ajustes' 9M25."
+  },
+  {
+    "chave": "depreciacao_amortizacao_tri",
+    "metrica": "Depreciação e amortização",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T26",
+    "periodo_inicio": "2026-07-01",
+    "periodo_fim": "2026-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "valor": 937901.0,
+    "valor_como_aparece": "937.901",
+    "pagina": 72,
+    "trecho": "937.901 937.554",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 1,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado."
+  },
+  {
+    "chave": "depreciacao_amortizacao_tri",
+    "metrica": "Depreciação e amortização",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T25",
+    "periodo_inicio": "2025-07-01",
+    "periodo_fim": "2025-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "valor": 937554.0,
+    "valor_como_aparece": "937.554",
+    "pagina": 72,
+    "trecho": "937.901 937.554",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 2,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado."
+  },
+  {
+    "chave": "ajuste_ebitda",
+    "metrica": "Recuperação de créditos / provisões (itens não recorrentes)",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T26",
+    "periodo_inicio": "2026-07-01",
+    "periodo_fim": "2026-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "natureza": "pontual",
+    "valor": -60412.0,
+    "valor_como_aparece": "(60.412)",
+    "pagina": 72,
+    "trecho": "(60.412) -",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 1,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado. Sem valor no 3T25 ('-'). Inclui itens não recorrentes, segundo a nota. A mesma linha aparece 2x na página (valores iguais)."
+  },
+  {
+    "chave": "ajuste_ebitda",
+    "metrica": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T26",
+    "periodo_inicio": "2026-07-01",
+    "periodo_fim": "2026-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "natureza": "recorrente",
+    "valor": 193594.0,
+    "valor_como_aparece": "193.594",
+    "pagina": 72,
+    "trecho": "193.594 229.349",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 1,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado. Ajuste recorrente (critério), não efeito pontual. A mesma linha aparece 2x na página (valores iguais)."
+  },
+  {
+    "chave": "ajuste_ebitda",
+    "metrica": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
+    "empresa": "gerdau",
+    "documento": "itr",
+    "documento_id": "gerdau_ITR_3T26",
+    "data_documento": "2026-09-30",
+    "escopo": "consolidado",
+    "tipo": "fluxo",
+    "periodo": "3T25",
+    "periodo_inicio": "2025-07-01",
+    "periodo_fim": "2025-09-30",
+    "unidade": "R$ mil",
+    "moeda": "BRL",
+    "criterio": "ajustado",
+    "revisao_manual": {
+      "por": "Claude Code, a pedido de Gabriel Martins (2026-11-06)",
+      "nota": "conferência visual da p. 72 renderizada: bloco 'Consolidado' de 'Períodos de 3 meses', colunas 30/09/2026 e 30/09/2025 nessa ordem; âncora: receita 18.690.518 = DRE 3T26 (p. 29)"
+    },
+    "natureza": "recorrente",
+    "valor": 229349.0,
+    "valor_como_aparece": "229.349",
+    "pagina": 72,
+    "trecho": "193.594 229.349",
+    "evidencia": {
+      "escopo": "C onsolidado",
+      "unidade": "(Valores expressos em milhares de reais, exceto quando especificado)",
+      "periodo": "P eríodos de 3 m eses findos em :",
+      "coluna": 2,
+      "n_colunas": 2
+    },
+    "obs": "Nota 22, informações por segmento, coluna Consolidado. Ajuste recorrente (critério), não efeito pontual. A mesma linha aparece 2x na página (valores iguais)."
+  }
+]

@@ -548,7 +548,7 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 3. Cada linha com valores, variações, `vencedor` (pela regra `melhor` maior/menor), `texto` já formatado com `contrato.fmt_br` e `fontes` com página.
 4. `insights` determinísticos com números (base para os títulos dos slides): maior diferença de margem, quem cresceu mais A/A, alavancagem, R$/t e EBITDA/t, peso de exterior/mineração no EBITDA.
 5. `alertas`: efeito pontual (ajuste relevante no 3T25 ou 2T26 distorcendo a variação), divergência calculado × reportado, indicador indisponível, negócios diferentes (mix de segmentos).
-6. Gráficos (matplotlib, 16:9, cores do `config/empresas.toml`, rótulos em pt-BR, "Fonte: ITR 3T26, p. X" no rodapé):
+6. Gráficos (matplotlib, 16:9, cores do `config/empresas.toml`, rótulos em pt-BR, "Fonte: ITR 3T26, p. X" no rodapé, com X = índice do PDF):
    1. Receita e EBITDA, 3T26 × 3T25;
    2. Margens lado a lado;
    3. DL/EBITDA (calculado e reportado);
@@ -589,9 +589,9 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 | 5 | `graficos` | Receita, EBITDA e margem, 3T26 × 3T25 (A/A rotulado) |
 | 6 | `setor` | Volume, R$/t, EBITDA/t, DL/EBITDA |
 | 7 | `destaques_riscos` | 1 positivo e 1 negativo por empresa + o que observar (guidance/riscos) + alertas de efeito pontual |
-| 8 | `metodologia` | Páginas, contábil × ajustado, anualização, `verificacao` (X/Y números conferidos), aviso |
+| 8 | `metodologia` | Páginas (numeração do PDF, não a impressa), contábil × ajustado, anualização, `verificacao` (X/Y números conferidos), aviso |
 
-3. Rodapé em todos os slides: fontes ("Gerdau — ITR p. 29; Apresentação p. 7") e "Não constitui recomendação de investimento".
+3. Rodapé em todos os slides: fontes com a página na numeração do PDF ("Gerdau — ITR p. 29; Apresentação p. 7") e "Não constitui recomendação de investimento".
 4. `narrativa/<a>_x_<b>_<tri>.json`: títulos-mensagem e bullets escritos com o Claude Code **a partir do `comparativo.json`**. Sem narrativa → usar `insights` automáticos (o produto continua genérico).
 5. **Verificador de narrativa:** cada afirmação numérica referencia a chave da métrica, empresa, período, critério e fonte; o código resolve e formata os valores. Testar troca indevida de empresa/período e fatos qualitativos sem fonte. A simples existência de um número igual no JSON não comprova a afirmação. Datas e números de slides devem ser tratados separadamente dos valores financeiros.
 6. Gerar a versão final em `entrega/apresentacao_gerdau_x_usiminas_3T26.html` (versionada).
@@ -718,7 +718,8 @@ Lista JSON no topo (compatível com o verificador atual). Campos novos são igno
 - `documento`: `itr` | `apresentacao`.
 - `escopo`: `consolidado` ou `segmento:<slug_do_segmento>` (ex.: `segmento:america_do_norte`, `segmento:mineracao`). Nunca controladora/holding.
 - `unidade`: **como aparece no documento** (`R$ mil`, `R$ milhões`, `mil t`, `R$/t`, `US$/t`, `%`, `x`). A conversão é feita em código no CASE-04.
-- `pagina`: índice do PDF a partir de 1 (o mesmo de `pagina_NN.txt`), não o número impresso na folha.
+- `pagina` e `trecho`: **obrigatórios em todo fato**. Número sem página não entra no JSON nem na apresentação.
+- `pagina`: índice do PDF a partir de 1 (o mesmo de `pagina_NN.txt` e o que o leitor de PDF mostra), não o número impresso no rodapé da folha nem o "PÁGINA: X de N" do formulário CVM. Ex.: a DRE consolidada da Gerdau é `pagina` 29, impressa como 24 e "PÁGINA: 16 de 65".
 - Opcionais: `codigo_cvm`, `obs`, e os campos do verificador `anterior`, `anterior_como_aparece`, `variacao_pct`.
 - Rastreabilidade obrigatória: `documento_id` identifica o PDF exato (caminho e hash em manifesto), `data_documento`, `moeda` quando monetário, `criterio` (contábil/ajustado quando aplicável), início/fim do período e evidência da unidade e dos cabeçalhos. `documento` sozinho identifica apenas o tipo. O manifesto mantém URL, data de acesso e data de referência do documento.
 - Registrar ausência separadamente em um relatório de cobertura: `ausente`, `nao_aplicavel` ou `nao_comparavel`, com motivo. Não criar fato de valor zero para preencher ausência. `null` nos indicadores mantém essa distinção em `obs`/status.
@@ -845,13 +846,14 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 
 1. **Nenhum número de memória.** Todo número vem de um JSON verificado ou é calculado em código a partir dele. As fixtures são de empresas fictícias (`empresa_a`, `empresa_b`) justamente para nunca vazarem para a apresentação real.
 2. **Consolidado sempre.** Nada de `DFs Individuais` nem do comentário da holding.
-3. `trecho` e `valor_como_aparece` são cópias literais do `pagina_NN.txt`.
+3. Todo fato tem `pagina` (índice do PDF) e `trecho`; `trecho` e `valor_como_aparece` são cópias literais do `pagina_NN.txt`.
 4. Unidade registrada como aparece; conversão só em código.
 5. Rotular A/A (3T26 × 3T25) e T/T (3T26 × 2T26). Sem dado de 2T26 → `null`, nunca estimar.
 6. Cada erro que o verificador ou você pegar vai em `docs/registro/<seu-nome>.md` (empresa, métrica, o que o Claude disse, o que estava no ITR, como pegou, correção). É material do vídeo e do README.
 7. Prompts que funcionaram vão no mesmo arquivo.
 8. Conflitos entre fontes ficam registrados com ambos os valores e suas referências. ITR tem preferência para fatos contábeis de mesmo critério; essa preferência não resolve divergência entre escopos, períodos ou EBITDA contábil/ajustado.
 9. Indicadores por tonelada exigem numerador e denominador do mesmo negócio, produto, período, moeda e escopo. Receita consolidada incluindo mineração não pode ser dividida só pelo volume de aço.
+10. Em `comparativo.json`, gráficos e slides, "p. X" é sempre o índice do PDF (o mesmo `pagina` dos JSONs), nunca o número impresso na folha. O slide de metodologia avisa: "páginas na numeração do PDF".
 
 **Definição de pronto (todo card):** PR aberto para `main`; testes passando (`pytest`); nenhum arquivo de outro dono alterado (exceto catálogo em `contrato.py`); registro de erros/prompts atualizado.
 </script>
