@@ -1,46 +1,39 @@
 # Roteiro do vídeo — 2 minutos
 
-## 0:00–0:20 · O problema
+Gravar a tela com a apresentação aberta no link público (https://claude.ai/artifact/CuFHhUEJA44KkaTf9MNsYC), o terminal na raiz do repositório e o PDF do ITR da Usiminas aberto na p. 28. Ensaiar uma vez antes de gravar. Total de falas: cerca de 270 palavras.
 
-**Tela:** título do projeto e dois PDFs lado a lado.
+## 0:00–0:20 · O problema (Pessoa 1)
 
-**Fala:**
+**Tela:** capa da apresentação (slide 1).
 
-> Comparar Gerdau e Usiminas não é apenas copiar números. É garantir que cada valor pertence ao mesmo período, unidade, escopo e critério de EBITDA. Um erro de coluna ou de unidade muda a conclusão do slide.
+> Um comitê de investimentos quer saber qual siderúrgica teve o melhor terceiro trimestre: Gerdau ou Usiminas. A resposta está espalhada em ITRs de cem páginas e apresentações de RI, com unidades, períodos e critérios de EBITDA diferentes. Um número na coluna errada muda a conclusão.
 
-## 0:20–1:20 · A solução na tela
+## 0:20–1:20 · A solução funcionando (Pessoa 2)
 
-**Tela:** mostrar o fluxo do README, depois `saida/`, um ranking do `localizar_paginas.py` e um JSON de métricas.
+**Tela:** terminal rodando `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` (cerca de 10 segundos com os PDFs já extraídos). Mostrar a linha "202/239 OK · 0 erro · status APROVADO" e o "ENTREGUE".
 
-**Fala:**
+> Com um comando, o fluxo lê os PDFs oficiais, extrai as demonstrações, confere cada número contra a página de onde veio, calcula os indicadores e gera a apresentação.
 
-> O fluxo começa nos PDFs oficiais de RI e CVM. Extraímos as páginas, localizamos as páginas candidatas por tema e usamos prompts para transformar evidências em JSON. Cada fato guarda a página, o trecho, a unidade e o escopo. Depois, o verificador procura o token literalmente no texto e só então os indicadores são calculados.
+**Tela:** passar pelos slides 2, 4 e 7 da apresentação, apontando o rodapé com as páginas.
 
-**Tela:** abrir `docs/ERROS_ENCONTRADOS.md` e destacar os erros documentados.
+> A conclusão: a Gerdau foi mais rentável, com margem EBITDA de 20,2% contra 9,0%, e cresceu; a Usiminas tem caixa líquido, mas a receita caiu. Todo número tem a página do PDF no rodapé. E quando falta dado, como volume consolidado da Gerdau, o slide diz isso em vez de inventar.
 
-> Quando a automação não prova a coluna, registramos revisão manual. Quando uma página não tem texto, ela não vira fonte numérica.
+> O Claude escreveu os títulos, mas sem digitar nenhum número: o texto usa marcadores que o código troca pelo valor verificado.
 
-## 1:20–1:40 · Um número conferido na fonte
+## 1:20–1:40 · Um número conferido na fonte (Pessoa 3)
 
-**Tela:** Usiminas, ITR p. 28, linha do EBITDA com cabeçalhos de período.
+**Tela:** ITR da Usiminas, p. 28, linha "EBITDA (Instrução CVM 156)".
 
-**Fala:**
+> Aqui o Claude errou. O 156 do nome "Instrução CVM 156" foi lido como o EBITDA do trimestre, e cada valor escorregou uma coluna. O primeiro verificador aprovou, porque os números existiam na linha. Quem pegou foi a reconciliação: o EBITDA mais os ajustes não fechava. Hoje o verificador exige a coluna certa, e o valor correto, 588 milhões, fecha com o EBITDA ajustado de 558 milhões.
 
-> Um caso real foi o número 156, que fazia parte do texto “Instrução CVM 156”. O parser poderia tratá-lo como EBITDA. A reconciliação e a conferência do cabeçalho mostraram o erro; o verificador passou a exigir a coluna e o período corretos.
+## 1:40–2:00 · Impacto e próximos passos (Pessoa 4)
 
-## 1:40–2:00 · Impacto e próximos passos
+**Tela:** slide 8 (metodologia) e depois o README no GitHub.
 
-**Tela:** comparativo final ou, enquanto ele não existe, o painel de status dos CASEs.
+> Um analista troca os PDFs e roda o mesmo comando para outra empresa ou outro trimestre: o que é determinístico roda sozinho, e o que precisa do Claude vem como um prompt pronto. Com mais um dia, completaríamos a evidência dos 37 números ainda para revisar e o volume consolidado da Gerdau. Não é recomendação de investimento.
 
-**Fala:**
+## Checagem antes de publicar
 
-> O resultado é uma análise auditável: cada número tem uma origem e cada limitação fica visível. O próximo passo é conectar os indicadores ao comparativo, gerar os oito slides e publicar o artefato para teste em aba anônima.
-
-## Organização da gravação
-
-- Pessoa 1: problema e contexto — 20 segundos.
-- Pessoa 2: demonstração do fluxo — 60 segundos.
-- Pessoa 3: erro real e conferência na fonte — 20 segundos.
-- Pessoa 4: impacto, limitações e próximos passos — 20 segundos.
-
-Se o artefato final ainda não estiver publicado, usar o fluxo documental e os JSONs verificados como demonstração provisória; substituir essa tela antes do envio.
+- Duração até 2:00 (a banca para de assistir em 2:00).
+- Publicar como YouTube "não listado" ou Drive "qualquer pessoa com o link"; abrir o link numa aba anônima.
+- Colar o link no README (linha "Vídeo") e no formulário de entrega.

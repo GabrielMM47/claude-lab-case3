@@ -11,7 +11,21 @@ Use esta skill quando o pedido envolver extração, validação, comparação ou
 
 Ela se aplica especialmente a ITRs, apresentações institucionais, volumes, capacidade, receita por tonelada, EBITDA, mix e narrativa executiva.
 
-## Fluxo recomendado
+## Caminho rápido: um comando
+
+```bash
+python src/pipeline.py --a <slug_a> --b <slug_b> --tri <tri>   # ex.: --a gerdau --b usiminas --tri 3T26
+```
+
+Precisa de `data/itrs/<slug>_ITR_<tri>.pdf`, `data/apresentacoes/<slug>_APRESENTACAO_<tri>.pdf` e o cadastro da empresa em `config/empresas.toml`. O comando para com uma mensagem útil em cada bloqueio:
+
+- **código 3 (extração assistida):** imprime o prompt pronto (também salvo em `saida/prompts/`). Siga o prompt, grave o JSON em `metricas/` e rode de novo;
+- **código 1 (verificação reprovada):** abra `saida/verificacao_<a>_x_<b>_<tri>.json`, corrija só os fatos com ERRO olhando a página indicada e rode de novo;
+- **código 2 (insumo ausente):** falta um PDF; o caminho esperado vem na mensagem.
+
+Saída aprovada: `entrega/apresentacao_<a>_x_<b>_<tri>.html`. Para os títulos-mensagem, escreva `narrativa/<a>_x_<b>_<tri>.json` a partir do `comparativo.json`, usando só placeholders (`{a.margem_ebitda}`, `{b.receita_liquida.var_aa}`, `{a.nome}`) e nenhum número digitado; o gerador reprova a narrativa que não passar.
+
+## Fluxo passo a passo (quando precisar entender ou depurar)
 
 1. Leia `docs/CONTRATO_DADOS.md` e `CLAUDE.md`.
 2. Confira os PDFs em `data/itrs/` e `data/apresentacoes/` e registre as fontes.
@@ -49,6 +63,8 @@ Prompts principais:
 - Não use página sem texto extraído como evidência numérica.
 - Não copie trechos longos; use resumo próprio e âncora literal curta.
 - Não coloque no slide um número que não tenha fonte ou não esteja no comparativo verificado.
+- Não use como destaque uma variação A/A contra um período com efeito pontual (ex.: impairment da Usiminas no 3T25): lucro, EBIT e margens contábeis ficam distorcidos.
+- Não confie só em "o número existe na página": o "156" de "Instrução CVM 156" existia na linha e não era EBITDA. Exija a coluna do período certo.
 
 ## Verificação mínima
 

@@ -560,7 +560,12 @@ ul.compacta{font-size:15px}
 .tile .quem{display:block;font-size:11px;color:var(--suave);font-weight:400}
 .pos{color:#1a7f37}.neg{color:#b42318}
 .alerta{display:block;font-size:13px;color:#7a4b00;background:#fff6e5;border-radius:4px;padding:4px 8px}
-#nav{position:fixed;right:14px;bottom:10px;color:#cfd3da;font:12px system-ui,sans-serif}
+#nav{position:fixed;right:14px;bottom:10px;display:flex;gap:8px;align-items:center;z-index:5;
+  color:#cfd3da;font:13px system-ui,sans-serif}
+#nav button{background:#454b55;color:#fff;border:0;border-radius:6px;width:38px;height:32px;
+  font-size:20px;line-height:1;cursor:pointer}
+#nav button:hover{background:#5d6470}
+#nav button:disabled{opacity:.35;cursor:default}
 @media print{
   @page{size:1280px 720px;margin:0}
   html,body{background:#fff;height:auto}
@@ -573,12 +578,22 @@ ul.compacta{font-size:15px}
 JS = """
 const s=[...document.querySelectorAll('.slide')];let i=0;
 function escala(){const k=Math.min(innerWidth/1280,innerHeight/720)*0.97;s.forEach(x=>x.style.transform='scale('+k+')')}
+const ant=document.getElementById('ant'),prox=document.getElementById('prox');
 function ir(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach((x,j)=>x.classList.toggle('ativo',j===i));
-  document.getElementById('pos').textContent=(i+1)+' / '+s.length;history.replaceState(null,'','#'+(i+1))}
+  document.getElementById('pos').textContent=(i+1)+' / '+s.length;ant.disabled=i===0;prox.disabled=i===s.length-1;
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
 addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))ir(i+1);
   else if(['ArrowLeft','PageUp'].includes(e.key))ir(i-1);else if(e.key==='Home')ir(0);
   else if(e.key==='End')ir(s.length-1)});
-addEventListener('resize',escala);escala();ir((parseInt(location.hash.slice(1))||1)-1);
+ant.onclick=()=>ir(i-1);prox.onclick=()=>ir(i+1);
+// clique no slide: terço esquerdo volta, o resto avança (sem atrapalhar seleção de texto)
+document.getElementById('deck').addEventListener('click',e=>{if(String(getSelection()))return;
+  ir(e.clientX<innerWidth/3?i-1:i+1)});
+let x0=null;addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;
+  if(Math.abs(dx)>40)ir(dx<0?i+1:i-1)},{passive:true});
+addEventListener('resize',escala);escala();
+let h=1;try{h=parseInt(location.hash.slice(1))||1}catch(e){}ir(h-1);
 """
 
 
@@ -600,7 +615,9 @@ def gerar_html(d: Dados, narrativa: dict | None = None) -> str:
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(a)} × {esc(b)} · {esc(d.comp["periodo"])}</title><style>{CSS}</style></head>'
             f'<body><main id="deck">{"".join(secoes)}</main>'
-            f'<div id="nav">← → navegar · <span id="pos"></span></div><script>{JS}</script></body></html>\n')
+            f'<div id="nav"><button id="ant" type="button" aria-label="Slide anterior">‹</button>'
+            f'<span id="pos"></span><button id="prox" type="button" aria-label="Próximo slide">›</button></div>'
+            f'<script>{JS}</script></body></html>\n')
 
 
 def main(argv: list[str] | None = None) -> int:
