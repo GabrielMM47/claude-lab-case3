@@ -500,7 +500,20 @@ def rodar_comparativo(ctx: Contexto, relatorio: dict, dest: Destinos) -> Path:
     return pasta
 
 
-def rodar_apresentacao(ctx: Contexto, pasta_comp: Path, dest: Destinos) -> Path:
+def marcar_rascunho(html: str, relatorio: dict) -> str:
+    """Faixa fixa e visível em todos os slides: o rascunho não pode ser confundido com a entrega."""
+    if 'id="faixa-rascunho"' in html:
+        return html
+    motivo = (f"RASCUNHO — NÃO ENTREGAR · {relatorio['erro']} fato(s) reprovado(s) fora dos cálculos · "
+              f"{len(relatorio['pendencias'])} pendência(s) · ver saida/verificacao_*.json")
+    faixa = ('<div id="faixa-rascunho" style="position:fixed;top:0;left:0;right:0;z-index:99999;'
+             'background:#b00020;color:#fff;font:bold 14px/2 sans-serif;text-align:center;'
+             f'letter-spacing:.04em">{motivo}</div>')
+    m = re.search(r"<body[^>]*>", html, re.I)
+    return html[:m.end()] + faixa + html[m.end():] if m else faixa + html
+
+
+def rodar_apresentacao(ctx: Contexto, pasta_comp: Path, dest: Destinos, relatorio: dict) -> Path:
     args = ["--comparativo", str(pasta_comp), "--metricas", str(dest.metricas), "--saida", str(dest.html)]
     narrativa = ctx.raiz / "narrativa" / f"{ctx.par}.json"
     if narrativa.exists():
@@ -509,6 +522,7 @@ def rodar_apresentacao(ctx: Contexto, pasta_comp: Path, dest: Destinos) -> Path:
     if not dest.html.exists():
         raise Parada(SAIDA_ERRO, f"apresentacao.py não gerou {_rel(dest.html, ctx.raiz)}")
     if dest.final is None:
+        gravar_se_mudou(dest.html, marcar_rascunho(dest.html.read_text(encoding="utf-8"), relatorio))
         return dest.html
     if not dest.final.exists() or dest.final.read_bytes() != dest.html.read_bytes():
         dest.final.parent.mkdir(parents=True, exist_ok=True)
@@ -561,7 +575,7 @@ def executar(ctx: Contexto) -> int:
         pasta_comp = rodar_comparativo(ctx, relatorio, dest)
         etapa = "8/8 apresentação"
         ctx.diz(f"[{etapa}]")
-        final = rodar_apresentacao(ctx, pasta_comp, dest)
+        final = rodar_apresentacao(ctx, pasta_comp, dest, relatorio)
     except Parada as p:
         sys.stdout.flush()
         print(f"\nPAROU em [{etapa}]: {p}", file=sys.stderr)
