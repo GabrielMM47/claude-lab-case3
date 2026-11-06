@@ -227,3 +227,20 @@ def test_sem_cabecalho_fica_para_revisar(pasta):
     del f["evidencia"]["cabecalho_colunas"]
     st, _, pend = avaliar(f, pasta)
     assert st == "REVISAR" and any("cabecalho_colunas" in p for p in pend)
+
+
+def test_formato_legado_sem_chave_fica_para_revisar(pasta):
+    """Fatos sem 'chave' (template antigo, extrair_balanco.py) não reprovam, mas não entram no pipeline."""
+    f = fato()
+    for c in ("chave", "documento", "escopo"):
+        del f[c]
+    st, erros, pend = avaliar(f, pasta)
+    assert st == "REVISAR" and not erros and any("fora do contrato" in p for p in pend)
+    f["valor"] = 1.0  # número errado continua sendo erro
+    assert avaliar(f, pasta)[0] == "ERRO"
+
+
+def test_fato_do_contrato_sem_escopo_e_erro(pasta):
+    f = fato()
+    del f["escopo"]
+    assert avaliar(f, pasta)[0] == "ERRO"

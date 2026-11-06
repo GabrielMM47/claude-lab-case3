@@ -28,7 +28,7 @@ def linha(pasta, pagina, inicio):
 
 
 def fato(slug, doc_id, pasta, chave, metrica, pagina, inicio, cols, ev, tipo="fluxo", unidade="R$ mil",
-         criterio=None, obs=None):
+         criterio=None, obs=None, natureza=None):
     trecho, repet = linha(pasta, pagina, inicio)
     toks = valores_finais(trecho)
     out = []
@@ -48,6 +48,8 @@ def fato(slug, doc_id, pasta, chave, metrica, pagina, inicio, cols, ev, tipo="fl
             f["moeda"] = "BRL"
         if criterio:
             f["criterio"] = criterio
+        if natureza:  # só em ajuste_ebitda: 'recorrente' (critério) ou 'pontual' (efeito não recorrente)
+            f["natureza"] = natureza
         f |= {"valor": br_para_float(tok), "valor_como_aparece": tok, "pagina": pagina, "trecho": trecho,
               "evidencia": ev[periodo] | {"coluna": k, "n_colunas": len(toks)}}
         o = obs or ""
@@ -79,10 +81,10 @@ def gerdau():
               {"3T26": 1, "3T25": 2}, E3, obs=nota)
     F += fato(slug, doc, pasta, "ajuste_ebitda", "Recuperação de créditos / provisões (itens não recorrentes)",
               72, "(60.412) -", {"3T26": 1}, E3, criterio="ajustado",
-              obs=nota + " Sem valor no 3T25 ('-'). Inclui itens não recorrentes, segundo a nota.")
+              obs=nota + " Sem valor no 3T25 ('-'). Inclui itens não recorrentes, segundo a nota.", natureza="pontual")
     F += fato(slug, doc, pasta, "ajuste_ebitda", "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
               72, "193.594 229.349", {"3T26": 1, "3T25": 2}, E3, criterio="ajustado",
-              obs=nota + " Ajuste recorrente (critério), não efeito pontual.")
+              obs=nota + " Ajuste recorrente (critério), não efeito pontual.", natureza="recorrente")
     cob = [
         {"chave": "ebitda_contabil", "periodo": p, "status": "ausente",
          "motivo": "ITR não divulga o EBITDA CVM 156 consolidado; calculável como ebit + depreciacao_amortizacao_tri"}
@@ -123,12 +125,12 @@ def usiminas():
     F += fato(slug, doc, pasta, "depreciacao_amortizacao_tri", "Depreciação, amortização e exaustão", 28,
               "Depreciação, amortização e exaustão", c3, E28, obs=rel)
     F += fato(slug, doc, pasta, "ajuste_ebitda", "(-) Participação no resultado de controladas, controladas em conjunto e coligadas",
-              28, "(-) Participação no resultado", c3, E28, criterio="ajustado", obs=rel + " Ajuste recorrente.")
+              28, "(-) Participação no resultado", c3, E28, criterio="ajustado", obs=rel + " Ajuste recorrente.", natureza="recorrente")
     F += fato(slug, doc, pasta, "ajuste_ebitda", "(+) EBITDA proporcional de controladas em conjunto", 28,
-              "(+) EBITDA proporcional", c3, E28, criterio="ajustado", obs=rel + " Ajuste recorrente.")
+              "(+) EBITDA proporcional", c3, E28, criterio="ajustado", obs=rel + " Ajuste recorrente.", natureza="recorrente")
     F += fato(slug, doc, pasta, "ajuste_ebitda", "(-) Impairment de ativos não financeiros líquido de realização",
               28, "(-) Impairment de ativos", {"3T25": 3}, E28, criterio="ajustado",
-              obs=rel + " EFEITO PONTUAL do 3T25: distorce a comparação A/A de EBITDA contábil e de lucro líquido.")
+              obs=rel + " EFEITO PONTUAL do 3T25: distorce a comparação A/A de EBITDA contábil e de lucro líquido.", natureza="pontual")
     F += fato(slug, doc, pasta, "ebitda_contabil", "EBITDA (Instrução CVM 156)", 45, "EBITDA (Instrução CVM 156)",
               {"9M26": 1, "9M25": 2}, E45, criterio="contabil", obs="Release, DRE acumulada consolidada.")
     F += fato(slug, doc, pasta, "ebitda_ajustado", "EBITDA Ajustado", 45, "EBITDA Ajustado ", {"9M26": 1, "9M25": 2},

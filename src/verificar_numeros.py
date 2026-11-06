@@ -106,7 +106,18 @@ def avaliar(m: dict, pasta: Path) -> tuple[str, list[str], list[str]]:
     pend: list[str] = []
     qualitativo = m.get("chave") == "qualitativo"
 
-    obrigatorios = CAMPOS_BASE + CAMPOS_CONTRATO + (() if qualitativo else CAMPOS_NUMERICOS)
+    # Fato do contrato (tem 'chave'): todos os campos são obrigatórios. Sem 'chave' é formato legado
+    # (ex.: templates/metricas_exemplo.json, extrair_balanco.py): número e trecho são conferidos igual,
+    # mas a falta dos campos de identificação vira pendência: o fato não entra no pipeline.
+    contrato = "chave" in m
+    obrigatorios = CAMPOS_BASE + (() if qualitativo else CAMPOS_NUMERICOS)
+    if contrato:
+        obrigatorios += CAMPOS_CONTRATO
+    else:
+        obrigatorios = tuple(c for c in obrigatorios if c != "escopo")
+        sem = [c for c in CAMPOS_CONTRATO + ("escopo",) if m.get(c) in (None, "")]
+        if sem:
+            pend.append(f"fora do contrato (sem {', '.join(sem)}): não entra no pipeline")
     faltando = [c for c in obrigatorios if m.get(c) in (None, "")]
     if faltando:
         erros.append(f"campos obrigatórios ausentes: {', '.join(faltando)}")
