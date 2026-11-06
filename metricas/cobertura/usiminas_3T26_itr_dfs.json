@@ -1,0 +1,477 @@
+{
+  "documento_id": "usiminas_ITR_3T26",
+  "consistencia": "ok",
+  "avisos": [],
+  "itens": [
+    {
+      "chave": "receita_liquida",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.01"
+    },
+    {
+      "chave": "receita_liquida",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.01"
+    },
+    {
+      "chave": "receita_liquida",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.01"
+    },
+    {
+      "chave": "receita_liquida",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.01"
+    },
+    {
+      "chave": "cpv",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.02"
+    },
+    {
+      "chave": "cpv",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.02"
+    },
+    {
+      "chave": "cpv",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.02"
+    },
+    {
+      "chave": "cpv",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.02"
+    },
+    {
+      "chave": "lucro_bruto",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.03"
+    },
+    {
+      "chave": "lucro_bruto",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.03"
+    },
+    {
+      "chave": "lucro_bruto",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.03"
+    },
+    {
+      "chave": "lucro_bruto",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.03"
+    },
+    {
+      "chave": "despesas_receitas_operacionais",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.04"
+    },
+    {
+      "chave": "despesas_receitas_operacionais",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.04"
+    },
+    {
+      "chave": "despesas_receitas_operacionais",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.04"
+    },
+    {
+      "chave": "despesas_receitas_operacionais",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.04"
+    },
+    {
+      "chave": "ebit",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.05"
+    },
+    {
+      "chave": "ebit",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.05"
+    },
+    {
+      "chave": "ebit",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.05"
+    },
+    {
+      "chave": "ebit",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.05"
+    },
+    {
+      "chave": "resultado_financeiro",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.06"
+    },
+    {
+      "chave": "resultado_financeiro",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.06"
+    },
+    {
+      "chave": "resultado_financeiro",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.06"
+    },
+    {
+      "chave": "resultado_financeiro",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.06"
+    },
+    {
+      "chave": "lair",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.07"
+    },
+    {
+      "chave": "lair",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.07"
+    },
+    {
+      "chave": "lair",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.07"
+    },
+    {
+      "chave": "lair",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.07"
+    },
+    {
+      "chave": "ir_csll",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.08"
+    },
+    {
+      "chave": "ir_csll",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.08"
+    },
+    {
+      "chave": "ir_csll",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.08"
+    },
+    {
+      "chave": "ir_csll",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.08"
+    },
+    {
+      "chave": "lucro_liquido",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11"
+    },
+    {
+      "chave": "lucro_liquido",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11"
+    },
+    {
+      "chave": "lucro_liquido",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11"
+    },
+    {
+      "chave": "lucro_liquido",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11"
+    },
+    {
+      "chave": "lucro_liquido_controladores",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11.01"
+    },
+    {
+      "chave": "lucro_liquido_controladores",
+      "periodo": "3T25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11.01"
+    },
+    {
+      "chave": "lucro_liquido_controladores",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11.01"
+    },
+    {
+      "chave": "lucro_liquido_controladores",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 14,
+      "codigo_cvm": "3.11.01"
+    },
+    {
+      "chave": "ativo_total",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1"
+    },
+    {
+      "chave": "ativo_total",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1"
+    },
+    {
+      "chave": "passivo_total",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2"
+    },
+    {
+      "chave": "passivo_total",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2"
+    },
+    {
+      "chave": "caixa_equivalentes",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1.01.01"
+    },
+    {
+      "chave": "caixa_equivalentes",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1.01.01"
+    },
+    {
+      "chave": "aplicacoes_financeiras",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1.01.02"
+    },
+    {
+      "chave": "aplicacoes_financeiras",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 12,
+      "codigo_cvm": "1.01.02"
+    },
+    {
+      "chave": "emprestimos_cp",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.01.04"
+    },
+    {
+      "chave": "emprestimos_cp",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.01.04"
+    },
+    {
+      "chave": "emprestimos_lp",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.02.01"
+    },
+    {
+      "chave": "emprestimos_lp",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.02.01"
+    },
+    {
+      "chave": "pl_total",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.03"
+    },
+    {
+      "chave": "pl_total",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.03"
+    },
+    {
+      "chave": "pl_nao_controladores",
+      "periodo": "3T26",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.03.09"
+    },
+    {
+      "chave": "pl_nao_controladores",
+      "periodo": "4T25",
+      "status": "presente",
+      "pagina": 13,
+      "codigo_cvm": "2.03.09"
+    },
+    {
+      "chave": "depreciacao_amortizacao",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.01.01.04"
+    },
+    {
+      "chave": "depreciacao_amortizacao",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.01.01.04"
+    },
+    {
+      "chave": "depreciacao_amortizacao",
+      "periodo": "3T26",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    },
+    {
+      "chave": "depreciacao_amortizacao",
+      "periodo": "3T25",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    },
+    {
+      "chave": "fco",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.01"
+    },
+    {
+      "chave": "fco",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.01"
+    },
+    {
+      "chave": "fco",
+      "periodo": "3T26",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    },
+    {
+      "chave": "fco",
+      "periodo": "3T25",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    },
+    {
+      "chave": "capex",
+      "periodo": "9M26",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.02.02"
+    },
+    {
+      "chave": "capex",
+      "periodo": "9M25",
+      "status": "presente",
+      "pagina": 16,
+      "codigo_cvm": "6.02.02"
+    },
+    {
+      "chave": "capex",
+      "periodo": "3T26",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    },
+    {
+      "chave": "capex",
+      "periodo": "3T25",
+      "status": "nao_comparavel",
+      "motivo": "a DFC do ITR só traz o acumulado do ano; o trimestral exigiria o acumulado do trimestre anterior (outro documento)"
+    }
+  ]
+}
