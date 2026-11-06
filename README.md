@@ -26,6 +26,10 @@ python src/verificar_numeros.py saida/usiminas_ITR_3T26 metricas/metricas_usimin
 | [data/itrs/](data/itrs/) | ITRs 3T26 da Gerdau (80 p.) e da Usiminas (110 p.) |
 | [src/](src/) | `extrair_release.py` (PDF → texto/tabelas) e `verificar_numeros.py` (confere cada número no PDF) |
 | [templates/](templates/) | formato do JSON de métricas e roteiro dos slides |
+| [schemas/](schemas/) | schemas do JSON de métricas, do balanço e do `.meta.json` (validados antes da conferência) |
+| [docs/CONTRATO_DADOS.md](docs/CONTRATO_DADOS.md) | contrato de dados, resumo do verificador, catálogo e fixtures de teste |
+| [docs/CATALOGO_DADOS.md](docs/CATALOGO_DADOS.md) | catálogo das fontes e dos artefatos (gerado por `src/gerar_catalogo.py`) |
+| [tests/](tests/) | testes do contrato, do verificador, do extrator e do catálogo (`pytest`) |
 | [metricas/](metricas/) | os JSONs de métricas do time (verificados) |
 | [docs/CASE3.md](docs/CASE3.md) | enunciado oficial do case |
 | [docs/GUIA_TECNICO.md](docs/GUIA_TECNICO.md) | trilha técnica oficial |
@@ -65,6 +69,8 @@ ITRs do 3º trimestre de 2026 (até 30/09/2026) da Gerdau S.A. e da Usiminas, em
 
 ## Como verificamos os resultados
 
+Duas etapas separadas. Primeiro `python src/contrato.py` valida a forma do JSON contra o schema (código 2 se estiver fora do contrato). Depois `python src/verificar_numeros.py` confere cada número contra o PDF e classifica cada fato em OK, REVISAR ou ERRO: sai com código 1 se houver ERRO (ou REVISAR, com `--estrito`).
+
 Pelo menos 2 ou 3 exemplos concretos: que número o Claude produziu, onde conferimos, se bateu ou não, e o que ajustamos. Ver [docs/ERROS_ENCONTRADOS.md](docs/ERROS_ENCONTRADOS.md).
 
 ## Como reproduzir
@@ -73,6 +79,8 @@ Pelo menos 2 ou 3 exemplos concretos: que número o Claude produziu, onde confer
 pip install -r requirements.txt
 python src/extrair_release.py data/itrs/*.pdf
 python src/verificar_numeros.py saida/gerdau_ITR_3T26 metricas/metricas_gerdau.json
+pytest                                  # testes, sem PDF (pytest é dependência de desenvolvimento)
+python src/gerar_catalogo.py --check    # confere se o catálogo está em dia
 ```
 
 Prompts principais em [docs/PROMPTS.md](docs/PROMPTS.md).

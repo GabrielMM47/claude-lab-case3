@@ -1,0 +1,53 @@
+Docusign Envelope ID: AA4DB11E-AF95-8FF6-8065-92BDF91157FE Versão : 1
+PÁGINA: 14 de 65
+ITR - Informações Trimestrais Ano: 2026 Versão: 1
+DFs Consolidadas / Balanço Patrimonial Passivo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+2 Passivo Total 83.945.525 81.688.175
+2.01 Passivo Circulante 10.573.919 9.887.420
+2.01.01 Obrigações Sociais e Trabalhistas 1.033.182 915.508
+2.01.01.01 Obrigações Sociais 1.033.182 915.508
+2.01.01.01.01 Salários a pagar 1.033.182 915.508
+2.01.02 Fornecedores 6.557.450 5.009.671
+2.01.02.01 Fornecedores Nacionais 4.838.838 4.023.333
+2.01.02.01.01 Fornecedores mercado doméstico 4.454.549 3.641.918
+2.01.02.01.02 Fornecedores risco sacado 384.289 381.415
+2.01.02.02 Fornecedores Estrangeiros 1.718.612 986.338
+2.01.02.02.01 Fornecedores importação 1.718.612 986.338
+2.01.03 Obrigações Fiscais 577.600 690.155
+2.01.03.01 Obrigações Fiscais Federais 577.600 690.155
+2.01.03.01.01 Imposto de Renda e Contribuição Social a Pagar 147.804 289.862
+2.01.03.01.02 Impostos e contribuições sociais a recolher 429.796 400.293
+2.01.04 Empréstimos e Financiamentos 554.745 941.904
+2.01.04.01 Empréstimos e Financiamentos 354.214 897.295
+2.01.04.01.01 Em Moeda Nacional 135.967 831.919
+2.01.04.01.02 Em Moeda Estrangeira 218.247 65.376
+2.01.04.02 Debêntures 200.531 44.609
+2.01.05 Outras Obrigações 1.568.835 1.944.076
+2.01.05.02 Outros 1.568.835 1.944.076
+2.01.05.02.05 Passivo de arrendamento 510.647 386.472
+2.01.05.02.06 Beneficios a empregados 586 594
+2.01.05.02.07 Outros passivos circulantes 1.057.602 1.557.010
+2.01.06 Provisões 282.107 386.106
+2.01.06.02 Outras Provisões 282.107 386.106
+2.01.06.02.03 Provisões para Passivos Ambientais e de Desativação 265.960 382.800
+2.01.06.02.04 Valor justo de derivativos 16.147 3.306
+2.02 Passivo Não Circulante 18.523.362 18.002.266
+2.02.01 Empréstimos e Financiamentos 13.174.481 13.240.247
+2.02.01.01 Empréstimos e Financiamentos 8.809.959 8.877.457
+2.02.01.01.01 Em Moeda Nacional 1.791.773 1.436.622
+2.02.01.01.02 Em Moeda Estrangeira 7.018.186 7.440.835
+2.02.01.02 Debêntures 4.364.522 4.362.790
+2.02.02 Outras Obrigações 1.839.667 1.473.829
+2.02.02.02 Outros 1.839.667 1.473.829
+2.02.02.02.04 Passivo de arrendamento 1.240.544 1.002.689
+2.02.02.02.05 Outros passivos não circulantes 599.123 471.140
+2.02.03 Tributos Diferidos 410.401 353.828
+2.02.03.01 Imposto de Renda e Contribuição Social Diferidos 410.401 353.828
+2.02.04 Provisões 3.098.813 2.934.362
+2.02.04.01 Provisões Fiscais Previdenciárias Trabalhistas e Cíveis 2.771.063 2.696.497
+2.02.04.01.01 Provisões Fiscais 2.035.528 1.928.918
+2.02.04.01.02 Provisões Previdenciárias e Trabalhistas 339.473 326.315
+ITR - InfoDrmFsa çCõoens sTorilmideasdtraasis / -B 3a0l/a0n9ç/2o0 P26a t-r iGmEoRnDiaAlU P Sa.sAs.ivo 22

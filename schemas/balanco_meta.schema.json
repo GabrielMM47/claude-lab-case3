@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-lab-case3.invalid/schemas/balanco_meta.schema.json",
+  "title": "Metadados do extrator do Balanço (balanco_*.meta.json)",
+  "description": "Gravado por extrair_balanco.py. 'status' é a AUTOVALIDAÇÃO do extrator (V01–V08), não o resultado do verificar_numeros.py. 'gerado_em' muda a cada execução e não deve ir para artefatos determinísticos (catálogo).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "script",
+    "versao_script",
+    "gerado_em",
+    "empresa",
+    "pdf",
+    "pdf_sha256",
+    "textos_dir",
+    "visao",
+    "paginas",
+    "localizacao",
+    "escala_original",
+    "unidade",
+    "data_atual",
+    "data_anterior",
+    "n_contas",
+    "n_ambiguos",
+    "status",
+    "validacoes",
+    "avisos"
+  ],
+  "properties": {
+    "script": {
+      "const": "extrair_balanco.py"
+    },
+    "versao_script": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "gerado_em": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$"
+    },
+    "empresa": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "pdf": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Caminho relativo à raiz do repo quando dentro dela."
+    },
+    "pdf_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "textos_dir": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visao": {
+      "enum": [
+        "consolidado",
+        "controladora"
+      ]
+    },
+    "paginas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ativo",
+        "passivo"
+      ],
+      "properties": {
+        "ativo": {
+          "$ref": "#/$defs/lista_paginas"
+        },
+        "passivo": {
+          "$ref": "#/$defs/lista_paginas"
+        }
+      }
+    },
+    "localizacao": {
+      "enum": [
+        "automatica",
+        "--paginas"
+      ]
+    },
+    "escala_original": {
+      "const": "Reais Mil"
+    },
+    "unidade": {
+      "const": "R$ mil"
+    },
+    "data_atual": {
+      "$ref": "#/$defs/data_iso"
+    },
+    "data_anterior": {
+      "$ref": "#/$defs/data_iso"
+    },
+    "n_contas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ativo",
+        "passivo",
+        "total"
+      ],
+      "properties": {
+        "ativo": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passivo": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "n_ambiguos": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "aprovado",
+        "reprovado"
+      ],
+      "description": "Autovalidação do extrator (V01–V08)."
+    },
+    "validacoes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/validacao"
+      }
+    },
+    "avisos": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/aviso"
+      }
+    }
+  },
+  "$defs": {
+    "data_iso": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "lista_paginas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "description": "Índices base 1 (pagina_NN.txt)."
+    },
+    "validacao": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "descricao",
+        "severidade",
+        "coluna",
+        "ok",
+        "esperado",
+        "obtido",
+        "detalhe"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[VA]\\d{2}$",
+          "description": "V01–V08 (erro) e A01–A08 (aviso)."
+        },
+        "descricao": {
+          "type": "string"
+        },
+        "severidade": {
+          "enum": [
+            "erro",
+            "aviso"
+          ]
+        },
+        "coluna": {
+          "enum": [
+            "atual",
+            "anterior",
+            null
+          ]
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "esperado": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "obtido": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "detalhe": {
+          "type": "string"
+        }
+      }
+    },
+    "aviso": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "pagina",
+        "mensagem"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^A\\d{2}$"
+        },
+        "pagina": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "mensagem": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-lab-case3.invalid/schemas/metricas.schema.json",
+  "title": "Métricas verificáveis (Case 3)",
+  "description": "Lista de registros que o verificar_numeros.py confere contra saida/<pdf>/pagina_NN.txt. O schema garante forma e tipos; NÃO compara campos entre si (valor × valor_como_aparece, variação recalculada, soma de contas) nem confere literalidade contra o texto: isso é do verificador. 'format' não é assertivo no jsonschema; datas usam 'pattern'. O $id é só um identificador (domínio .invalid): os schemas são resolvidos localmente, sem rede.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "$ref": "#/$defs/registro"
+  },
+  "$defs": {
+    "unidade": {
+      "description": "Unidade do 'valor' tal como no documento. Demonstrações vêm em R$ mil; o release da Usiminas mistura R$ mil e R$ milhões: converter só na etapa de comparação, nunca no JSON verificado. 'p.p.' = pontos percentuais (variação de margem); 'x' = múltiplo (ex.: dívida líquida/EBITDA).",
+      "enum": [
+        "R$ mil",
+        "R$ milhões",
+        "%",
+        "p.p.",
+        "mil t",
+        "R$/t",
+        "x"
+      ]
+    },
+    "registro": {
+      "title": "Registro-base",
+      "description": "Um número extraído de uma página do ITR, com proveniência. Campos extras são permitidos aqui (extensões como o balanço restringem no próprio schema).",
+      "type": "object",
+      "required": [
+        "metrica",
+        "periodo",
+        "unidade",
+        "valor",
+        "valor_como_aparece",
+        "pagina",
+        "trecho"
+      ],
+      "properties": {
+        "metrica": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Nome da métrica (ex.: 'Receita líquida', '1 Ativo Total'). Se contiver 'EBITDA' (qualquer caixa), 'criterio_ebitda' é obrigatório."
+        },
+        "periodo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Período(s) como texto livre (ex.: '3T26 vs 3T25', '30/09/2026 vs 31/12/2025'). O rótulo formal fica em 'base_comparacao'."
+        },
+        "unidade": {
+          "$ref": "#/$defs/unidade",
+          "description": "Unidade do 'valor' tal como no documento (lista em $defs/unidade). Não converter no JSON verificado."
+        },
+        "valor": {
+          "type": "number",
+          "description": "Valor numérico do período atual, na mesma escala de 'valor_como_aparece' (sem converter unidade)."
+        },
+        "valor_como_aparece": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Cópia literal do número em pagina_NN.txt (ex.: '12.345,6', '-395.736', '21,4%')."
+        },
+        "anterior": {
+          "type": "number",
+          "description": "Valor do período de comparação. Exige 'anterior_como_aparece'."
+        },
+        "anterior_como_aparece": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Cópia literal do número do período de comparação. Exige 'anterior'."
+        },
+        "variacao_pct": {
+          "type": "number",
+          "description": "Variação em % informada; o verificador recalcula (valor/anterior − 1) × 100, tolerância 0,5 p.p. Exige 'anterior'."
+        },
+        "pagina": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Índice da página no PDF contado a partir de 1 (o NN de pagina_NN.txt), não o número impresso na folha."
+        },
+        "trecho": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Cópia literal de um trecho de pagina_NN.txt que contém o número (de preferência a linha inteira). A literalidade só é conferida pelo verificador."
+        },
+        "base_comparacao": {
+          "enum": [
+            "A/A",
+            "T/T",
+            "posição"
+          ],
+          "description": "A/A = 3T26 × 3T25; T/T = 3T26 × 2T26; posição = saldo de balanço (30/09/2026 × 31/12/2025). Opcional no contrato; recomendado sempre que houver 'anterior'."
+        },
+        "visao": {
+          "enum": [
+            "consolidado",
+            "controladora"
+          ],
+          "description": "Visão da demonstração. Opcional no registro-base; obrigatória no balanço. Usar números consolidados."
+        },
+        "criterio_ebitda": {
+          "enum": [
+            "contábil",
+            "ajustado"
+          ],
+          "description": "Critério do EBITDA (o mesmo para as duas empresas). Obrigatório quando 'metrica' contém 'EBITDA'."
+        }
+      },
+      "dependentRequired": {
+        "anterior": [
+          "anterior_como_aparece"
+        ],
+        "anterior_como_aparece": [
+          "anterior"
+        ],
+        "variacao_pct": [
+          "anterior"
+        ]
+      },
+      "if": {
+        "required": [
+          "metrica"
+        ],
+        "properties": {
+          "metrica": {
+            "type": "string",
+            "pattern": "[Ee][Bb][Ii][Tt][Dd][Aa]"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "criterio_ebitda"
+        ]
+      }
+    }
+  }
+}

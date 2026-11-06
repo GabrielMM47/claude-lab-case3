@@ -1,0 +1,41 @@
+ITR - Informações Trimestrais - 30/09/2026 - USINAS SID DE MINAS GERAIS S.A.-USIMINAS Versão : 1
+DFs Individuais / Balanço Patrimonial Ativo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+1 Ativo Total 30.968.623 31.624.842
+1.01 Ativo Circulante 12.339.526 12.457.712
+1.01.01 Caixa e Equivalentes de Caixa 2.276.554 3.281.930
+1.01.02 Aplicações Financeiras 1.487.545 844.685
+1.01.03 Contas a Receber 2.961.439 2.725.343
+1.01.04 Estoques 4.950.220 4.857.548
+1.01.08 Outros Ativos Circulantes 663.768 748.206
+1.01.08.03 Outros 663.768 748.206
+1.01.08.03.01 Impostos a Recuperar 425.901 457.158
+1.01.08.03.02 Imposto de Renda e Contribuição Social Antecipados 25.423 72.811
+1.01.08.03.03 Dividendos a Receber 33.515 115.566
+1.01.08.03.04 Adiantamentos a Fornecedores 34.054 1.232
+1.01.08.03.07 Outros 144.875 101.439
+1.02 Ativo Não Circulante 18.629.097 19.167.130
+1.02.01 Ativo Realizável a Longo Prazo 2.163.596 2.448.698
+1.02.01.04 Contas a Receber 178.928 193.425
+1.02.01.04.01 Clientes 17.066 23.464
+1.02.01.04.02 Outras Contas a Receber 161.862 169.961
+1.02.01.07 Tributos Diferidos 1.270.704 1.190.888
+1.02.01.09 Créditos com Partes Relacionadas 18.801 18.803
+1.02.01.10 Outros Ativos Não Circulantes 695.163 1.045.582
+1.02.01.10.03 Depósitos Judiciais 220.603 220.470
+1.02.01.10.06 Impostos a Recuperar 264.583 439.186
+1.02.01.10.07 Imposto de Renda e Contribuição Social a Recuperar 178.425 353.107
+1.02.01.10.09 Outros 31.552 32.819
+1.02.02 Investimentos 7.647.454 7.612.404
+1.02.02.01 Participações Societárias 7.579.771 7.539.928
+1.02.02.01.01 Participações em Coligadas 78.812 76.255
+1.02.02.01.02 Participações em Controladas 6.983.760 6.972.803
+1.02.02.01.03 Participações em Controladas em Conjunto 517.199 490.870
+1.02.02.02 Propriedades para Investimento 67.683 72.476
+1.02.03 Imobilizado 8.556.246 8.852.718
+1.02.03.01 Imobilizado em Operação 7.276.957 6.483.084
+1.02.03.03 Imobilizado em Andamento 1.279.289 2.369.634
+1.02.04 Intangível 261.801 253.310
+PÁGINA: 2 de 109

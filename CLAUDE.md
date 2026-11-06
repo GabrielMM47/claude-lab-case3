@@ -7,7 +7,9 @@ Leia primeiro: `docs/CASE3.md` (demanda e cuidados) e `docs/GUIA_TECNICO.md` (o 
 ## Fluxo
 1. `python src/extrair_release.py data/itrs/*.pdf` → gera `saida/<pdf>/pagina_NN.txt`
 2. Gerar `metricas/metricas_<empresa>.json` no formato de `templates/metricas_exemplo.json`, **a partir de `saida/<pdf>/pagina_NN.txt`**
+   - Validar a forma antes de conferir: `python src/contrato.py metricas/<arquivo>.json`
 3. `python src/verificar_numeros.py saida/<pdf> metricas/metricas_<empresa>.json`; corrigir só os itens com ERRO, olhando a página indicada
+   - Resultado por fato: OK, REVISAR (falta evidência; `--estrito` reprova) ou ERRO.
 4. Tabela comparativa e gráficos a partir dos JSONs verificados
 5. Slides (python-pptx ou HTML) seguindo `templates/roteiro_apresentacao.md`
 
@@ -23,6 +25,11 @@ Leia primeiro: `docs/CASE3.md` (demanda e cuidados) e `docs/GUIA_TECNICO.md` (o 
 - Gerdau tem América do Norte; Usiminas tem mineração. Olhar os segmentos antes de concluir.
 - Toda apresentação leva a página do ITR de cada número (índice do PDF, o mesmo `pagina` do JSON) e o aviso "Não constitui recomendação de investimento".
 - Registrar em `docs/ERROS_ENCONTRADOS.md` cada erro que o verificador ou o time pegou (vai para o vídeo e o README).
+
+## Contrato e catálogo
+- Contrato do time: `docs/TAREFAS.md`, seção "Contrato de dados". Schemas em `schemas/` (`fato` para os fatos do time, `metricas`, `balanco`, `balanco_meta`); detalhes em `docs/CONTRATO_DADOS.md`.
+- Validar a forma de um JSON: `python src/contrato.py metricas/<arquivo>.json` (código 2 = fora do contrato). O verificador (CASE-02) não chama o contrato.
+- Catálogo: `docs/CATALOGO_DADOS.md` e `metricas/catalogo.json` são gerados (`python src/gerar_catalogo.py`; não editar à mão). Cadastro manual em `catalogo/fontes.toml`.
 
 ## Mapa de páginas (índice do PDF = número do pagina_NN.txt)
 Os números impressos na folha são outros (a DRE da Gerdau está impressa como 24 e "PÁGINA: 16 de 65"); não usar.

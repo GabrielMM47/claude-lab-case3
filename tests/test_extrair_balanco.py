@@ -1,8 +1,8 @@
 """Testes do extrator do Balanço Patrimonial (SPEC §11).
 
 Rode da raiz:  pytest tests/test_extrair_balanco.py
-Os testes de integração usam saida/<stem>/pagina_NN.txt se existir; senão
-geram os textos em pasta temporária com pdfplumber (como o extrair_release).
+Os testes de integração usam as fixtures de tests/fixtures/ (via conftest.py: `textos`, `n_paginas`,
+`pdf_falso`) e rodam sem PDF. Os marcados `pdf` só rodam com `pytest --com-pdf`.
 Os valores esperados vêm das linhas literais do PDF (SPEC §10), convertidos com br_para_int.
 """
 import json
@@ -22,6 +22,7 @@ import extrair_balanco as eb  # noqa: E402
 import verificar_numeros as vn  # noqa: E402
 
 ITRS = RAIZ / "data" / "itrs"
+METRICAS = RAIZ / "metricas"
 
 
 # ---------------------------------------------------------------------------
@@ -340,47 +341,21 @@ LINHAS_LITERAIS = {
 }
 
 
-def _gerar_textos(pdf: Path, destino: Path) -> None:
-    import pdfplumber
-    destino.mkdir(parents=True, exist_ok=True)
-    with pdfplumber.open(pdf) as doc:
-        for n, pagina in enumerate(doc.pages, start=1):
-            (destino / f"pagina_{n:02d}.txt").write_text(pagina.extract_text() or "", encoding="utf-8")
+PARAMS = list(CASOS)
+STEMS = ["gerdau_ITR_3T26", "usiminas_ITR_3T26"]
 
 
 @pytest.fixture(scope="session")
-def textos(tmp_path_factory):
-    cache: dict[str, Path] = {}
-
-    def obter(stem: str) -> Path:
-        pdf = ITRS / f"{stem}.pdf"
-        if not pdf.exists():
-            pytest.skip(f"PDF ausente: {pdf}")
-        if stem not in cache:
-            pasta = RAIZ / "saida" / stem
-            n = eb.contar_paginas_pdf(pdf)
-            if not eb._textos_completos(pasta, n):
-                pasta = tmp_path_factory.mktemp("textos") / stem
-                _gerar_textos(pdf, pasta)
-            cache[stem] = pasta
-        return cache[stem]
-    return obter
-
-
-@pytest.fixture(scope="session")
-def resultados(textos):
+def resultados(textos, n_paginas):
     cache = {}
 
     def obter(stem: str, visao: str) -> tuple[eb.Resultado, Path]:
         if (stem, visao) not in cache:
             pasta = textos(stem)
-            n = eb.contar_paginas_pdf(ITRS / f"{stem}.pdf")
-            cache[(stem, visao)] = (eb.extrair_balanco(eb.carregar_textos(pasta, n), visao, stem=stem), pasta)
+            cache[(stem, visao)] = (eb.extrair_balanco(eb.carregar_textos(pasta, n_paginas(stem)), visao,
+                                                       stem=stem), pasta)
         return cache[(stem, visao)]
     return obter
-
-
-PARAMS = list(CASOS)
 
 
 @pytest.mark.parametrize("stem, visao", PARAMS)
@@ -433,18 +408,13 @@ def test_verificador_aprova_todos(resultados, stem, visao):
         assert vn.checar(r, pasta) == [], r["metrica"]
 
 
-def _cli(*args) -> subprocess.CompletedProcess:
-    return subprocess.run([sys.executable, "src/extrair_balanco.py", *map(str, args)],
-                          cwd=RAIZ, capture_output=True, text=True)
-
-
-@pytest.mark.parametrize("stem", ["gerdau_ITR_3T26", "usiminas_ITR_3T26"])
-def test_cli_ambas_e_verificador(textos, tmp_path, stem):
+@pytest.mark.parametrize("stem", STEMS)
+def test_cli_ambas_e_verificador(textos, pdf_falso, tmp_path, capsys, stem):
     pasta = textos(stem)
     empresa = stem.split("_")[0]
-    pdf = ITRS / f"{stem}.pdf"
-    proc = _cli(pdf, "--textos", pasta, "--saida", tmp_path, "--visao", "ambas", "--csv")
-    assert proc.returncode == 0, proc.stderr
+    rc = eb.main([str(pdf_falso(stem)), "--textos", str(pasta), "--saida", str(tmp_path), "--visao", "ambas",
+                  "--csv"])
+    assert rc == 0, capsys.readouterr().err
     nomes = [f"balanco_{empresa}", f"balanco_{empresa}_controladora"]
     for nome in nomes:
         for ext in (".json", ".meta.json", ".csv"):
@@ -457,19 +427,29 @@ def test_cli_ambas_e_verificador(textos, tmp_path, stem):
     meta = json.loads((tmp_path / f"{nomes[0]}.meta.json").read_text(encoding="utf-8"))
     assert meta["status"] == "aprovado" and meta["n_contas"]["total"] == len(cons)
 
+    capsys.readouterr()
     for nome in nomes:
-        v = subprocess.run([sys.executable, "src/verificar_numeros.py", str(pasta), str(tmp_path / f"{nome}.json")],
-                           cwd=RAIZ, capture_output=True, text=True)
-        assert v.returncode == 0 and "[ERRO]" not in v.stdout, v.stdout[-2000:]
+        assert vn.main([str(pasta), str(tmp_path / f"{nome}.json")]) == 0
+        assert "[ERRO]" not in capsys.readouterr().out
 
 
-def test_determinismo(textos, tmp_path):
+@pytest.mark.parametrize("stem", STEMS)
+def test_extracao_igual_aos_jsons_versionados(textos, pdf_falso, tmp_path, stem):
+    empresa = stem.split("_")[0]
+    assert eb.main([str(pdf_falso(stem)), "--textos", str(textos(stem)), "--saida", str(tmp_path),
+                    "--visao", "ambas"]) == 0
+    for nome in (f"balanco_{empresa}", f"balanco_{empresa}_controladora"):
+        assert json.loads((tmp_path / f"{nome}.json").read_text(encoding="utf-8")) == \
+            json.loads((METRICAS / f"{nome}.json").read_text(encoding="utf-8")), nome
+
+
+def test_determinismo(textos, pdf_falso, tmp_path):
     pasta = textos("gerdau_ITR_3T26")
-    pdf = ITRS / "gerdau_ITR_3T26.pdf"
+    pdf = pdf_falso("gerdau_ITR_3T26")
     bytes_ = []
     for i in range(2):
         out = tmp_path / str(i)
-        assert _cli(pdf, "--textos", pasta, "--saida", out).returncode == 0
+        assert eb.main([str(pdf), "--textos", str(pasta), "--saida", str(out)]) == 0
         bytes_.append((out / "balanco_gerdau.json").read_bytes())
     assert bytes_[0] == bytes_[1]
 
@@ -481,15 +461,14 @@ def _copiar_textos(origem: Path, destino: Path) -> Path:
     return destino
 
 
-def test_negativo_um_digito(textos, tmp_path):
+def test_negativo_um_digito(textos, pdf_falso, tmp_path):
     copia = _copiar_textos(textos("gerdau_ITR_3T26"), tmp_path / "textos")
     p26 = copia / "pagina_26.txt"
     original = p26.read_text(encoding="utf-8")
     assert "1 Ativo Total 83.945.525" in original
     p26.write_text(original.replace("1 Ativo Total 83.945.525", "1 Ativo Total 83.945.526", 1), encoding="utf-8")
     saida = tmp_path / "out"
-    proc = _cli(ITRS / "gerdau_ITR_3T26.pdf", "--textos", copia, "--saida", saida)
-    assert proc.returncode == 1, proc.stdout + proc.stderr
+    assert eb.main([str(pdf_falso("gerdau_ITR_3T26")), "--textos", str(copia), "--saida", str(saida)]) == 1
     meta = json.loads((saida / "balanco_gerdau.meta.json").read_text(encoding="utf-8"))
     assert meta["status"] == "reprovado"
     falhou = {(v["id"], v["coluna"]) for v in meta["validacoes"] if not v["ok"] and v["severidade"] == "erro"}
@@ -497,7 +476,7 @@ def test_negativo_um_digito(textos, tmp_path):
     assert not (saida / "balanco_gerdau.json").exists()
 
 
-def test_negativo_titulo(textos, tmp_path):
+def test_negativo_titulo(textos, pdf_falso, tmp_path, capsys):
     copia = _copiar_textos(textos("usiminas_ITR_3T26"), tmp_path / "textos")
     p13 = copia / "pagina_13.txt"
     texto = p13.read_text(encoding="utf-8")
@@ -505,34 +484,74 @@ def test_negativo_titulo(textos, tmp_path):
     p13.write_text(texto.replace("DFs Consolidadas / Balanço Patrimonial Passivo", "DFs Consolidadas / Outro"),
                    encoding="utf-8")
     saida = tmp_path / "out"
-    proc = _cli(ITRS / "usiminas_ITR_3T26.pdf", "--textos", copia, "--saida", saida)
-    assert proc.returncode == 2
-    assert "não encontrado" in proc.stderr
+    rc = eb.main([str(pdf_falso("usiminas_ITR_3T26")), "--textos", str(copia), "--saida", str(saida)])
+    assert rc == 2
+    assert "não encontrado" in capsys.readouterr().err
     assert not saida.exists() or not any(saida.iterdir())
 
 
-def test_paginas_override_real(textos, tmp_path):
+def test_paginas_override_real(textos, pdf_falso, tmp_path, capsys):
     pasta = textos("gerdau_ITR_3T26")
-    proc = _cli(ITRS / "gerdau_ITR_3T26.pdf", "--textos", pasta, "--saida", tmp_path, "--paginas", "26:27-28")
-    assert proc.returncode == 0, proc.stderr
+    rc = eb.main([str(pdf_falso("gerdau_ITR_3T26")), "--textos", str(pasta), "--saida", str(tmp_path),
+                  "--paginas", "26:27-28"])
+    assert rc == 0, capsys.readouterr().err
     meta = json.loads((tmp_path / "balanco_gerdau.meta.json").read_text(encoding="utf-8"))
     assert meta["localizacao"] == "--paginas" and meta["paginas"] == {"ativo": [26], "passivo": [27, 28]}
 
 
-def test_cli_restricoes(tmp_path):
-    pdfs = [ITRS / "gerdau_ITR_3T26.pdf", ITRS / "usiminas_ITR_3T26.pdf"]
-    assert _cli(*pdfs, "--empresa", "x").returncode == 2
-    assert _cli(pdfs[0], "--paginas", "26:27", "--visao", "ambas").returncode == 2
-    assert _cli(pdfs[0], "--empresa", "Nome Com Espaço").returncode == 2
-    proc = _cli(tmp_path / "nao_existe.pdf", "--saida", tmp_path)
-    assert proc.returncode == 2 and "PDF não encontrado" in proc.stderr
+def test_cli_restricoes(tmp_path, capsys):
+    # os caminhos de PDF podem ser fictícios: o argparse falha antes de abrir o arquivo
+    pdfs = [str(tmp_path / "a_ITR.pdf"), str(tmp_path / "b_ITR.pdf")]
+    for argv in ([*pdfs, "--empresa", "x"],
+                 [pdfs[0], "--paginas", "26:27", "--visao", "ambas"],
+                 [pdfs[0], "--empresa", "Nome Com Espaço"]):
+        with pytest.raises(SystemExit) as e:
+            eb.main(argv)
+        assert e.value.code == 2, argv
+    capsys.readouterr()
+    assert eb.main([str(tmp_path / "nao_existe.pdf"), "--saida", str(tmp_path)]) == 2
+    assert "PDF não encontrado" in capsys.readouterr().err
 
 
-@pytest.mark.parametrize("stem", ["gerdau_ITR_3T26", "usiminas_ITR_3T26"])
-def test_desempenho(textos, tmp_path, stem):
+@pytest.mark.parametrize("stem", STEMS)
+def test_desempenho(textos, pdf_falso, tmp_path, stem):
     pasta = textos(stem)
     t0 = time.perf_counter()
-    codigo = eb.processar(ITRS / f"{stem}.pdf", "consolidado", stem.split("_")[0], tmp_path, pasta, None, False)
+    codigo = eb.processar(pdf_falso(stem), "consolidado", stem.split("_")[0], tmp_path, pasta, None, False)
     dt = time.perf_counter() - t0
     assert codigo == 0
     assert dt < 10, f"{stem}: {dt:.1f}s"
+
+
+# ---------------------------------------------------------------------------
+# Fluxo completo com o PDF real (só com --com-pdf)
+# ---------------------------------------------------------------------------
+def _textos_reais(stem: str, tmp_path_factory) -> Path:
+    pdf = ITRS / f"{stem}.pdf"
+    pasta = RAIZ / "saida" / stem
+    if eb._textos_completos(pasta, eb.contar_paginas_pdf(pdf)):
+        return pasta
+    import pdfplumber
+    pasta = tmp_path_factory.mktemp("textos_reais") / stem
+    pasta.mkdir()
+    with pdfplumber.open(pdf) as doc:
+        for n, pagina in enumerate(doc.pages, start=1):
+            (pasta / f"pagina_{n:02d}.txt").write_text(pagina.extract_text() or "", encoding="utf-8")
+    return pasta
+
+
+@pytest.mark.pdf
+@pytest.mark.parametrize("stem", STEMS)
+def test_cli_pdf_real(tmp_path_factory, tmp_path, stem):
+    empresa = stem.split("_")[0]
+    pasta = _textos_reais(stem, tmp_path_factory)
+    proc = subprocess.run([sys.executable, "src/extrair_balanco.py", str(ITRS / f"{stem}.pdf"), "--textos",
+                           str(pasta), "--saida", str(tmp_path), "--visao", "ambas"],
+                          cwd=RAIZ, capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+    for nome in (f"balanco_{empresa}", f"balanco_{empresa}_controladora"):
+        gerado = (tmp_path / f"{nome}.json").read_bytes()
+        assert gerado == (METRICAS / f"{nome}.json").read_bytes(), nome
+        v = subprocess.run([sys.executable, "src/verificar_numeros.py", str(pasta), str(tmp_path / f"{nome}.json")],
+                           cwd=RAIZ, capture_output=True, text=True)
+        assert v.returncode == 0 and "[ERRO]" not in v.stdout, v.stdout[-2000:]
