@@ -31,11 +31,13 @@ ARTEFATOS_BALANCO = {
     "metricas/balanco_usiminas.json": "usiminas_ITR_3T26",
     "metricas/balanco_usiminas_controladora.json": "usiminas_ITR_3T26",
 }
+# O verificador do CASE-02 marca o formato legado (sem chave/documento/escopo/evidencia) como
+# REVISAR: nenhum erro, mas não entra no pipeline. O catálogo reporta isso como está.
 CONFERIDOS = {
-    "metricas/balanco_gerdau.json": "94/94 conferem",
-    "metricas/balanco_gerdau_controladora.json": "88/88 conferem",
-    "metricas/balanco_usiminas.json": "81/81 conferem",
-    "metricas/balanco_usiminas_controladora.json": "78/78 conferem",
+    "metricas/balanco_gerdau.json": "0/94 conferem, 94 para revisar",
+    "metricas/balanco_gerdau_controladora.json": "0/88 conferem, 88 para revisar",
+    "metricas/balanco_usiminas.json": "0/81 conferem, 81 para revisar",
+    "metricas/balanco_usiminas_controladora.json": "0/78 conferem, 78 para revisar",
 }
 SEM_SAIDA = "não verificado (saida/ ausente)"
 
@@ -128,11 +130,15 @@ def test_c_t2_check_em_dia_e_defasado(raiz, capsys):
 
 # C-T3 ----------------------------------------------------------------------
 
-def test_c_t3_doze_artefatos_por_tipo(raiz):
+def test_c_t3_artefatos_por_tipo(raiz):
     assert _gerar(raiz) == 0
     cat = _catalogo(raiz)
     tipos = [a["tipo"] for a in cat["artefatos"]]
-    assert len(cat["artefatos"]) == 12
+    n_fatos = len([p for p in (RAIZ / "metricas").glob("*_*_itr_*.json")])
+    assert n_fatos >= 1
+    assert len(cat["artefatos"]) == 12 + n_fatos
+    assert tipos.count("fato") == n_fatos
+    assert all(a["contrato"]["valido"] for a in cat["artefatos"] if a["tipo"] == "fato")
     assert tipos.count("balanco") == 4
     assert tipos.count("meta") == 4
     assert tipos.count("csv") == 4

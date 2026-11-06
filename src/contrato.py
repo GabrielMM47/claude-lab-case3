@@ -4,12 +4,12 @@ Case 3 — CONTRATO de dados dos JSONs de métricas.
 Valida um JSON contra os schemas de `schemas/` (JSON Schema 2020-12) e devolve
 os erros em português, com o caminho do campo (`$[3].pagina`). O schema confere
 forma e tipos; a literalidade do trecho e a conta dos números ficam com o
-`verificar_numeros.py`, que chama este módulo antes de conferir.
+`gerar_catalogo.py` e pela CLI abaixo (o verificar_numeros.py é do CASE-02 e não o chama).
 
-    python src/contrato.py ARQUIVO [ARQUIVO ...] [--schema {auto,metricas,balanco,balanco_meta}]
+    python src/contrato.py ARQUIVO [ARQUIVO ...] [--schema {auto,metricas,balanco,balanco_meta,fato}]
 
 Com `auto` (padrão), `*.meta.json` usa `balanco_meta`; os demais usam
-`escolher_schema` (lista com `demonstracao` → `balanco`; senão `metricas`).
+`escolher_schema` (item com `chave` → `fato`; com `demonstracao` → `balanco`; senão `metricas`).
 Código de saída: 0 = todos válidos; 2 = algum inválido, ilegível ou uso inválido.
 Os schemas são resolvidos localmente (sem rede).
 """
@@ -33,6 +33,7 @@ SCHEMAS: dict[str, str] = {
     "metricas": "metricas.schema.json",
     "balanco": "balanco.schema.json",
     "balanco_meta": "balanco_meta.schema.json",
+    "fato": "fato.schema.json",
 }
 LIMITE_LINHAS = 50
 
@@ -85,7 +86,10 @@ def validador(nome: str) -> jsonschema.Draft202012Validator:
 
 
 def escolher_schema(dados: Any) -> str:
-    """'balanco' se for lista com algum item dict que tenha 'demonstracao'; senão 'metricas'."""
+    """'fato' se algum item tem 'chave' (contrato do time, docs/TAREFAS.md); 'balanco' se algum
+    item tem 'demonstracao'; senão 'metricas'."""
+    if isinstance(dados, list) and any(isinstance(m, dict) and "chave" in m for m in dados):
+        return "fato"
     if isinstance(dados, list) and any(isinstance(m, dict) and "demonstracao" in m for m in dados):
         return "balanco"
     return "metricas"

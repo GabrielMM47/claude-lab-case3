@@ -1,8 +1,8 @@
 # Contrato de dados, catálogo e fixtures — guia
 
-Leia antes o [caminho avançado](GUIA_TECNICO.md) e o [extrator do balanço](EXTRATOR_BALANCO.md). Este guia cobre quatro coisas: o **contrato** (o formato que um JSON de métricas precisa ter para o verificador aceitá-lo), os **avisos** do verificador, o **catálogo** dos dados e as **fixtures** com os testes. O desenho completo está no SPEC em `claude-lab-case3-planejamento/SPEC_contrato_catalogo_fixtures.md`, fora do repo.
+Leia antes o [caminho avançado](GUIA_TECNICO.md) e o [extrator do balanço](EXTRATOR_BALANCO.md). Este guia cobre quatro coisas: o **contrato** (a forma que um JSON precisa ter, checada por `src/contrato.py`), o **verificador** (resumo do que ele faz hoje), o **catálogo** dos dados e as **fixtures** com os testes. O contrato oficial do time para os JSONs de fatos é a seção "Contrato de dados" de [TAREFAS.md](TAREFAS.md); o schema `fato` é a versão em JSON Schema dela. O desenho completo está no SPEC em `claude-lab-case3-planejamento/SPEC_contrato_catalogo_fixtures.md`, fora do repo.
 
-O verificador confere cada número contra o PDF, mas só depois de checar a forma do arquivo. Um `pagina` que falta ou uma unidade inventada travariam a conferência no meio do caminho. Por isso o contrato roda primeiro: se o JSON não passar, o verificador para com código 2 e não confere nenhuma métrica.
+São duas etapas separadas. Primeiro `src/contrato.py` valida a **forma** do JSON (campos, tipos, unidades permitidas) e sai com código 2 se algo estiver errado. Depois `src/verificar_numeros.py` confere **cada número contra o PDF** e classifica cada fato em OK, REVISAR ou ERRO. O verificador não chama o contrato: quem quiser as duas checagens roda os dois comandos.
 
 ```bash
 python src/contrato.py metricas/metricas_gerdau.json           # valida a forma do JSON
@@ -17,7 +17,7 @@ pytest --com-pdf                                                # inclui os test
 
 ## Parte 1 — Contrato
 
-### Os três schemas
+### Os quatro schemas
 
 Os schemas ficam em `schemas/` e seguem o JSON Schema Draft 2020-12. Validam forma e tipos. Não conferem números.
 
@@ -25,9 +25,10 @@ Os schemas ficam em `schemas/` e seguem o JSON Schema Draft 2020-12. Validam for
 |---|---|---|
 | `schemas/metricas.schema.json` | Registro-base: a lista de métricas que o time extrai (`metricas/metricas_<empresa>.json`). | Qualquer JSON que não seja balanço. |
 | `schemas/balanco.schema.json` | Contas do balanço: o registro-base mais 12 campos próprios (19 obrigatórios). Campo fora da lista é rejeitado. | `metricas/balanco_<empresa>[_controladora].json`. |
-| `schemas/balanco_meta.schema.json` | Metadados gravados pelo extrator. | `metricas/balanco_*.meta.json`. Só pelo `src/contrato.py`. |
+| `schemas/balanco_meta.schema.json` | Metadados gravados pelo extrator. | `metricas/balanco_*.meta.json`. |
+| `schemas/fato.schema.json` | Fatos do contrato do time ([TAREFAS.md](TAREFAS.md), "Contrato de dados"): `chave`, `empresa`, `documento`, `escopo`, `periodo`, `evidencia`, `revisao_manual`... | `metricas/<slug>_<tri>_itr_*.json` e `*_apresentacao_*.json`. |
 
-O `escolher_schema` decide sozinho: se a lista tem um item com a chave `demonstracao`, usa `balanco`; senão, `metricas`. Para forçar, use `--schema`.
+O `escolher_schema` decide sozinho: se algum item tem a chave `chave`, usa `fato`; se tem `demonstracao`, usa `balanco`; senão, `metricas`. Para forçar, use `--schema` no `src/contrato.py`. O `metricas/catalogo.json` é ignorado.
 
 O `status` do `.meta.json` é a **autovalidação do extrator** (V01 a V08 de [EXTRATOR_BALANCO.md](EXTRATOR_BALANCO.md)). Não é o resultado do verificador.
 
@@ -58,6 +59,15 @@ Regras que o schema aplica entre campos:
 
 A `unidade` é a do documento. Demonstrações vêm em `R$ mil`. O release da Usiminas mistura `R$ mil` e `R$ milhões`. A conversão para a mesma unidade fica na etapa de comparação, nunca no JSON verificado.
 
+### Fato (`fato.schema.json`)
+
+É o contrato do time para os JSONs `metricas/<slug>_<tri>_itr_*.json` e `*_apresentacao_*.json` ([TAREFAS.md](TAREFAS.md), "Contrato de dados"; em caso de dúvida, vale o TAREFAS.md). A lista não pode estar vazia e campos não listados são permitidos, como diz o contrato.
+
+- Obrigatórios em todo fato: `chave` (minúsculas, dígitos e `_`), `metrica`, `empresa` (slug), `documento` (`itr` ou `apresentacao`), `pagina` (inteiro a partir de 1) e `trecho`.
+- Para fatos numéricos (todos, exceto `chave` igual a `qualitativo`) também são obrigatórios `escopo` (`consolidado` ou `segmento:<nome>`), `periodo` (`3T26`, `9M26`...), `unidade`, `valor` e `valor_como_aparece`. Fato `qualitativo` exige `tema` e `resumo`.
+- `unidade` aceita `R$ mil`, `R$ milhões`, `R$ bilhões`, `mil t`, `mil t/ano`, `R$/t`, `US$/t`, `%` e `x`; `criterio` é `contabil` ou `ajustado`; `tipo` é `fluxo` ou `saldo`.
+- `revisao_manual`, se presente, exige `por` e `nota`. É o que o verificador usa para transformar um REVISAR em OK.
+
 ### Balanço (`balanco.schema.json`)
 
 - Os 19 campos obrigatórios são os 7 do registro-base mais 12 próprios: `anterior`, `anterior_como_aparece`, `codigo_conta`, `descricao`, `codigo_pai`, `nivel`, `demonstracao`, `visao`, `empresa`, `data_atual`, `data_anterior`, `ambiguo`.
@@ -70,17 +80,17 @@ A `unidade` é a do documento. Demonstrações vêm em `R$ mil`. O release da Us
 ### O que o schema não confere
 
 - Não compara `valor` com `valor_como_aparece`, não recalcula variação e não soma contas.
-- Não confere se `trecho` ou `valor_como_aparece` estão na página. Isso é do verificador.
+- Não confere se `trecho` ou `valor_como_aparece` estão na página. Isso é do verificador (`src/verificar_numeros.py`).
 - Não confere se a data é real. Confere só o formato `AAAA-MM-DD`.
 - No balanço, não confere as somas (V04 a V06 ficam no extrator).
 
 ### Como validar um JSON
 
 ```bash
-python src/contrato.py ARQUIVO [ARQUIVO ...] [--schema {auto,metricas,balanco,balanco_meta}]
+python src/contrato.py ARQUIVO [ARQUIVO ...] [--schema {auto,metricas,balanco,balanco_meta,fato}]
 ```
 
-Com `auto` (o padrão), um arquivo que termina em `.meta.json` usa `balanco_meta`, e os demais usam `escolher_schema`. Para cada arquivo, a saída é:
+Com `auto` (o padrão), um arquivo que termina em `.meta.json` usa `balanco_meta`, e os demais usam `escolher_schema` (`fato`, `balanco` ou `metricas`). Para cada arquivo, a saída é:
 
 ```
 <arquivo>: válido (<nome>)
@@ -90,14 +100,13 @@ Com `auto` (o padrão), um arquivo que termina em `.meta.json` usa `balanco_meta
 
 Código de saída: 0 se todos forem válidos; 2 se algum for inválido, ilegível ou se o uso for inválido. Arquivo ausente ou JSON sintaticamente inválido sai em stderr como `ERRO: <mensagem>`, por exemplo `ERRO: JSON inválido em <caminho>: linha <l>, coluna <c>: <msg>`.
 
-### Mensagens `[CONTRATO]`
+### Mensagens do `contrato.py`
 
 O caminho do erro aponta para o campo: `$` é a raiz, `$[0]` é o primeiro registro, `$[0].pagina` é o campo `pagina` do primeiro registro, `$.paginas.ativo[0]` aparece no meta. Exemplo, com o registro sem `pagina` (fixture `sem_pagina.json`):
 
 ```
-[CONTRATO] $[0].pagina: campo obrigatório ausente
-
-JSON fora do contrato (schemas/metricas.schema.json): 1 erro(s). Nenhuma métrica foi conferida.
+tests/fixtures/invalidos/sem_pagina.json: 1 erro(s) (metricas)
+  $[0].pagina: campo obrigatório ausente
 ```
 
 Mensagens mais comuns:
@@ -116,39 +125,36 @@ Mensagens mais comuns:
 | `campo não permitido neste contrato` | Campo proibido (ex.: `variacao_pct` no balanço). |
 | `valor "A/A" deveria ser "posição"` | Valor fixo diferente (balanço com `base_comparacao`). |
 
-Se houver mais de 50 erros, o verificador mostra as 50 primeiras e diz quantos sobraram.
+Se houver mais de 50 erros, o `contrato.py` mostra as 50 primeiras e diz quantos sobraram.
 
-### Códigos de saída do verificador
+### Verificador: o que ele faz hoje
 
 ```
-python src/verificar_numeros.py PASTA ARQUIVO [--sem-contrato] [--schema {auto,metricas,balanco}]
+python src/verificar_numeros.py PASTA ARQUIVO [--estrito] [--relatorio ARQ.json]
 ```
+
+O verificador (dono: CASE-02) não valida o contrato: ele lê o JSON e confere cada fato contra `saida/<pdf>/pagina_NN.txt`. Cada fato recebe um destes resultados:
+
+| Resultado | Significado |
+|---|---|
+| `OK` | Conferido literalmente contra o PDF (trecho na página, valor como token inteiro, variação recalculada, evidências de período, unidade e escopo coerentes). |
+| `REVISAR` | A automação não comprovou o vínculo: falta evidência (`evidencia.periodo`, `evidencia.unidade`, `evidencia.escopo`, coluna), ou o JSON está fora do contrato. Vira OK só com `revisao_manual` (`por` e `nota`) no fato. |
+| `ERRO` | Algo não bate com a página: trecho ausente, valor ou variação divergente, escopo individual, etc. |
 
 | Código | Significado |
 |---|---|
-| 0 | Tudo confere. Avisos são permitidos. |
-| 1 | Pelo menos um `[ERRO]`: número, trecho ou variação não batem com a página. |
-| 2 | Fora do contrato, ou entrada inutilizável, ou uso inválido. Nenhuma métrica foi conferida. |
+| 0 | Nenhum ERRO (REVISAR não muda o código). |
+| 1 | Pelo menos um ERRO, ou pelo menos um REVISAR com `--estrito`. |
 
-Os casos do código 2 são: arquivo não encontrado, JSON sintaticamente inválido, pasta de textos não encontrada, `jsonschema` ausente com o contrato ligado, uso inválido e JSON fora do contrato. As mensagens de entrada saem em stderr com o prefixo `ERRO: `, por exemplo `ERRO: pasta de textos não encontrada: <pasta>`.
+A última linha resume: `<ok>/<total> conferem · <n> para revisar · <n> com erro.` O `--relatorio` grava o resultado em JSON. Fato sem `chave`, `documento` ou `escopo` (formato legado, como os `balanco_*.json`) sai como REVISAR com a mensagem `fora do contrato (sem chave, documento, escopo): não entra no pipeline`.
 
-**Regra de ordem:** o contrato vem antes da pasta. Um JSON inválido dá código 2 mesmo que a pasta de textos esteja errada.
+Exemplo real: `metricas/gerdau_3T26_itr_dfs.json` contra `saida/gerdau_ITR_3T26` dá `62/62 conferem · 0 para revisar · 0 com erro.`
 
-### `--sem-contrato`
-
-A flag pula a validação do schema. O código continua 0 ou 1. Em stderr aparece:
-
-```
-aviso: --sem-contrato: o JSON não foi validado contra o schema (use só para destravar a oficina)
-```
-
-Use em dois casos: quando a biblioteca `jsonschema` não está instalada (sem ela e sem a flag, o verificador sai com código 2 e a mensagem `jsonschema não instalado: rode 'pip install -r requirements.txt' (ou use --sem-contrato)`), ou para ver a conferência de números enquanto o JSON ainda está sendo corrigido na oficina.
-
-Não use para fechar a entrega. Sem contrato, o verificador aceita o que o schema proibiria: unidade fora da lista vira só aviso, e campo não previsto passa. Um `pagina` ausente vira ERRO `campo 'pagina' ausente ou inválido`, em vez de ser barrado antes. O JSON que vai para `metricas/` tem de passar pelo contrato.
+Para a entrega, rode as duas etapas: `contrato.py` para a forma e `verificar_numeros.py` para os números. Um JSON só vale para o pipeline se passar na primeira e não tiver ERRO (nem REVISAR sem revisão manual) na segunda.
 
 ### Erros comuns e como corrigi-los
 
-As fixtures em `tests/fixtures/invalidos/` têm um registro cada, com um erro cada. Servem de exemplo:
+As fixtures em `tests/fixtures/invalidos/` têm um registro cada, com um erro cada. Elas são validadas pelo `contrato.py` (não pelo verificador) e servem de exemplo:
 
 | Fixture | Erro | Correção |
 |---|---|---|
@@ -167,38 +173,19 @@ Para pedir o JSON ao Claude, inclua a exigência do schema no próprio pedido:
 
 > Gere `metricas/metricas_gerdau.json` no formato de `templates/metricas_exemplo.json`. O JSON tem de validar em `schemas/metricas.schema.json`. Cada número traz `pagina`, `trecho` e `valor_como_aparece` copiados de `saida/gerdau_ITR_3T26/pagina_NN.txt`.
 
-Depois, rode `python src/contrato.py metricas/metricas_gerdau.json` antes do verificador.
+Depois, rode `python src/contrato.py metricas/metricas_gerdau.json` (forma) e `python src/verificar_numeros.py saida/gerdau_ITR_3T26 metricas/metricas_gerdau.json` (números).
 
 ---
 
-## Parte 2 — Avisos do verificador
+## Parte 2 — Verificador (resumo)
 
-O verificador tem dois níveis. **ERRO** muda o código para 1. **AVISO** aparece na saída, mas não muda o código. O aviso serve para o caso em que a conferência passou, mas há um sinal de que ela pode ter passado por acaso ou que a citação está incompleta.
+O comportamento completo está no docstring de `src/verificar_numeros.py` e no card CASE-02 de [TAREFAS.md](TAREFAS.md). O que importa aqui:
 
-Exemplo de saída com aviso (formato de `imprimir`):
-
-```
-[OK ] <metrica> (<periodo>): confere com o PDF
-[AVISO] <metrica> (<periodo>): valor_como_aparece '9' está na página, mas fora do trecho citado
-
-1 aviso(s): revise as linhas [AVISO] (não mudam o código de saída).
-```
-
-Sem avisos, a saída é idêntica à do verificador anterior. Nos quatro balanços versionados em `metricas/balanco_*.json`, a saída não traz nenhum aviso (CA-A3).
-
-| Aviso | Quando aparece | Mensagem exata | O que fazer |
-|---|---|---|---|
-| 1 | O registro não tem `trecho`. | `sem 'trecho': a citação não foi conferida` | Incluir o `trecho`. Sem ele, a citação não foi conferida. |
-| 2 | `valor_como_aparece` está na página, mas não no `trecho`. | `valor_como_aparece '<lit>' está na página, mas fora do trecho citado` | Conferir se o `trecho` é a linha certa. O número existe na página, mas pode não ser o citado. |
-| 3 | Mesma situação do 2, com `anterior_como_aparece` curto (até 3 caracteres). | `anterior_como_aparece '<lit>' é curto e foi achado fora do trecho; pode ter casado por acaso` | Número curto como `7` ou `0` casa em qualquer lugar. Conferir a linha da página. |
-| 4 | `unidade` não está na lista do contrato (só com `--sem-contrato`). | `unidade '<u>' fora da lista do contrato` | Trocar pelo valor do enum. |
-| 5 | A unidade não aparece no `trecho`, no `valor_como_aparece` nem na página. | `unidade '<u>' não aparece no trecho nem na página` | Conferir a escala na página (ex.: `R$ milhões` sem nenhuma menção a milhões). |
-
-Os avisos 4 e 5 são heurísticos. A unidade é procurada por marcadores no texto (por exemplo, `mil` ou `milhares` para `R$ mil`, e `%` para `%`). Notas da Gerdau citam valores como `R$ 289.505` sem "mil" por perto. Se a página não trouxer um marcador, o aviso aparece. É um lembrete para conferir a escala, não um bloqueio.
-
-Os avisos não aparecem para literal que não está na página. Nesse caso já é ERRO.
-
-Limitação: a busca do verificador é por substring. Um literal curto dentro do próprio `trecho` passa sem aviso. Por exemplo, `0` dentro de `3.204.533` (caso fixado no teste `B-V24`). O aviso 3 só cobre o literal curto que aparece **fora** do `trecho`. Na oficina os avisos ficam como lembrete. O próximo passo, ainda não feito, é promover o aviso 2 a ERRO quando o time sair da oficina.
+- Três níveis por fato: OK, REVISAR e ERRO (tabela da Parte 1). Não há nível de aviso.
+- REVISAR é o padrão quando falta evidência literal. O time resolve incluindo `evidencia` no fato ou registrando `revisao_manual`.
+- A busca do valor é por token inteiro, dentro do `trecho` e na página. Número curto como `0` exige atenção à coluna (`evidencia.coluna`/`n_colunas`); trecho com vários números e sem coluna vira REVISAR.
+- Escopo: texto de controladora, holding ou DFs individuais sem evidência de consolidado não passa como OK.
+- `--estrito` faz o REVISAR também sair com código 1, útil para fechar a entrega.
 
 ---
 
@@ -236,20 +223,19 @@ No `--check`, cada arquivo diferente ou ausente sai como `desatualizado: <arquiv
 | | Autovalidação do extrator | Verificador |
 |---|---|---|
 | Onde aparece | `status` no `.meta.json` | Coluna "Verificador" do catálogo |
-| O que checa | V01 a V08 do balanço (contas, somas, ordem) | Contrato do JSON e conferência de cada número contra `saida/<stem>/` |
-| Status | `aprovado` ou `reprovado` | `94/94 conferem`, `fora do contrato (<n> erro(s))`, `não verificado (saida/ ausente)` e outros |
+| O que checa | V01 a V08 do balanço (contas, somas, ordem) | Conferência de cada fato contra `saida/<stem>/` (OK, REVISAR, ERRO) |
+| Status | `aprovado` ou `reprovado` | `<ok>/<n> conferem, <r> para revisar, <e> com erro`, `não verificado (saida/ ausente)` e outros |
 
-Um balanço pode estar `aprovado` na autovalidação e ainda não ter sido conferido pelo verificador. O catálogo mostra as duas colunas separadas.
+Um balanço pode estar `aprovado` na autovalidação e ainda ter todos os registros em REVISAR no verificador, porque o formato legado não entra no contrato do time. O catálogo mostra as duas colunas separadas, e a coluna de contrato (`válido` ou `fora do contrato (<n>)`) vem do `contrato.py`, não do verificador.
 
 ### Status do verificador no catálogo
 
 | Status | Quando |
 |---|---|
-| `<n_ok>/<n_total> conferem` | Há `saida/<stem>/` e o verificador rodou. Com avisos, acrescenta `, <n_avisos> aviso(s)`. |
-| `fora do contrato (<n> erro(s))` | O JSON não passou no contrato. |
+| `<n_ok>/<n_total> conferem` | Há `saida/<stem>/` e o verificador rodou (`verificar_numeros.avaliar`). Com REVISAR, acrescenta `, <n> para revisar`; com ERRO, `, <n> com erro`. |
 | `não verificado (saida/ ausente)` | Não há `saida/<stem>/` e não há status herdado (ver abaixo). |
 | `não verificado (fonte desconhecida)` | Não se sabe de qual PDF o artefato vem. |
-| `erro de entrada (ver terminal)` | O verificador levantou erro de entrada. A mensagem vai para o terminal. |
+| `erro de entrada (ver terminal)` | O JSON não é uma lista de fatos legível. A mensagem vai para o terminal. |
 | `pendente` | Artefato esperado (em `fontes.toml`) que ainda não existe. |
 
 No terminal, cada artefato mostra a origem do status: `calculado`, `herdado` ou `não verificado`. Essa origem não entra nos arquivos.
@@ -302,7 +288,7 @@ Para o balanço, o campo `criterio_ebitda` vem como `n/a`. Para as métricas, ve
 | Usiminas | consolidado | 12 | 13 | 81 (36/45) |
 | Usiminas | controladora | 3 | 4 | 78 (35/43) |
 
-Os números de páginas e contas vêm dos `metricas/balanco_*.meta.json` (`paginas` e `n_contas`). Com as fixtures, o verificador confere 94/94, 88/88, 81/81 e 78/78 nessa ordem.
+Os números de páginas e contas vêm dos `metricas/balanco_*.meta.json` (`paginas` e `n_contas`). Os testes com essas fixtures conferem a extração do balanço. No verificador atual, os quatro `balanco_*.json` saem com todos os registros em REVISAR (0/94, 0/88, 0/81 e 0/78 conferem), sem ERRO.
 
 Estrutura:
 
@@ -355,7 +341,7 @@ Os testes marcados com `pdf` são:
 
 O `C-T15` (`tests/test_catalogo.py`) não é marcado com `pdf`. Ele roda por padrão, checa `gerar_catalogo.py --check` no repo real, e sai como `skipped` se `data/itrs/*.pdf` não existir.
 
-Para saber se os testes realmente pegam erro, apague, uma por vez, a checagem de trecho, a comparação de `valor` com o literal e a checagem de variação em `checar` (`src/verificar_numeros.py`). Em cada caso, pelo menos um teste tem de falhar (`B-V6`/`B-V8`, `B-V10`, `B-V13`).
+Para saber se os testes realmente pegam erro, apague, uma por vez, a checagem de trecho, a comparação de `valor` com o literal e a checagem de variação em `checar` (`src/verificar_numeros.py`). Em cada caso, pelo menos um teste de `tests/test_verificar_numeros.py` tem de falhar.
 
 Arquivos de teste:
 
@@ -363,7 +349,7 @@ Arquivos de teste:
 |---|---|
 | `tests/test_contrato.py` | Os três schemas, mensagens em português, ordem dos erros, EBITDA, leitura de JSON e CLI do `contrato.py`. |
 | `tests/test_fixtures.py` | Manifesto, hashes, páginas do BP contra os metas, tamanho da pasta (< 50 KB). |
-| `tests/test_verificar_numeros.py` | Verificador: contrato, conferência, avisos, códigos de saída e mensagens de erro. |
+| `tests/test_verificar_numeros.py` | Verificador (CASE-02): OK, REVISAR e ERRO, `--estrito`, `--relatorio` e códigos de saída. |
 | `tests/test_extrair_balanco.py` | Extrator, em processo, sobre as fixtures e um PDF falso. |
 | `tests/test_catalogo.py` | Catálogo: determinismo, `--check`, herança do status, pendentes. |
 
@@ -371,6 +357,6 @@ Os testes do extrator e do verificador rodam em processo, sem subprocess. Por is
 
 ### Dependências
 
-- `jsonschema>=4.20` é dependência de execução (`requirements.txt` e `pyproject.toml`). Sem ela, só o `--sem-contrato` do verificador funciona.
+- `jsonschema>=4.20` é dependência de execução (`requirements.txt` e `pyproject.toml`). Sem ela, o `contrato.py` não roda.
 - `pytest` e `pytest-cov` são dependências de desenvolvimento (`pyproject.toml`).
 - O catálogo usa só a biblioteca padrão e os módulos do projeto.

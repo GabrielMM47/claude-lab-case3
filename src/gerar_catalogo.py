@@ -223,20 +223,26 @@ def _verificador(raiz: Path, caminho: str, arquivo: Path, fonte: str | None, sha
     texto = f"saida/{fonte}"
     if pasta.is_dir():
         try:
-            r = verificar_numeros.verificar(pasta, arquivo)
-        except verificar_numeros.ErroEntrada as e:
+            fatos = json.loads(arquivo.read_text(encoding="utf-8"))
+            if not isinstance(fatos, list) or not fatos:
+                raise ValueError("esperado uma lista de fatos não vazia")
+            contagem = {"OK": 0, "REVISAR": 0, "ERRO": 0}
+            for m in fatos:
+                if not isinstance(m, dict):
+                    raise ValueError("item que não é objeto")
+                contagem[verificar_numeros.avaliar(m, pasta)[0]] += 1
+        except (OSError, ValueError, TypeError, KeyError) as e:
             info["mensagens"][caminho] = str(e)
             return ({"status": "erro de entrada (ver terminal)", "ok": None, "total": None,
                      "texto": texto, "json_sha256": sha}, "calculado")
-        if r.erros_contrato:
-            status, ok, total = f"fora do contrato ({len(r.erros_contrato)} erro(s))", None, None
-        else:
-            status = f"{r.n_ok}/{r.n_total} conferem"
-            if r.n_avisos:
-                status += f", {r.n_avisos} aviso(s)"
-            ok, total = r.n_ok, r.n_total
-        return ({"status": status, "ok": ok, "total": total, "texto": texto,
-                 "json_sha256": sha}, "calculado")
+        ok, total = contagem["OK"], len(fatos)
+        status = f"{ok}/{total} conferem"
+        if contagem["REVISAR"]:
+            status += f", {contagem['REVISAR']} para revisar"
+        if contagem["ERRO"]:
+            status += f", {contagem['ERRO']} com erro"
+        return ({"status": status, "ok": ok, "total": total, "revisar": contagem["REVISAR"],
+                 "erro": contagem["ERRO"], "texto": texto, "json_sha256": sha}, "calculado")
     anterior = anteriores.get(caminho)
     if anterior and isinstance(anterior.get("verificador"), dict) \
             and anterior["verificador"].get("json_sha256") == sha:

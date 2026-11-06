@@ -27,7 +27,7 @@ python src/verificar_numeros.py saida/usiminas_ITR_3T26 metricas/metricas_usimin
 | [src/](src/) | `extrair_release.py` (PDF → texto/tabelas) e `verificar_numeros.py` (confere cada número no PDF) |
 | [templates/](templates/) | formato do JSON de métricas e roteiro dos slides |
 | [schemas/](schemas/) | schemas do JSON de métricas, do balanço e do `.meta.json` (validados antes da conferência) |
-| [docs/CONTRATO_DADOS.md](docs/CONTRATO_DADOS.md) | contrato de dados, avisos do verificador, catálogo e fixtures de teste |
+| [docs/CONTRATO_DADOS.md](docs/CONTRATO_DADOS.md) | contrato de dados, resumo do verificador, catálogo e fixtures de teste |
 | [docs/CATALOGO_DADOS.md](docs/CATALOGO_DADOS.md) | catálogo das fontes e dos artefatos (gerado por `src/gerar_catalogo.py`) |
 | [tests/](tests/) | testes do contrato, do verificador, do extrator e do catálogo (`pytest`) |
 | [metricas/](metricas/) | os JSONs de métricas do time (verificados) |
@@ -69,7 +69,7 @@ ITRs do 3º trimestre de 2026 (até 30/09/2026) da Gerdau S.A. e da Usiminas, em
 
 ## Como verificamos os resultados
 
-Antes de conferir qualquer número, o verificador valida o JSON contra `schemas/metricas.schema.json`: um JSON fora do contrato sai com código 2 e nenhuma métrica é conferida. Só depois vem a conferência contra o PDF, com código 1 para número ou trecho que não bate.
+Duas etapas separadas. Primeiro `python src/contrato.py` valida a forma do JSON contra o schema (código 2 se estiver fora do contrato). Depois `python src/verificar_numeros.py` confere cada número contra o PDF e classifica cada fato em OK, REVISAR ou ERRO: sai com código 1 se houver ERRO (ou REVISAR, com `--estrito`).
 
 Pelo menos 2 ou 3 exemplos concretos: que número o Claude produziu, onde conferimos, se bateu ou não, e o que ajustamos. Ver [docs/ERROS_ENCONTRADOS.md](docs/ERROS_ENCONTRADOS.md).
 

@@ -10,6 +10,6 @@ em texto, usadas pelos testes para rodar sem os PDFs inteiros.
 - **Regenerar / conferir:** `python scripts/gerar_fixtures.py` e `python scripts/gerar_fixtures.py --check`
   (precisa dos PDFs em `data/itrs/`). O `MANIFEST.json` guarda bytes e SHA-256 de cada página e o SHA-256 dos PDFs.
 - **Nunca edite à mão:** o teste de hash (`tests/test_fixtures.py`) pega qualquer alteração.
-- **`invalidos/`:** JSONs fora do contrato (estáticos), usados pelos testes do verificador.
+- **`invalidos/`:** JSONs fora do contrato (estáticos), usados pelos testes do contrato (`src/contrato.py`).
 - **Fixtures negativas de texto** (dígito trocado, título alterado) são derivadas por mutação em `tmp_path`,
   dentro dos testes, e não ficam salvas aqui.
