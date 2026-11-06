@@ -1,96 +1,107 @@
-# [Nome do projeto] — Case 3 · Comparativo de resultados (Gerdau × Usiminas, 3T26)
+# Comparativo de resultados — Gerdau × Usiminas, 3T26
 
 > Claude Lab · Economia & Finanças · PUC-Rio · 06/11/2026
-> **Deadline: 16h00.** Este README é a porta de entrada da entrega: a banca lê isto primeiro. As seções abaixo seguem o modelo oficial; vão preenchendo ao longo do dia.
 
-**🎬 Vídeo (2 min):** [link]
-**🔗 Artefato público:** [link]
-
----
-
-## 🧭 Para o time (apagar esta seção antes da entrega)
-
-**Comecem por:** [docs/GUIA_CASE3.md](docs/GUIA_CASE3.md), um resumo de tudo (demanda, cuidados, entregas, critérios).
-
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python src/extrair_release.py data/itrs/gerdau_ITR_3T26.pdf data/itrs/usiminas_ITR_3T26.pdf
-# Claude gera metricas/metricas_gerdau.json e metricas/metricas_usiminas.json
-python src/verificar_numeros.py saida/gerdau_ITR_3T26 metricas/metricas_gerdau.json
-python src/verificar_numeros.py saida/usiminas_ITR_3T26 metricas/metricas_usiminas.json
-```
-
-| Pasta / arquivo | O que tem |
-|---|---|
-| [data/itrs/](data/itrs/) | ITRs 3T26 da Gerdau (80 p.) e da Usiminas (110 p.) |
-| [src/](src/) | `extrair_release.py` (PDF → texto/tabelas) e `verificar_numeros.py` (confere cada número no PDF) |
-| [templates/](templates/) | formato do JSON de métricas e roteiro dos slides |
-| [schemas/](schemas/) | schemas do JSON de métricas, do balanço e do `.meta.json` (validados antes da conferência) |
-| [docs/CONTRATO_DADOS.md](docs/CONTRATO_DADOS.md) | contrato de dados, resumo do verificador, catálogo e fixtures de teste |
-| [docs/CATALOGO_DADOS.md](docs/CATALOGO_DADOS.md) | catálogo das fontes e dos artefatos (gerado por `src/gerar_catalogo.py`) |
-| [tests/](tests/) | testes do contrato, do verificador, do extrator e do catálogo (`pytest`) |
-| [metricas/](metricas/) | os JSONs de métricas do time (verificados) |
-| [docs/CASE3.md](docs/CASE3.md) | enunciado oficial do case |
-| [docs/GUIA_TECNICO.md](docs/GUIA_TECNICO.md) | trilha técnica oficial |
-| [docs/REGRAS_E_AVALIACAO.md](docs/REGRAS_E_AVALIACAO.md) · [docs/CHECKLIST_ENTREGA.md](docs/CHECKLIST_ENTREGA.md) · [docs/USO-DOS-DADOS.md](docs/USO-DOS-DADOS.md) | regras, critérios, checklist |
-| [docs/ERROS_ENCONTRADOS.md](docs/ERROS_ENCONTRADOS.md) · [docs/PROMPTS.md](docs/PROMPTS.md) | registrem aqui ao longo do dia |
-| [CLAUDE.md](CLAUDE.md) | contexto e regras que o Claude Code carrega sozinho |
-| `saida/` | gerado pelos scripts (não vai para o Git) |
-
-**Entrega:** [formulário oficial](https://github.com/jplucas29/claude-lab-financas-puc2026/issues/new?template=entrega.yml), uma vez por time, com os 3 links públicos.
-
----
+**Vídeo:** pendente de gravação e publicação  
+**Artefato público:** pendente da apresentação final
 
 ## Equipe
 
-| Nome | Curso / período | Papel no projeto | LinkedIn / GitHub |
-|---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+| Pessoa | Responsabilidade |
+|---|---|
+| Gabriel Patrício | contrato, fixtures e apresentação executiva |
+| Gabriel Martins | DFs CVM, EBITDA e pipeline |
+| Geronimo | apresentações institucionais, dados operacionais, qualitativos e entrega |
+| João Vitor | indicadores, comparativo e gráficos |
 
 ## O problema
 
-Em 2 a 3 frases: qual problema vocês atacaram, para quem, e por que ele importa.
+Comparar duas siderúrgicas a partir de ITRs e releases exige combinar demonstrações padronizadas, métricas operacionais e informação qualitativa. O risco é colocar no mesmo slide números de períodos, unidades, escopos ou critérios de EBITDA diferentes sem perceber.
 
 ## A solução
 
-O que vocês construíram e como se usa. Prints ajudam.
+O projeto organiza os PDFs em texto pesquisável, extrai fatos para JSON, confere cada número contra sua página e calcula indicadores a partir dos fatos verificados. A apresentação final deverá consumir apenas comparativos e narrativas rastreáveis.
 
 ## Como funciona
 
-Fluxo: extrair (pdfplumber) → Claude extrai métricas para JSON com página e trecho → verificador confere cada número no PDF → comparação e gráficos → slides gerados só com números verificados.
+```text
+PDFs de RI/CVM
+      ↓
+extração de páginas e tabelas
+      ↓
+localização de páginas por tema
+      ↓
+Claude extrai JSON com página, unidade, escopo e trecho
+      ↓
+verificador confere cada número no PDF
+      ↓
+indicadores e comparativo
+      ↓
+slides com fontes e limitações
+```
+
+Os prompts assistidos estão em [`prompts/`](prompts/) e a skill reutilizável está em [`.claude/skills/apresentacao-resultados/SKILL.md`](.claude/skills/apresentacao-resultados/SKILL.md).
 
 ## Dados usados
 
-ITRs do 3º trimestre de 2026 (até 30/09/2026) da Gerdau S.A. e da Usiminas, em `data/itrs/`. Fonte: as próprias empresas (RI) e a CVM. Como tratamos os cuidados do case: consolidado × holding, contábil × ajustado, efeitos pontuais, A/A × T/T, unidades, segmentos.
+Foram usados os ITRs 3T26 da Gerdau e da Usiminas, além das apresentações institucionais registradas em [`data/apresentacoes/FONTES.md`](data/apresentacoes/FONTES.md). Os dados cobrem demonstrações financeiras, segmentos, volumes, capacidade, indicadores por tonelada e temas qualitativos.
 
-## Como verificamos os resultados
+Cuidados aplicados: consolidado versus segmento, holding versus controlada, EBITDA contábil versus ajustado, 3T26 versus 3T25, unidades e efeitos pontuais.
 
-Duas etapas separadas. Primeiro `python src/contrato.py` valida a forma do JSON contra o schema (código 2 se estiver fora do contrato). Depois `python src/verificar_numeros.py` confere cada número contra o PDF e classifica cada fato em OK, REVISAR ou ERRO: sai com código 1 se houver ERRO (ou REVISAR, com `--estrito`).
+## Como verificamos
 
-Pelo menos 2 ou 3 exemplos concretos: que número o Claude produziu, onde conferimos, se bateu ou não, e o que ajustamos. Ver [docs/ERROS_ENCONTRADOS.md](docs/ERROS_ENCONTRADOS.md).
+O processo tem duas camadas:
+
+1. o contrato valida campos, tipos, unidades e escopos;
+2. `src/verificar_numeros.py` procura o trecho e o token literal na página correta, conferindo período, unidade, escopo e coluna quando disponíveis.
+
+Erros reais encontrados estão consolidados em [`docs/ERROS_ENCONTRADOS.md`](docs/ERROS_ENCONTRADOS.md). Exemplos:
+
+- o `156` de “Instrução CVM 156” foi confundido com um valor de EBITDA na p. 28 da Usiminas;
+- a dívida bruta da Usiminas na p. 32 diferia da soma das contas das DFs porque incluía tributos parcelados;
+- os dígitos dos gráficos da Gerdau nas p. 18–20 foram fragmentados pelo extrator;
+- a p. 40 da apresentação da Usiminas saiu sem texto e foi excluída das evidências.
 
 ## Como reproduzir
 
+Instale as dependências:
+
 ```bash
 pip install -r requirements.txt
-python src/extrair_release.py data/itrs/*.pdf
-python src/verificar_numeros.py saida/gerdau_ITR_3T26 metricas/metricas_gerdau.json
-pytest                                  # testes, sem PDF (pytest é dependência de desenvolvimento)
-python src/gerar_catalogo.py --check    # confere se o catálogo está em dia
 ```
 
-Prompts principais em [docs/PROMPTS.md](docs/PROMPTS.md).
+Extraia os PDFs e localize páginas candidatas:
+
+```bash
+python src/extrair_release.py data/itrs/gerdau_ITR_3T26.pdf data/itrs/usiminas_ITR_3T26.pdf
+python src/extrair_release.py data/apresentacoes/gerdau_APRESENTACAO_3T26.pdf data/apresentacoes/usiminas_APRESENTACAO_3T26.pdf
+python src/localizar_paginas.py saida/gerdau_APRESENTACAO_3T26 --tema operacional --top 10
+```
+
+Depois da conclusão dos CASEs 05–07, o comando-alvo será:
+
+```bash
+python src/pipeline.py --a gerdau --b usiminas --tri 3T26
+```
+
+No estado atual, o pipeline integrado e a apresentação final ainda não existem. Para testes locais:
+
+```bash
+pytest -q
+```
 
 ## Limitações e próximos passos
 
-O que ficou de fora, que suposições fizemos, o que faríamos com mais um dia.
+- A apresentação da Gerdau não traz volume consolidado textual verificável.
+- A Usiminas não apresenta receita/EBITDA segmentados de 3T25 na tabela operacional utilizada.
+- Alguns gráficos têm texto extraído com dígitos fragmentados.
+- CASE-05, CASE-06 e CASE-07 ainda precisam gerar comparativo, apresentação e pipeline integrados.
+- Ainda faltam publicação pública, vídeo e teste em aba anônima.
+
+## Entrega
+
+O vídeo, o artefato público e o formulário serão adicionados quando a apresentação final estiver publicada. O checklist está em [`docs/CHECKLIST_ENTREGA.md`](docs/CHECKLIST_ENTREGA.md).
 
 ## Aviso
 
-Projeto acadêmico desenvolvido em workshop. Não constitui recomendação de investimento. Fonte dos dados: ITRs 3T26 da Gerdau e da Usiminas (CVM / RI das empresas).
-
-**Feito com:** Claude + Claude Code, Python, pdfplumber, pandas, matplotlib, python-pptx. Material de partida: [claude-lab-financas-puc2026](https://github.com/jplucas29/claude-lab-financas-puc2026).
+Projeto acadêmico desenvolvido em workshop. Não constitui recomendação de investimento.
