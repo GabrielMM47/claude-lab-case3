@@ -28,6 +28,10 @@
 | 14 | — | modo rascunho | o HTML do rascunho era idêntico ao final; só o nome do arquivo dizia "RASCUNHO" | rascunho identificado no próprio slide | abrindo o HTML gerado com o CASE-06 | faixa fixa "RASCUNHO — NÃO ENTREGAR" com nº de fatos reprovados |
 | 15 | — | troca de PDF | PDF republicado com o mesmo nome reaproveitava páginas e DFs antigas, e a verificação **passava** (comparava com as páginas velhas) | re-extrair quando o PDF muda | revisão do fluxo "trocar só os PDFs" | carimbo sha256 em `saida/<pdf>/_origem.sha256` (ITR: também o manifesto); teste `test_pdf_trocado_reextrai_e_refaz_dfs` |
 | 16 | Usiminas | alerta de efeito pontual (CASE-04) | "ajustes não recorrentes somam 544% do EBITDA do 3T25" somando itens recorrentes (participação em controladas, EBITDA proporcional) | só o impairment: 513% | lendo os alertas do comparativo | corrigido pelo Gabriel Patrício na `feat/gabriel-patricio` (filtra `natureza`); confirmado na rodada integrada |
+| 17 | Usiminas | Receita de mineração por t, 3T25 (CASE-03) | **US$ 87/t** | apresentação p. 28: **US$ 79** no 3T25 (os US$ 87 são do 4T25 e do 1T26) | o verificador acusou "valor fora do trecho"; a página renderizada mostrou que o número era de outro trimestre | valor 79, trecho literal da linha `2.503 2.463 2.469 $79 $78`, revisão manual registrada |
+| 18 | Gerdau | Volume, receita e EBITDA por segmento (apresentação p. 18–20, CASE-03) | `valor_como_aparece` nulo: "a extração fragmenta os dígitos" | o texto tem o número com cada caractere triplicado (negrito falso): `111...555888222` = 1.582 | verificador (contrato) | `tem_token` aceita a forma triplicada (só tokens de 3+ caracteres); 17 fatos com trecho literal e revisão manual após conferir as páginas renderizadas |
+| 19 | Usiminas | operacionais do ITR e da apresentação (CASE-03) | trecho = só o título da linha ("Volume de Vendas Aço (mil t)"), sem o número | a linha inteira, com a coluna provada pelo cabeçalho literal (`3T26 2T26 ∆ 3T25 ∆`) | verificador: "existe na página, mas não no trecho" | 21 fatos corrigidos com linha literal + `cabecalho_colunas` |
+| 20 | Gerdau / Usiminas | unidades e períodos fora do contrato (CASE-03) | `"1.000 toneladas"`, `"mil toneladas"`, `"milhões de toneladas/ano"`, período `"3T26 vs 2T26"` | vocabulário do contrato (`mil t`); período é um trimestre | `contrato.py` dentro do pipeline | `mil t`; capacidades em milhões de t/ano (laminados, não aço bruto) e a variação T/T foram para `metricas/cobertura/` com motivo |
 
 ## Observações dos dados
 
@@ -51,11 +55,12 @@
 
 **CASE-02 concluído e mergeado** (PR #3). `*_itr_dfs.json` 62/62 OK cada; complementares 9/9 e 29/29 OK.
 
-**CASE-07 pronto do lado do pipeline** — `src/pipeline.py` + `tests/test_pipeline.py` (22 testes).
-- Rodada de 14h45 (main + CASE-06 da `feat/gabriel-patricio` num worktree): `--permitir-pendencias` vai **até o fim** e gera os 8 slides em `saida/rascunho/gerdau_x_usiminas_3T26/RASCUNHO_*.html`, com faixa de rascunho, aviso "Não constitui recomendação" e páginas. Funciona com A/B invertidos e é idempotente.
-- Sem a flag, **bloqueia na verificação**: 177/243 OK, 38 ERROs, todos nos operacionais do CASE-03 (`gerdau_..._apresentacao_operacional` 17, `usiminas_..._itr_operacional` 12, `usiminas_..._apresentacao_operacional` 9: unidade fora do contrato, `valor_como_aparece` nulo, trecho sem o valor). Meus arquivos e os qualitativos: 100% OK e válidos no `contrato.py`.
-- Para a entrega final faltam: (1) CASE-03 corrigir os 38 ERROs; (2) CASE-06 mergeado (a `feat/gabriel-patricio` conflita com o main em `metricas/*_indicadores.json` e no registro dela: precisa de rebase).
-- Decisão: REVISAR não bloqueia (só ERRO); aparece no relatório.
+**CASE-07 concluído: entrega gerada pelo pipeline.**
+- `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` (sem flag): verificação **APROVADA** (202/239 OK, 37 REVISAR, 0 ERRO) → `entrega/apresentacao_gerdau_x_usiminas_3T26.html` (8 slides, aviso "Não constitui recomendação", páginas na numeração do PDF). Invertido (`--a usiminas --b gerdau`) também entrega.
+- 824 testes passam (`pytest` e `python -m pytest`).
+- Para chegar lá, corrigi os 38 ERROs dos operacionais do CASE-03 (erros 17–20 acima): trecho e token copiados do `pagina_NN.txt` por script, nenhum número digitado.
+- Limites que os slides devem dizer: Gerdau sem volume consolidado (só por segmento) → R$/t e EBITDA/t da Gerdau N/D; R$/t da Usiminas N/C (receita consolidada inclui mineração); sem 2T26 da Gerdau no ITR (T/T só Usiminas).
+- 37 REVISAR (sem evidência literal de período/unidade/escopo) não bloqueiam; próximo passo: completar `evidencia` nesses fatos.
 
 **Avisos para o time**
 - CASE-04: aprovado, o pipeline regrava `metricas/<slug>_<tri>_indicadores.json` com a mesma serialização do CLI (byte a byte igual com os mesmos fatos); rascunho nunca toca esse arquivo.
@@ -63,4 +68,4 @@
 - Testes: `pytest` puro não importa `tests/test_localizar_paginas.py` (`from src. ...`); use `python -m pytest`. `test_catalogo` falha por causa dos operacionais do CASE-03 (já falhava no main).
 - CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"`; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
 
-**Próximo:** depois que CASE-03 corrigir e CASE-06 mergear: `git pull --rebase origin main` e `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` (sem flag) até `entrega/apresentacao_gerdau_x_usiminas_3T26.html`.
+**Próximo:** mergear o PR #5; CASE-08 usa o comando acima no README e os erros 13–20 no vídeo.
