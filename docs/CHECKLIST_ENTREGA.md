@@ -11,7 +11,7 @@ Ensaiem uma vez antes de gravar. Uma gravação boa e simples vale mais que uma 
 
 ## Antes do deadline (16h00)
 
-- [x] **Vídeo** publicado (YouTube não listado ou Drive "qualquer pessoa com o link"), com até 2 min.
+- [ ] **Vídeo** publicado (YouTube não listado ou Drive "qualquer pessoa com o link"), com até 2 min.
 - [ ] **Artefato** publicado. Abram o link numa **aba anônima** para conferir que está público.
 - [ ] **GitHub** do time **público**, com o README preenchido (equipe completa, problema, solução, dados, verificação, limitações).
 - [ ] Os links do vídeo e do artefato estão **dentro do README** do GitHub.
