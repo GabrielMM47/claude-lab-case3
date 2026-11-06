@@ -19,7 +19,7 @@
     "nao_aplicavel": "N/A"
   },
   "cobertura": {
-    "ok": 40,
+    "ok": 43,
     "ausente": 7,
     "nao_comparavel": 0,
     "nao_aplicavel": 0
@@ -2206,6 +2206,114 @@
       "obs": null
     },
     {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 6884.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 8,
+          "metrica": "Capacidade de aço bruto"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 0.9,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 7,
+          "metrica": "Capacidade de aço bruto"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "neutro",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 7656.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 12,
+          "metrica": "Capacidade de aço bruto"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
       "chave": "receita_por_t_reportada",
       "nome": "Receita por tonelada (reportada)",
       "grupo": "setor",
@@ -2515,18 +2623,5 @@
       }
     ]
   },
-  "alertas": [
-    {
-      "tipo": "unidade",
-      "texto": "capacidade_instalada 3T26 (segmento:america_do_norte) ignorado: unidade ambígua: 'MT' (milhões de t ou mil t?); registrar 'mil t' ou 'milhões de t' no JSON de origem"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "capacidade_instalada 3T26 (segmento:brasil) ignorado: unidade ambígua: 'MT' (milhões de t ou mil t?); registrar 'mil t' ou 'milhões de t' no JSON de origem"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "capacidade_instalada 3T26 (segmento:america_do_sul) ignorado: unidade ambígua: 'MT' (milhões de t ou mil t?); registrar 'mil t' ou 'milhões de t' no JSON de origem"
-    }
-  ]
+  "alertas": []
 }

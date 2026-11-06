@@ -19,8 +19,8 @@
     "nao_aplicavel": "N/A"
   },
   "cobertura": {
-    "ok": 39,
-    "ausente": 4,
+    "ok": 49,
+    "ausente": 1,
     "nao_comparavel": 4,
     "nao_aplicavel": 0
   },
@@ -1583,18 +1583,35 @@
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
       "valores": {
-        "3T26": null,
-        "3T25": null,
+        "3T26": 1034.0,
+        "3T25": 1104.0,
         "2T26": null
       },
-      "var_aa": null,
+      "var_aa": -6.3406,
       "var_tt": null,
       "unidade_var": "%",
       "formula": "volume_vendas",
-      "insumos": [],
-      "disponivel": false,
-      "status": "ausente",
-      "obs": "volume_vendas 3T26 (consolidado) ambíguo: 2 valores diferentes no mesmo tipo de documento (ver alerta 'ambiguo')"
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 24,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "consolidado",
+          "documento": "itr",
+          "pagina": 24,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
     },
     {
       "chave": "receita_por_t",
@@ -1722,7 +1739,7 @@
       "grupo": "setor",
       "unidade": "mil t",
       "melhor": "neutro",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -1739,18 +1756,18 @@
         {
           "chave": "volume_vendas",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
-          "pagina": 34,
-          "metrica": "Vendas total de minério"
+          "pagina": 24,
+          "metrica": "Volume de vendas de minério"
         },
         {
           "chave": "volume_vendas",
           "periodo": "3T25",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
-          "pagina": 34,
-          "metrica": "Vendas total de minério"
+          "pagina": 24,
+          "metrica": "Volume de vendas de minério"
         }
       ],
       "disponivel": true,
@@ -1763,7 +1780,7 @@
       "grupo": "setor",
       "unidade": "R$/t",
       "melhor": "maior",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -1780,7 +1797,7 @@
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 33,
           "metrica": "Receita líquida de vendas"
@@ -1788,10 +1805,10 @@
         {
           "chave": "volume_vendas",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
-          "pagina": 34,
-          "metrica": "Vendas total de minério"
+          "pagina": 24,
+          "metrica": "Volume de vendas de minério"
         }
       ],
       "disponivel": true,
@@ -1804,7 +1821,7 @@
       "grupo": "setor",
       "unidade": "R$/t",
       "melhor": "maior",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -1821,7 +1838,7 @@
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 33,
           "metrica": "EBITDA ajustado"
@@ -1829,10 +1846,10 @@
         {
           "chave": "volume_vendas",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
-          "pagina": 34,
-          "metrica": "Vendas total de minério"
+          "pagina": 24,
+          "metrica": "Volume de vendas de minério"
         }
       ],
       "disponivel": true,
@@ -1850,15 +1867,23 @@
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
       "valores": {
-        "3T26": null,
+        "3T26": 1034.0,
         "3T25": 1104.0,
         "2T26": null
       },
-      "var_aa": null,
+      "var_aa": -6.3406,
       "var_tt": null,
       "unidade_var": "%",
       "formula": "volume_vendas",
       "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Volume de vendas"
+        },
         {
           "chave": "volume_vendas",
           "periodo": "3T25",
@@ -1868,9 +1893,198 @@
           "metrica": "Volume de vendas"
         }
       ],
-      "disponivel": false,
-      "status": "ausente",
-      "obs": "volume_vendas 3T26 (segmento:siderurgia) ambíguo: 4 valores diferentes no mesmo tipo de documento (ver alerta 'ambiguo')"
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:siderurgia",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 5425.5319,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 33,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Volume de vendas"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_por_t_ajustado",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:siderurgia",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 520.3095,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 33,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Volume de vendas"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "utilizacao_capacidade",
+      "nome": "Utilização da capacidade",
+      "grupo": "setor",
+      "unidade": "%",
+      "melhor": "maior",
+      "escopo": "segmento:siderurgia",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 49.7391,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "p.p.",
+      "formula": "volume_producao × 4 / capacidade_instalada (trimestre anualizado, sem sazonalidade)",
+      "insumos": [
+        {
+          "chave": "volume_producao",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Produção de aço bruto"
+        },
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "apresentacao",
+          "pagina": 26,
+          "metrica": "Capacidade de geração de produto para venda"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "neutro",
+      "escopo": "segmento:siderurgia_exportacao",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 55.0,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia_exportacao",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Vendas para exportação"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "neutro",
+      "escopo": "segmento:siderurgia_mercado_interno",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 979.0,
+        "3T25": null,
+        "2T26": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia_mercado_interno",
+          "documento": "itr",
+          "pagina": 36,
+          "metrica": "Vendas no mercado interno"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
     },
     {
       "chave": "volume_producao",
@@ -1878,7 +2092,7 @@
       "grupo": "setor",
       "unidade": "mil t",
       "melhor": "neutro",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -1895,7 +2109,7 @@
         {
           "chave": "volume_producao",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 34,
           "metrica": "Produção de minério de ferro"
@@ -1903,7 +2117,7 @@
         {
           "chave": "volume_producao",
           "periodo": "3T25",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 34,
           "metrica": "Produção de minério de ferro"
@@ -1958,14 +2172,14 @@
       "chave": "capacidade_instalada",
       "nome": "Capacidade instalada",
       "grupo": "setor",
-      "unidade": null,
+      "unidade": "mil t/ano",
       "melhor": "neutro",
-      "escopo": "segmento:siderurgia",
+      "escopo": "segmento:cubatao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
       "valores": {
-        "3T26": null,
+        "3T26": 2300.0,
         "3T25": null,
         "2T26": null,
         "4T25": null
@@ -1976,10 +2190,91 @@
       "periodo_ano": "4T25",
       "var_ano": null,
       "formula": "capacidade_instalada (reportado)",
-      "insumos": [],
-      "disponivel": false,
-      "status": "ausente",
-      "obs": "capacidade_instalada 3T26 (segmento:siderurgia) ambíguo: 4 valores diferentes no mesmo tipo de documento (ver alerta 'ambiguo')"
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:cubatao",
+          "documento": "apresentacao",
+          "pagina": 16,
+          "metrica": "Capacidade instalada de Cubatão"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "neutro",
+      "escopo": "segmento:ipatinga",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 4600.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:ipatinga",
+          "documento": "apresentacao",
+          "pagina": 16,
+          "metrica": "Capacidade instalada de Ipatinga"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "capacidade_instalada",
+      "nome": "Capacidade instalada",
+      "grupo": "setor",
+      "unidade": "mil t/ano",
+      "melhor": "neutro",
+      "escopo": "segmento:siderurgia",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 6900.0,
+        "3T25": null,
+        "2T26": null,
+        "4T25": null
+      },
+      "var_aa": null,
+      "var_tt": null,
+      "unidade_var": "%",
+      "periodo_ano": "4T25",
+      "var_ano": null,
+      "formula": "capacidade_instalada (reportado)",
+      "insumos": [
+        {
+          "chave": "capacidade_instalada",
+          "periodo": "3T26",
+          "escopo": "segmento:siderurgia",
+          "documento": "apresentacao",
+          "pagina": 26,
+          "metrica": "Capacidade de geração de produto para venda"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
     },
     {
       "chave": "receita_por_t_reportada",
@@ -1987,7 +2282,7 @@
       "grupo": "setor",
       "unidade": "US$/t",
       "melhor": "maior",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -2004,7 +2299,7 @@
         {
           "chave": "receita_por_t_reportada",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "apresentacao",
           "pagina": 28,
           "metrica": "Receita líquida de mineração por tonelada"
@@ -2012,7 +2307,7 @@
         {
           "chave": "receita_por_t_reportada",
           "periodo": "3T25",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "apresentacao",
           "pagina": 28,
           "metrica": "Receita líquida de mineração por tonelada"
@@ -2206,7 +2501,7 @@
       "grupo": "segmentos",
       "unidade": "%",
       "melhor": "neutro",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -2223,7 +2518,7 @@
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 33,
           "metrica": "Receita líquida de vendas"
@@ -2272,7 +2567,7 @@
       "grupo": "segmentos",
       "unidade": "%",
       "melhor": "neutro",
-      "escopo": "segmento:mineração",
+      "escopo": "segmento:mineracao",
       "periodo": "3T26",
       "periodo_aa": "3T25",
       "periodo_tt": "2T26",
@@ -2289,7 +2584,7 @@
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T26",
-          "escopo": "segmento:mineração",
+          "escopo": "segmento:mineracao",
           "documento": "itr",
           "pagina": 33,
           "metrica": "EBITDA ajustado"
@@ -2419,126 +2714,6 @@
     ]
   },
   "alertas": [
-    {
-      "tipo": "ambiguo",
-      "chave": "volume_vendas",
-      "periodo": "3T26",
-      "escopo": "segmento:siderurgia",
-      "valores": [
-        {
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Vendas de aço",
-          "valor": 1034.0,
-          "unidade": "mil t"
-        },
-        {
-          "documento": "itr",
-          "pagina": 36,
-          "metrica": "Volume de vendas",
-          "valor": 1034.0,
-          "unidade": "mil t"
-        },
-        {
-          "documento": "itr",
-          "pagina": 36,
-          "metrica": "Vendas no mercado interno",
-          "valor": 979.0,
-          "unidade": "mil t"
-        },
-        {
-          "documento": "itr",
-          "pagina": 36,
-          "metrica": "Vendas para exportação",
-          "valor": 55.0,
-          "unidade": "mil t"
-        }
-      ],
-      "texto": "volume_vendas 3T26 (segmento:siderurgia): valores diferentes no mesmo tipo de documento, nenhum foi usado: apresentacao p.16 'Vendas de aço' = 1034.0; itr p.36 'Volume de vendas' = 1034.0; itr p.36 'Vendas no mercado interno' = 979.0; itr p.36 'Vendas para exportação' = 55.0. Provável recorte (mercado, unidade, produto) gravado com a mesma chave e escopo: corrigir o JSON de origem"
-    },
-    {
-      "tipo": "ambiguo",
-      "chave": "capacidade_instalada",
-      "periodo": "3T26",
-      "escopo": "segmento:siderurgia",
-      "valores": [
-        {
-          "documento": "apresentacao",
-          "pagina": 26,
-          "metrica": "Capacidade de geração de produto para venda",
-          "valor": 6900.0,
-          "unidade": "mil t/ano"
-        },
-        {
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Capacidade instalada de aços laminados planos",
-          "valor": 6900.0,
-          "unidade": "mil t/ano"
-        },
-        {
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Capacidade instalada de Ipatinga",
-          "valor": 4600.0,
-          "unidade": "mil t/ano"
-        },
-        {
-          "documento": "apresentacao",
-          "pagina": 16,
-          "metrica": "Capacidade instalada de Cubatão",
-          "valor": 2300.0,
-          "unidade": "mil t/ano"
-        }
-      ],
-      "texto": "capacidade_instalada 3T26 (segmento:siderurgia): valores diferentes no mesmo tipo de documento, nenhum foi usado: apresentacao p.26 'Capacidade de geração de produto para venda' = 6900.0; apresentacao p.16 'Capacidade instalada de aços laminados planos' = 6900.0; apresentacao p.16 'Capacidade instalada de Ipatinga' = 4600.0; apresentacao p.16 'Capacidade instalada de Cubatão' = 2300.0. Provável recorte (mercado, unidade, produto) gravado com a mesma chave e escopo: corrigir o JSON de origem"
-    },
-    {
-      "tipo": "ambiguo",
-      "chave": "volume_vendas",
-      "periodo": "3T26",
-      "escopo": "consolidado",
-      "valores": [
-        {
-          "documento": "itr",
-          "pagina": 24,
-          "metrica": "Volume de vendas de aço",
-          "valor": 1034.0,
-          "unidade": "mil t"
-        },
-        {
-          "documento": "itr",
-          "pagina": 24,
-          "metrica": "Volume de vendas de minério",
-          "valor": 2014.0,
-          "unidade": "mil t"
-        }
-      ],
-      "texto": "volume_vendas 3T26 (consolidado): valores diferentes no mesmo tipo de documento, nenhum foi usado: itr p.24 'Volume de vendas de aço' = 1034.0; itr p.24 'Volume de vendas de minério' = 2014.0. Provável recorte (mercado, unidade, produto) gravado com a mesma chave e escopo: corrigir o JSON de origem"
-    },
-    {
-      "tipo": "ambiguo",
-      "chave": "volume_vendas",
-      "periodo": "3T25",
-      "escopo": "consolidado",
-      "valores": [
-        {
-          "documento": "itr",
-          "pagina": 24,
-          "metrica": "Volume de vendas de aço",
-          "valor": 1104.0,
-          "unidade": "mil t"
-        },
-        {
-          "documento": "itr",
-          "pagina": 24,
-          "metrica": "Volume de vendas de minério",
-          "valor": 2503.0,
-          "unidade": "mil t"
-        }
-      ],
-      "texto": "volume_vendas 3T25 (consolidado): valores diferentes no mesmo tipo de documento, nenhum foi usado: itr p.24 'Volume de vendas de aço' = 1104.0; itr p.24 'Volume de vendas de minério' = 2503.0. Provável recorte (mercado, unidade, produto) gravado com a mesma chave e escopo: corrigir o JSON de origem"
-    },
     {
       "tipo": "efeito_pontual",
       "periodo": "3T25",

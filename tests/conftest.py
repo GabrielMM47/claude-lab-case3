@@ -23,6 +23,13 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
+    import importlib.util
+    faltando = [m for m in ("jsonschema", "referencing", "matplotlib", "pdfplumber")
+                if importlib.util.find_spec(m) is None]
+    if faltando:
+        raise pytest.UsageError(
+            f"dependências ausentes neste Python ({sys.executable}): {', '.join(faltando)}. "
+            "Rode `pip install -r requirements.txt` ou use o venv: `.venv/bin/python -m pytest`.")
     config.addinivalue_line("markers", "pdf: usa data/itrs/*.pdf; só roda com --com-pdf")
 
 

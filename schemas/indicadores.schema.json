@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-lab-case3.invalid/schemas/indicadores.schema.json",
+  "title": "Indicadores calculados (saída do CASE-04)",
+  "description": "metricas/<slug>_<tri>_indicadores.json, gerado por src/indicadores.py. Escolhido quando o JSON é um objeto com 'indicadores'. Não é lista de fatos: não tem 'trecho'; a rastreabilidade vem de 'insumos' (documento + página). Campos não listados são permitidos.",
+  "type": "object",
+  "required": ["empresa", "periodo", "unidade_monetaria", "indicadores", "alertas"],
+  "properties": {
+    "empresa": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "periodo": {"type": "string", "pattern": "^([1-4]T|\\d{1,2}M)\\d{2}$"},
+    "setor": {"type": ["string", "null"]},
+    "unidade_monetaria": {"type": "string", "minLength": 1},
+    "unidade_volume": {"type": ["string", "null"]},
+    "anualizacao": {"type": ["string", "null"]},
+    "saldos_medios": {"type": ["string", "null"]},
+    "criterios_ebitda": {"type": "array", "items": {"enum": ["contabil", "ajustado"]}},
+    "indicadores": {"type": "array", "items": {"$ref": "#/$defs/indicador"}},
+    "alertas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tipo", "texto"],
+        "properties": {"tipo": {"type": "string", "minLength": 1}, "texto": {"type": "string", "minLength": 1}}
+      }
+    }
+  },
+  "$defs": {
+    "indicador": {
+      "type": "object",
+      "required": ["chave", "nome", "unidade", "escopo", "valores", "insumos", "disponivel"],
+      "properties": {
+        "chave": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "nome": {"type": "string", "minLength": 1},
+        "grupo": {"type": "string"},
+        "unidade": {"type": ["string", "null"]},
+        "melhor": {"enum": ["maior", "menor", "neutro", null]},
+        "escopo": {"type": "string", "pattern": "^(consolidado|segmento:[a-z0-9_]+)$"},
+        "periodo": {"type": "string", "pattern": "^([1-4]T|\\d{1,2}M)\\d{2}$"},
+        "valores": {"type": "object", "additionalProperties": {"type": ["number", "null"]}},
+        "var_aa": {"type": ["number", "null"]},
+        "var_tt": {"type": ["number", "null"]},
+        "unidade_var": {"type": ["string", "null"]},
+        "insumos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["chave", "documento", "pagina"],
+            "properties": {
+              "chave": {"type": "string"},
+              "documento": {"enum": ["itr", "apresentacao"]},
+              "pagina": {"type": "integer", "minimum": 1}
+            }
+          }
+        },
+        "disponivel": {"type": "boolean"},
+        "status": {"enum": ["ok", "ausente", "nao_comparavel", "nao_aplicavel"]},
+        "obs": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

@@ -305,7 +305,17 @@ def _art_json(raiz: Path, nome: str, esperados: list[dict], fontes_toml: list[di
         valores = _distintos(ebitda, "criterio_ebitda")
         criterio = valores if valores else "não informado"
 
-    verificador, origem = _verificador(raiz, caminho, caminho_abs, fonte, sha, anteriores, info)
+    if schema == "indicadores":
+        # Indicadores são cálculos com vários insumos, sem um único PDF-fonte.
+        # A validação de forma acima permanece; a conferência literal cabe aos fatos.
+        fonte = None
+        registro["empresa"] = dados.get("empresa")
+        registro["gerado_por"] = "src/indicadores.py"
+        verificador = {"status": "não aplicável (indicadores calculados; verificar os fatos de origem)",
+                       "ok": None, "total": None, "texto": None, "json_sha256": sha}
+        origem = "não aplicável"
+    else:
+        verificador, origem = _verificador(raiz, caminho, caminho_abs, fonte, sha, anteriores, info)
     info["origens"][caminho] = origem
 
     return {

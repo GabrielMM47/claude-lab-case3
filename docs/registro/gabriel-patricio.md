@@ -17,3 +17,13 @@
 - Usiminas, ROIC 9M26 = ROI: o IR/CSLL do 9M26 é crédito (+R$ 218 mi, ITR p. 14), a alíquota efetiva fica negativa e é limitada a 0%. É a hipótese documentada em METODOLOGIA_INDICADORES.md, mas precisa aparecer explicada no slide.
 - Usiminas: dívida líquida calculada (−R$ 566,0 mi) difere da reportada (−R$ 470,7 mi, ITR p. 32) em 17%. A reportada inclui tributos parcelados (registro do CASE-02, item 4).
 - Gerdau não divulga volume consolidado, só por segmento: receita/t consolidada fica N/D e vale a por segmento.
+
+## Integração e validação em 06/11/2026
+
+- Integrados os commits de `origin/main` com CASE-01, CASE-03, CASE-05 e documentação. Preservados o motor e o gerador da apresentação desta branch; indicadores reais regenerados a partir dos fatos corrigidos.
+- Indicadores das duas empresas e comparativo real passam nos schemas específicos. O comparativo gera cinco gráficos e o gerador produz oito slides em `saida/apresentacao/gerdau_x_usiminas_3T26.html`.
+- Corrigido o catálogo: indicadores calculados não são mais enviados ao verificador de fatos contra um único PDF. Isso não certifica os fatos usados nos cálculos.
+- Regeneradas as fixtures fictícias e o catálogo local.
+- Ainda pendente no CASE-03: 37 violações do schema de fatos (24 em `gerdau_3T26_apresentacao_operacional.json`, 7 em `usiminas_3T26_apresentacao_operacional.json`, 6 em `usiminas_3T26_itr_operacional.json`). Incluem 17 valores literais nulos nos gráficos da Gerdau (p. 18–20), unidades fora da lista aceita e o período `3T26 vs 2T26` na variação da receita por tonelada (p. 19). Não foram inventados literais nem relaxado o schema para aprovar esses dados.
+- A apresentação gerada é rascunho para revisão: gerar slides e passar no schema dos indicadores não substitui a verificação dos fatos de origem.
+- Validação final: `python -m pytest -q --tb=short` executado no venv: 802 passaram, 3 ignorados e 1 falhou (`test_c_t3b_fatos_dentro_do_contrato`, pelas 37 violações acima). Catálogo e fixtures passaram em `--check`.

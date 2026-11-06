@@ -1,0 +1,5 @@
+[
+{"chave": "qualitativo", "metrica": "perfil", "tema": "perfil", "empresa": "empresa_b", "documento": "apresentacao", "documento_id": "empresa_b_APRESENTACAO_3T26", "resumo": "Texto fictício sobre perfil da empresa_b.", "pagina": 5, "trecho": "perfil (FICTÍCIO)"},
+{"chave": "qualitativo", "metrica": "estrategia", "tema": "estrategia", "empresa": "empresa_b", "documento": "apresentacao", "documento_id": "empresa_b_APRESENTACAO_3T26", "resumo": "Texto fictício sobre estrategia da empresa_b.", "pagina": 6, "trecho": "estrategia (FICTÍCIO)"},
+{"chave": "qualitativo", "metrica": "riscos", "tema": "riscos", "empresa": "empresa_b", "documento": "apresentacao", "documento_id": "empresa_b_APRESENTACAO_3T26", "resumo": "Texto fictício sobre riscos da empresa_b.", "pagina": 7, "trecho": "riscos (FICTÍCIO)"}
+]
