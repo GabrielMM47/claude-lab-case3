@@ -13,8 +13,8 @@ atenção. Implementado no CSS de `src/apresentacao.py`; vale para qualquer par 
 ## Tokens
 | Token | Valor | Uso |
 |---|---|---|
-| `--superficie` | `#FFFFFF` | slide |
-| `--palco` | `#EEF0F2` | em volta do slide |
+| `--superficie` | `#F4F6F8` | slide (cinza-azulado claro; gráficos brancos viram placas com régua de 1px) |
+| `--palco` | `#D9DEE3` | em volta do slide |
 | `--tinta` | `#1F2328` | texto |
 | `--sec` | `#59636E` | legendas, variações, fontes |
 | `--linha` | `#D8DEE4` | réguas de 1px (tabela, rodapé) |

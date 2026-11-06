@@ -306,12 +306,18 @@ def slide_capa(d, n, fontes):
 
 def slide_resumo(d, n, fontes):
     titulo = resolver(n.get("titulo") or "Três coisas que o comitê precisa saber", d, fontes)
+    def item(texto: str) -> str:  # "Rentabilidade: ..." vira rótulo + texto
+        rot, sep, resto = texto.partition(": ")
+        if sep and len(rot) <= 40:
+            return f'<b class="rotulo">{esc(rot)}</b>{esc(resto)}'
+        return esc(texto)
+
     if n.get("bullets"):
-        bullets = [esc(resolver(b, d, fontes)) for b in n["bullets"]]
+        bullets = [item(resolver(b, d, fontes)) for b in n["bullets"]]
     else:
         bullets = []
         for ins in d.comp.get("insights", [])[:3]:
-            bullets.append(esc(ins["texto"]))
+            bullets.append(item(ins["texto"]))
             fontes_de_insight(ins, d, fontes)
     if not bullets:
         bullets = ['<span class="nd">Sem conclusões: o comparativo não trouxe insights.</span>']
@@ -519,7 +525,7 @@ FONTE_CSS = ("@font-face{font-family:'Archivo';font-style:normal;font-weight:100
              + base64.b64encode(_FONTE.read_bytes()).decode() + ") format('woff2')}") if _FONTE.exists() else ""
 
 CSS = """
-:root{--superficie:#fff;--palco:#EEF0F2;--tinta:#1F2328;--sec:#59636E;--linha:#D8DEE4;--nd:#9A6700;
+:root{--superficie:#F4F6F8;--palco:#D9DEE3;--tinta:#1F2328;--sec:#59636E;--linha:#D8DEE4;--nd:#9A6700;
   --pos:#1A7F37;--neg:#CF222E;--t-xs:12px;--t-s:15px;--t-m:18px;--t-l:23px;--t-xl:29px;--t-capa:44px}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--palco);color:var(--tinta);
@@ -539,13 +545,17 @@ footer .aviso{white-space:nowrap}
 ul{margin:0;padding-left:1.1em}
 li{margin:0 0 .55em;line-height:1.45}
 li::marker{color:var(--sec)}
-ul.grande{font-size:var(--t-l);max-width:1000px}
-ul.grande li{margin-bottom:.9em;line-height:1.4}
+#resumo .corpo{justify-content:center;padding-bottom:40px}
+ul.grande{font-size:var(--t-l);display:grid;grid-template-columns:repeat(3,1fr);gap:44px;padding:0;
+  list-style:none}
+ul.grande li{margin:0;line-height:1.4;border-top:2px solid var(--tinta);padding-top:18px}
+ul.grande .rotulo{display:block;font-size:var(--t-xl);font-weight:600;line-height:1.15;margin-bottom:14px}
 ul.compacta{font-size:var(--t-s)}
-#capa h1{font-size:var(--t-capa);line-height:1.12;max-width:1000px;margin-top:120px}
-#capa .sub{font-size:var(--t-l);margin-top:14px}
-.capa{display:flex;gap:20px;align-items:baseline;font-size:var(--t-l);font-weight:600;margin-top:auto}
-.capa small{font-size:var(--t-s);color:var(--sec);font-weight:400;margin-left:4px}
+#capa h1{font-size:52px;line-height:1.08;max-width:1150px;margin-top:80px}
+#capa .sub{font-size:var(--t-l);margin-top:18px}
+.capa{display:flex;gap:28px;align-items:baseline;font-size:48px;font-weight:600;margin-top:auto;
+  padding-top:22px;border-top:1px solid var(--linha)}
+.capa small{font-size:var(--t-m);color:var(--sec);font-weight:400;margin-left:6px}
 .capa .x{color:var(--sec);font-weight:400}
 .nota{font-size:var(--t-xs);color:var(--sec);margin:0 0 18px}
 .duas{display:grid;grid-template-columns:1fr 1fr;gap:56px;min-height:0}
@@ -563,7 +573,7 @@ ul.compacta{font-size:var(--t-s)}
 .nd{color:var(--nd)}
 .melhor{font-size:var(--t-xs);color:var(--cor);margin-left:6px;font-weight:600}
 .graf{flex:1;min-height:0;display:flex;gap:24px;justify-content:center;align-items:center}
-.graf img{max-width:50%;max-height:100%;object-fit:contain}
+.graf img{max-width:50%;max-height:100%;object-fit:contain;background:#fff;border:1px solid var(--linha)}
 .graf.um img{max-width:100%}
 .tiles{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:32px}
 .tile{font-size:var(--t-s)}
@@ -572,7 +582,10 @@ ul.compacta{font-size:var(--t-s)}
 .tile .lado.venc .v{font-weight:600}
 .tile .quem{display:block;font-size:var(--t-xs);color:var(--cor);font-weight:600}
 .pos{color:var(--pos)}.neg{color:var(--neg)}
-.alerta{display:block;font-size:13px;color:var(--nd)}
+.alerta{display:block;font-size:var(--t-s);color:var(--nd)}
+#destaques_riscos ul.compacta{font-size:var(--t-m)}
+#metodologia ul.compacta{font-size:var(--t-m);columns:2;column-gap:56px}
+#metodologia li{break-inside:avoid}
 .alerta::before{content:"Atenção: ";font-weight:600}
 #nav{position:fixed;right:16px;bottom:10px;color:var(--sec);font:12px Archivo,system-ui,sans-serif}
 @media print{
