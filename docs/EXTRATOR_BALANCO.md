@@ -18,9 +18,10 @@ Ele não substitui o `verificar_numeros.py`. O JSON gerado é uma etapa intermed
 
 ## Pré-requisitos e instalação
 
-- Python com `pdfplumber`, a mesma dependência de `src/extrair_release.py`. A ferramenta não exige pacotes novos.
+- Python com `pdfplumber`, a mesma dependência de `src/extrair_release.py`. O extrator não exige pacotes novos.
 - Os PDFs dos ITRs em `data/itrs/`.
-- Para os testes (opcional): `pytest`, como dependência de desenvolvimento (`uv add --dev pytest` ou `pip install pytest`). Ele não entra no `requirements.txt` de execução.
+- O `src/contrato.py` valida o JSON com `jsonschema` (`jsonschema>=4.20` em `requirements.txt`). O verificador não usa essa biblioteca (ver [CONTRATO_DADOS.md](CONTRATO_DADOS.md)).
+- Para os testes (opcional): `pytest` e `pytest-cov`, como dependências de desenvolvimento (`uv add --dev pytest` ou `pip install pytest`). Eles não entram no `requirements.txt` de execução.
 
 Rode os comandos sempre a partir da raiz do repo, como os demais scripts. O extrator calcula a raiz a partir do próprio arquivo.
 
@@ -196,13 +197,27 @@ O `verificar_numeros.py` confere cada registro contra a página indicada em `pag
 python src/verificar_numeros.py saida/<stem> metricas/balanco_<empresa>.json
 ```
 
-A pasta passada ao verificador tem de ser a mesma de onde o extrator leu o texto (`saida/<stem>`), e o JSON tem de ser o principal (`balanco_<empresa>.json`), não o `.meta.json`. O verificador checa, para cada registro:
+A pasta passada ao verificador tem de ser a mesma de onde o extrator leu o texto (`saida/<stem>`), e o JSON tem de ser o principal (`balanco_<empresa>.json`), não o `.meta.json`. O verificador não valida o contrato. Para checar a forma do JSON contra `schemas/balanco.schema.json`, rode antes `python src/contrato.py metricas/balanco_<empresa>.json` (código 2 se estiver fora do contrato).
+
+O verificador confere, para cada registro:
 
 1. Se o `trecho` está na página indicada.
-2. Se o `valor_como_aparece` está nesse trecho.
+2. Se o `valor_como_aparece` está na página indicada e dentro do `trecho`.
 3. Se o número convertido bate com `valor`.
 
+Cada registro sai como OK, REVISAR ou ERRO.
+
+**Os balanços saem como REVISAR.** O formato legado (sem `chave`, `documento` nem `escopo`) fica "fora do contrato" do time para o verificador atual, que o classifica como REVISAR: `fora do contrato (sem chave, documento, escopo): não entra no pipeline`, além de pedir evidência literal de período, unidade e escopo. Hoje os quatro balanços dão 0/94, 0/88, 0/81 e 0/78 conferem, com todos os registros em REVISAR e nenhum ERRO (código 0). Isso significa que a conferência automática não comprovou o vínculo, não que o número esteja errado; os balanços ainda não entram no pipeline de fatos.
+
 Se algum item der ERRO, o problema está no registro, na página ou no texto extraído. Corrija só o item indicado, olhando a página em `pagina_NN.txt` e o PDF. Não ajuste o número sem conferir a fonte.
+
+Códigos do verificador: 0 (nenhum ERRO) e 1 (algum ERRO; com `--estrito`, também REVISAR). Para validar o `.meta.json`, que o verificador não lê, use o `src/contrato.py`:
+
+```bash
+python src/contrato.py metricas/balanco_gerdau.meta.json
+```
+
+Detalhes do contrato e do resumo do verificador estão em [CONTRATO_DADOS.md](CONTRATO_DADOS.md).
 
 ## Validações
 
@@ -264,6 +279,8 @@ Em execuções com vários PDFs ou `--visao ambas`, o código final é o maior d
 | `--paginas inválido` | Use `ATIVO:PASSIVO`, por exemplo `26:27-28`. |
 | Código 1 com V04 ou V05 falhando | O balanço não fecha. Muitas vezes é um dígito errado no texto extraído ou um texto editado à mão. Confira a página e o PDF antes de mexer em qualquer coisa. |
 | `ambiguo: true` | Não é erro. O literal aparece mais de uma vez na página (por exemplo, pai e filho com o mesmo valor). |
+| `contrato.py` sai com código 2 | O JSON do balanço não passou no schema. Corrija os campos apontados. O caminho `$[n].campo` diz qual registro e qual campo. Ver [CONTRATO_DADOS.md](CONTRATO_DADOS.md). |
+| Verificador marca tudo como `[REVISAR]` (`fora do contrato`) | Esperado para o formato legado do balanço. Não é erro do extrator; ver a seção do verificador acima. |
 
 ## Limitações
 
@@ -274,4 +291,10 @@ Em execuções com vários PDFs ou `--visao ambas`, o código final é o maior d
 - Não lê CSV da CVM e não acessa a rede.
 - Planos de contas diferentes do padrão CVM (bancos, seguradoras) falham nas validações com mensagem.
 - Não usa OCR nem PDF escaneado.
-- O verificador busca por substring, e literais curtos como `0` podem casar por acaso. O extrator mitiga isso com `trecho` de linha inteira e o campo `ambiguo`, mas não corrige a limitação do verificador.
+- O verificador busca por substring, e literais curtos como `0` podem casar por acaso. O extrator mitiga isso com `trecho` de linha inteira e o campo `ambiguo`, mas não corrige a limitação do verificador. O verificador atual trata o valor como token inteiro e pede a coluna quando o trecho tem vários números, o que reduz esse risco. Ver [CONTRATO_DADOS.md](CONTRATO_DADOS.md), parte 2.
+
+## Testes
+
+- `pytest` roda sem PDF: os testes do extrator e do verificador usam as páginas de `tests/fixtures/` e um PDF falso em `tmp_path`.
+- `pytest --com-pdf` roda também os testes que leem os PDFs reais em `data/itrs/`. Sem o PDF, o teste aparece como `skipped` com a razão `PDF ausente`.
+- As fixtures, o manifesto e como regenerá-las estão em [CONTRATO_DADOS.md](CONTRATO_DADOS.md), parte 4.

@@ -1,7 +1,9 @@
 [
   {
     "metrica": "Receita líquida",
-    "periodo": "2T26 vs 2T25",
+    "periodo": "3T26 vs 3T25",
+    "base_comparacao": "A/A",
+    "visao": "consolidado",
     "unidade": "R$ milhões",
     "valor": 12345.6,
     "valor_como_aparece": "12.345,6",
@@ -13,7 +15,9 @@
   },
   {
     "metrica": "Margem EBITDA",
-    "periodo": "2T26",
+    "periodo": "3T26",
+    "visao": "consolidado",
+    "criterio_ebitda": "ajustado",
     "unidade": "%",
     "valor": 21.4,
     "valor_como_aparece": "21,4%",

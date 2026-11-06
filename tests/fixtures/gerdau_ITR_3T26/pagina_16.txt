@@ -1,0 +1,53 @@
+Docusign Envelope ID: AA4DB11E-AF95-8FF6-8065-92BDF91157FE Versão : 1
+PÁGINA: 3 de 65
+ITR - Informações Trimestrais Ano: 2026 Versão: 1
+DFs Individuais / Balanço Patrimonial Passivo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+2 Passivo Total 61.544.961 60.465.956
+2.01 Passivo Circulante 983.335 997.890
+2.01.01 Obrigações Sociais e Trabalhistas 87.668 76.665
+2.01.01.02 Obrigações Trabalhistas 87.668 76.665
+2.01.01.02.01 Salarios a pagar 87.668 76.665
+2.01.02 Fornecedores 351.689 310.991
+2.01.02.01 Fornecedores Nacionais 345.392 301.841
+2.01.02.01.01 Fornecedores mercado doméstico 317.543 275.560
+2.01.02.01.02 Fornecedores risco sacado 27.849 26.281
+2.01.02.02 Fornecedores Estrangeiros 6.297 9.150
+2.01.02.02.01 Fornecedores importação 6.297 9.150
+2.01.03 Obrigações Fiscais 26.887 37.837
+2.01.03.01 Obrigações Fiscais Federais 26.887 37.837
+2.01.03.01.01 Imposto de Renda e Contribuição Social a Pagar 183 4.311
+2.01.03.01.02 Impostos e contribuições sociais a recolher 26.704 33.526
+2.01.04 Empréstimos e Financiamentos 212.369 201.838
+2.01.04.01 Empréstimos e Financiamentos 11.838 157.229
+2.01.04.01.01 Em Moeda Nacional 11.838 157.229
+2.01.04.02 Debêntures 200.531 44.609
+2.01.05 Outras Obrigações 251.864 328.575
+2.01.05.02 Outros 251.864 328.575
+2.01.05.02.05 Passivo de arrendamento 48.385 44.071
+2.01.05.02.07 Outros passivos circulantes 203.479 284.504
+2.01.06 Provisões 52.858 41.984
+2.01.06.02 Outras Provisões 52.858 41.984
+2.01.06.02.03 Provisões para Passivos Ambientais e de Desativação 52.858 40.870
+2.01.06.02.04 Valor justo de derivativos 0 1.114
+2.02 Passivo Não Circulante 5.906.606 5.882.673
+2.02.01 Empréstimos e Financiamentos 4.796.260 4.465.281
+2.02.01.01 Empréstimos e Financiamentos 250.402 102.491
+2.02.01.01.01 Em Moeda Nacional 250.402 102.491
+2.02.01.02 Debêntures 4.545.858 4.362.790
+2.02.02 Outras Obrigações 907.481 1.191.519
+2.02.02.01 Passivos com Partes Relacionadas 810.724 1.068.764
+2.02.02.02 Outros 96.757 122.755
+2.02.02.02.04 Passivo de arrendamento 21.167 55.903
+2.02.02.02.05 Outros passivos não Circulantes 75.590 66.852
+2.02.04 Provisões 202.865 225.873
+2.02.04.01 Provisões Fiscais Previdenciárias Trabalhistas e Cíveis 184.984 186.574
+2.02.04.01.01 Provisões Fiscais 108.746 116.628
+2.02.04.01.02 Provisões Previdenciárias e Trabalhistas 75.469 69.233
+2.02.04.01.04 Provisões Cíveis 769 713
+2.02.04.02 Outras Provisões 17.881 39.299
+2.02.04.02.03 Provisões para Passivos Ambientais e de Desativação 17.881 39.299
+2.03 Patrimônio Líquido 54.655.020 53.585.393
+ITR - InfoDrmFsa çInõedsiv Tidrimuaeisst r/a Bisa -l a3n0ç/0o9 P/2a0t2r6im -o GnEiaRlD PAaUs sSi.vAo. 11

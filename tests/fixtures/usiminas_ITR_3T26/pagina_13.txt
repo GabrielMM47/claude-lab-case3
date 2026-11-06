@@ -1,0 +1,51 @@
+ITR - Informações Trimestrais - 30/09/2026 - USINAS SID DE MINAS GERAIS S.A.-USIMINAS Versão : 1
+DFs Consolidadas / Balanço Patrimonial Passivo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+2 Passivo Total 34.836.026 35.684.766
+2.01 Passivo Circulante 3.212.685 4.078.513
+2.01.01 Obrigações Sociais e Trabalhistas 388.009 385.807
+2.01.02 Fornecedores 2.370.116 2.543.572
+2.01.03 Obrigações Fiscais 131.994 137.775
+2.01.03.01 Obrigações Fiscais Federais 131.994 137.775
+2.01.03.01.01 Imposto de Renda e Contribuição Social a Pagar 2.305 203
+2.01.03.01.02 Tributos a recolher 129.689 137.572
+2.01.04 Empréstimos e Financiamentos 127.408 184.291
+2.01.04.01 Empréstimos e Financiamentos 34.002 87.121
+2.01.04.02 Debêntures 93.406 97.170
+2.01.05 Outras Obrigações 195.158 827.068
+2.01.05.02 Outros 195.158 827.068
+2.01.05.02.01 Dividendos e JCP a Pagar 616 47.742
+2.01.05.02.04 Tributos Parcelados 34.665 31.073
+2.01.05.02.05 Instrumentos Financeiros 0 5.680
+2.01.05.02.06 Adiantamentos de Clientes 67.449 64.897
+2.01.05.02.08 Contas a Pagar 74.984 84.769
+2.01.05.02.09 Títulos a pagar - Forfaiting 0 570.111
+2.01.05.02.10 Passivos de Arrendamento 17.444 22.796
+2.02 Passivo Não Circulante 7.652.715 7.904.872
+2.02.01 Empréstimos e Financiamentos 6.053.758 6.205.848
+2.02.01.01 Empréstimos e Financiamentos 2.542.527 2.696.584
+2.02.01.02 Debêntures 3.511.231 3.509.264
+2.02.02 Outras Obrigações 310.445 335.344
+2.02.02.02 Outros 310.445 335.344
+2.02.02.02.03 Tributos Parcelados 60.668 78.043
+2.02.02.02.06 Passivos de Arrendamento 73.579 81.660
+2.02.02.02.07 Outros 176.198 175.641
+2.02.04 Provisões 1.288.512 1.363.680
+2.02.04.01 Provisões Fiscais Previdenciárias Trabalhistas e Cíveis 1.011.717 1.103.493
+2.02.04.01.02 Provisões Previdenciárias e Trabalhistas 504.190 552.297
+2.02.04.01.05 Passivos Contingentes 507.527 551.196
+2.02.04.02 Outras Provisões 276.795 260.187
+2.02.04.02.03 Provisões para Passivos Ambientais e de Desativação 270.490 250.452
+2.02.04.02.04 Outras Provisões 6.305 9.735
+2.03 Patrimônio Líquido Consolidado 23.970.626 23.701.381
+2.03.01 Capital Social Realizado 13.200.295 13.200.295
+2.03.02 Reservas de Capital 312.665 312.665
+2.03.04 Reservas de Lucros 7.414.547 7.414.547
+2.03.04.01 Reserva Legal 696.136 696.136
+2.03.04.10 Para Investimentos e Capital de Giro 6.718.411 6.718.411
+2.03.05 Lucros/Prejuízos Acumulados 1.388.340 0
+2.03.06 Ajustes de Avaliação Patrimonial -1.261.596 -113.628
+2.03.09 Participação dos Acionistas Não Controladores 2.916.375 2.887.502
+PÁGINA: 12 de 109

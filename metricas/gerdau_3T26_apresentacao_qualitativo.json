@@ -1,0 +1,82 @@
+[
+  {
+    "chave": "qualitativo",
+    "metrica": "perfil",
+    "tema": "perfil",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A Gerdau organiza suas operações de aço em três divisões geográficas, com portfólio de produtos e soluções global.",
+    "pagina": 7,
+    "trecho": "Portfólio completo de produtos e soluções em todo o mundo"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "capacidade_footprint",
+    "tema": "capacidade_footprint",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A operação norte-americana reúne 13 unidades de produção, atuação em EUA e Canadá e capacidade baseada integralmente em sucata.",
+    "pagina": 8,
+    "trecho": "13 unidades de produção de aço"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "mercados_produtos",
+    "tema": "mercados_produtos",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "O mix brasileiro combina longos e planos, enquanto os mercados finais incluem indústria, agro, construção civil e automotivo.",
+    "pagina": 18,
+    "trecho": "PORTFÓLIO DE PRODUTOS"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "estrategia",
+    "tema": "estrategia",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A agenda estratégica prioriza verticalização, crescimento de capacidade e otimização de ativos em aços planos e mini mills.",
+    "pagina": 15,
+    "trecho": "Principais direcionadores estratégicos"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "capex_investimentos",
+    "tema": "capex_investimentos",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "Os investimentos são apresentados em três frentes: crescimento, competitividade e manutenção, com foco em mineração e operações industriais.",
+    "pagina": 29,
+    "trecho": "Investimentos em crescimento, competitividade e manutenção"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "guidance_perspectivas",
+    "tema": "guidance_perspectivas",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A companhia informa guidance de capex para 2026 e o percentual já executado até os nove primeiros meses do ano.",
+    "pagina": 29,
+    "trecho": "GUIDANCE 2026"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "riscos",
+    "tema": "riscos",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A própria apresentação alerta que previsões dependem de condições econômicas, políticas, comerciais e regulatórias sujeitas a incerteza.",
+    "pagina": 43,
+    "trecho": "sujeitas a riscos"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "esg",
+    "tema": "esg",
+    "empresa": "gerdau",
+    "documento": "apresentacao",
+    "resumo": "A apresentação destaca a substituição de barragens de rejeitos por processamento com empilhamento a seco.",
+    "pagina": 12,
+    "trecho": "empilhamento a seco"
+  }
+]

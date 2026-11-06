@@ -1,0 +1,24 @@
+Docusign Envelope ID: AA4DB11E-AF95-8FF6-8065-92BDF91157FE Versão : 1
+PÁGINA: 15 de 65
+ITR - Informações Trimestrais Ano: 2026 Versão: 1
+DFs Consolidadas / Balanço Patrimonial Passivo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+2.02.04.01.03 Provisões para Benefícios a Empregados 357.976 404.085
+2.02.04.01.04 Provisões Cíveis 38.086 37.179
+2.02.04.02 Outras Provisões 327.750 237.865
+2.02.04.02.03 Provisões para Passivos Ambientais e de Desativação 327.750 237.865
+2.03 Patrimônio Líquido Consolidado 54.848.244 53.798.489
+2.03.01 Capital Social Realizado 24.273.225 24.273.225
+2.03.02 Reservas de Capital -395.736 -508.470
+2.03.02.05 Ações em Tesouraria -407.333 -520.067
+2.03.02.07 Reserva de capital 11.597 11.597
+2.03.04 Reservas de Lucros 22.449.653 23.054.501
+2.03.04.01 Reserva Legal 2.826.340 2.826.340
+2.03.04.07 Reserva de Incentivos Fiscais 2.914.226 2.914.226
+2.03.04.10 Reserva de Investimentos e capital de giro 16.709.087 17.313.935
+2.03.05 Lucros/Prejuízos Acumulados 3.204.533 0
+2.03.06 Ajustes de Avaliação Patrimonial 5.123.345 6.766.137
+2.03.09 Participação dos Acionistas Não Controladores 193.224 213.096
+ITR - InfoDrmFsa çCõoens sTorilmideasdtraasis / -B 3a0l/a0n9ç/2o0 P26a t-r iGmEoRnDiaAlU P Sa.sAs.ivo 23
