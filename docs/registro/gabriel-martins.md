@@ -29,3 +29,19 @@
   - Usiminas 3T25: −1.747.170 − 91.216 + 46.177 + 2.226.332 = 434.123 (p. 28)
   - Gerdau 3T26: 3.350.950 − 532.654 − 119.203 + 937.901 + 193.594 − 60.412 = 3.770.176 (p. 72)
   - Usiminas dívida líquida 3T26: 6.276.500 − 6.747.169 = −470.669 (p. 32)
+
+## Estado e próximos passos (para retomar numa nova sessão)
+
+**CASE-02: código e dados prontos.** 129 testes passando no repo inteiro (`.venv/bin/pytest -q tests`).
+- `src/dfs_cvm.py`: parser CVM; `metricas/{gerdau,usiminas}_3T26_itr_dfs.json` 62/62 OK.
+- `metricas/*_itr_complementar.json` gerados por `scripts/montar_complementar_3T26.py`; Gerdau 9 REVISAR, Usiminas 23 OK + 6 REVISAR.
+- `src/verificar_numeros.py` endurecido (coluna × cabeçalho, unidade, escopo, `revisao_manual`, formato legado sem `chave` → REVISAR).
+
+**Pendências**
+1. A branch local foi rebaseada sobre o `main` e está à frente da remota: falta `git push --force-with-lease` (bloqueado pela permissão na sessão anterior).
+2. Revisão manual de 15 itens, depois registrar `"revisao_manual": {"por": "Gabriel Martins", "nota": "..."}` no script de montagem e regerar:
+   - Gerdau p. 72–73: cabeçalho espaçado; conferir que a 1ª coluna do bloco Consolidado é 30/09/2026 (a receita 18.690.518 bate com a DRE 3T26, p. 29).
+   - Usiminas p. 32: dívida bruta/líquida; confirmar que é consolidado (o release p. 24 diz "Valores Consolidados") e a ordem 30-set-26 / 30-jun-26 / 30-set-25.
+3. Abrir PR `feat/gabriel-martins` → `main` (fecha o CASE-02).
+4. Avisar o dono do CASE-04: filtrar `ajuste_ebitda` por `natureza == "pontual"` no alerta de efeito pontual; dívida líquida da Usiminas calculada × reportada difere pelos tributos parcelados (95.333).
+5. Depois: CASE-07 (`src/pipeline.py`), ver `docs/TAREFAS.md`.
