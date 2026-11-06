@@ -108,6 +108,7 @@ class Linha:
     titulo: str
     escala: str
     colunas: list[Coluna]
+    cabecalho: str = ""  # cabeçalho literal das colunas (linhas entre a escala e a 1ª conta)
 
 
 @dataclass
@@ -193,6 +194,7 @@ def ler_pagina(texto: str, n_pagina: int, ext: Extracao) -> None:
         raise ErroExtracao(f"p.{n_pagina}: '{titulo}' sem linha de escala '(Reais Mil)' logo abaixo do título")
     escala = RE_ESCALA.match(linhas[i_escala].strip())["escala"]
     colunas = ler_colunas(linhas[i_escala + 1:i_primeira])
+    cabecalho = " ".join(l.strip() for l in linhas[i_escala + 1:i_primeira])
     if not colunas:
         raise ErroExtracao(f"p.{n_pagina}: '{titulo}' sem datas no cabeçalho das colunas")
 
@@ -218,7 +220,7 @@ def ler_pagina(texto: str, n_pagina: int, ext: Extracao) -> None:
             continue
         descricao, tokens = sep
         ext.linhas.append(Linha(mc["codigo"], descricao, tokens, " ".join(partes), n_pagina,
-                                demo, titulo, escala, colunas))
+                                demo, titulo, escala, colunas, cabecalho))
         i = j + 1
 
 
@@ -338,6 +340,7 @@ def montar(ext: Extracao, slug: str, tri: str, documento_id: str) -> tuple[list[
                         "periodo": col.cabecalho,
                         "coluna": k,
                         "n_colunas": len(l.colunas),
+                        "cabecalho_colunas": l.cabecalho,
                     },
                 })
         for per in esperados[demo]:

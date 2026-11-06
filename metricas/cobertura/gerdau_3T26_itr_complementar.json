@@ -1,0 +1,65 @@
+{
+  "documento_id": "gerdau_ITR_3T26",
+  "itens": [
+    {
+      "chave": "ebitda_contabil",
+      "periodo": "3T26",
+      "status": "ausente",
+      "motivo": "ITR não divulga o EBITDA CVM 156 consolidado; calculável como ebit + depreciacao_amortizacao_tri"
+    },
+    {
+      "chave": "ebitda_contabil",
+      "periodo": "3T25",
+      "status": "ausente",
+      "motivo": "ITR não divulga o EBITDA CVM 156 consolidado; calculável como ebit + depreciacao_amortizacao_tri"
+    },
+    {
+      "chave": "divida_bruta_reportada",
+      "periodo": "3T26",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "divida_bruta_reportada",
+      "periodo": "3T25",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "divida_liquida_reportada",
+      "periodo": "3T26",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "divida_liquida_reportada",
+      "periodo": "3T25",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "dl_ebitda_reportado",
+      "periodo": "3T26",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "dl_ebitda_reportado",
+      "periodo": "3T25",
+      "status": "ausente",
+      "motivo": "não divulgado em número no ITR (a nota 22 de risco de capital só cita o indicador)"
+    },
+    {
+      "chave": "*",
+      "periodo": "2T26",
+      "status": "ausente",
+      "motivo": "o ITR do 3T26 da Gerdau só traz 3T26 × 3T25 e 9M26 × 9M25"
+    },
+    {
+      "chave": "ajuste_ebitda:recuperacao_creditos_provisoes",
+      "periodo": "3T25",
+      "status": "ausente",
+      "motivo": "célula '-' na p. 72: sem ajuste no 3T25"
+    }
+  ]
+}

@@ -19,6 +19,7 @@ Para cada fato:
      estar na página e ser coerentes com o fato (datas, mil × milhões, consolidado × individual).
 
 Resultado por fato: OK, REVISAR (a automação não comprovou o vínculo: falta evidência) ou ERRO.
+Um REVISAR vira OK só com "revisao_manual": {"por": "<pessoa>", "nota": "<o que conferiu>"} no fato.
 "OK" quer dizer "conferido literalmente contra o PDF", não validação semântica completa.
 Saída 1 se houver ERRO; com --estrito, também se houver REVISAR.
 """
@@ -37,7 +38,12 @@ CAMPOS_BASE = ("metrica", "pagina", "trecho")
 CAMPOS_CONTRATO = ("chave", "empresa", "documento")
 CAMPOS_NUMERICOS = ("valor", "valor_como_aparece", "unidade", "periodo", "escopo")
 
-RE_NUM = re.compile(r"(?<![\w.,])[-(]?\d{1,3}(?:\.\d{3})*(?:,\d+)?\)?%?(?![\w])")
+_N = r"\d{1,3}(?:\.\d{3})*(?:,\d+)?"
+RE_NUM = re.compile(rf"(?<![\w.,])(?:-?{_N}|\({_N}\))(?:%|x)?(?![\w)])")  # parênteses balanceados
+# rótulos de coluna num cabeçalho: intervalo de datas, data, 3T26, 9M26 ou ∆
+RE_ROTULO = re.compile(r"\d{2}/\d{2}/\d{4}\s+à\s+\d{2}/\d{2}/\d{4}|\d{2}/\d{2}/\d{4}|\b[1-4]T\d{2}\b|\b\d{1,2}M\d{2}\b|[∆Δ]")
+VAZIO = {"-", "–", "—"}  # célula vazia numa linha de tabela
+RE_MIL = re.compile(r"\bmil(hares)?\b")
 RE_DATA = re.compile(r"\d{2}/\d{2}/\d{4}")
 RE_INDIVIDUAL = re.compile(r"DFs Individuais|controladora\b|holding", re.I)
 
@@ -48,7 +54,7 @@ def normalizar(t: str) -> str:
 
 def br_para_float(s: str) -> float:
     """'1.234,5' -> 1234.5 ; '(123,4)' -> -123.4 ; '12,3%' -> 12.3"""
-    s = s.strip().replace("%", "").replace("R$", "").strip()
+    s = s.strip().replace("%", "").replace("R$", "").strip().removesuffix("x")
     negativo = s.startswith("(") and s.endswith(")") or s.startswith("-")
     s = s.strip("()-").replace(".", "").replace(",", ".")
     return -float(s) if negativo else float(s)
@@ -64,7 +70,7 @@ def valores_finais(trecho: str) -> list[str]:
     """Tokens numéricos no fim da linha (as colunas de uma tabela)."""
     fim = []
     for p in reversed(trecho.split()):
-        if not RE_NUM.fullmatch(p):
+        if not (RE_NUM.fullmatch(p) or p in VAZIO):
             break
         fim.append(p)
     return fim[::-1]
@@ -72,6 +78,26 @@ def valores_finais(trecho: str) -> list[str]:
 
 def _iso_para_br(s: str) -> str:
     return date.fromisoformat(s).strftime("%d/%m/%Y")
+
+
+def checar_cabecalho(cab: str, texto_pagina: str, k: int, n: int, m: dict) -> list[str]:
+    """O cabeçalho literal tem n colunas e a coluna k é o período do fato?"""
+    if normalizar(cab) not in texto_pagina:
+        return [f"cabecalho_colunas '{cab}' não está na página"]
+    rotulos = RE_ROTULO.findall(cab)
+    if len(rotulos) != n:
+        return [f"cabeçalho tem {len(rotulos)} colunas ({' | '.join(rotulos)}); o fato diz {n}"]
+    r = rotulos[k - 1]
+    if r in ("∆", "Δ"):
+        return [f"a coluna {k} é de variação (∆), não de valor"]
+    datas = RE_DATA.findall(r)
+    if datas:
+        esperadas = [_iso_para_br(m[c]) for c in ("periodo_inicio", "periodo_fim") if m.get(c)]
+        if esperadas and datas != esperadas[-len(datas):]:
+            return [f"a coluna {k} é de {' à '.join(datas)}, não do período do fato ({m.get('periodo')})"]
+    elif r != m.get("periodo"):
+        return [f"a coluna {k} é '{r}', não '{m.get('periodo')}'"]
+    return []
 
 
 def avaliar(m: dict, pasta: Path) -> tuple[str, list[str], list[str]]:
@@ -127,12 +153,19 @@ def avaliar(m: dict, pasta: Path) -> tuple[str, list[str], list[str]]:
         cols = valores_finais(trecho)
         if ev.get("coluna") and ev.get("n_colunas"):
             k, n = int(ev["coluna"]), int(ev["n_colunas"])
-            if len(cols) != n:
+            if len(cols) < n:
                 erros.append(f"trecho termina com {len(cols)} valores; a evidência diz {n} colunas")
-            elif cols[k - 1] != tok:
-                onde = [i + 1 for i, c in enumerate(cols) if c == tok]
-                erros.append(f"coluna {k} do trecho é '{cols[k - 1]}', não '{tok}'"
-                             + (f" (o valor está na coluna {onde[0]})" if onde else ""))
+            else:
+                cols = cols[-n:]  # a descrição pode terminar em número ("Instrução CVM 156")
+                if cols[k - 1] != tok:
+                    onde = [i + 1 for i, c in enumerate(cols) if c == tok]
+                    erros.append(f"coluna {k} do trecho é '{cols[k - 1]}', não '{tok}'"
+                                 + (f" (o valor está na coluna {onde[0]})" if onde else ""))
+            cab = ev.get("cabecalho_colunas")
+            if cab:
+                erros += checar_cabecalho(cab, texto, k, n, m)
+            else:
+                pend.append("sem cabecalho_colunas: a ordem das colunas (qual é qual período) não foi comprovada")
         elif len(RE_NUM.findall(trecho)) > 1:
             pend.append("trecho tem mais de um número e o fato não diz a coluna: período não comprovado")
 
@@ -153,7 +186,7 @@ def avaliar(m: dict, pasta: Path) -> tuple[str, list[str], list[str]]:
         eu = ev["unidade"].lower()
         if normalizar(ev["unidade"]) not in texto:
             erros.append(f"evidência de unidade '{ev['unidade']}' não está na página")
-        elif ("milh" in un) != ("milh" in eu) or bool(re.search(r"\bmil\b", un)) != bool(re.search(r"\bmil\b", eu)):
+        elif ("milh" in un) != ("milhões" in eu or "milhoes" in eu) or bool(RE_MIL.search(un)) != bool(RE_MIL.search(eu)):
             erros.append(f"unidade '{m.get('unidade')}' incoerente com a evidência '{ev['unidade']}'")
     elif un not in ("%", "x"):
         pend.append("sem evidência literal da unidade (evidencia.unidade)")
@@ -173,6 +206,10 @@ def avaliar(m: dict, pasta: Path) -> tuple[str, list[str], list[str]]:
             and not re.search(r"^DFs Consolidadas", bruto, re.M):
         erros.append("fato marcado consolidado, mas a página é das DFs Individuais (controladora)")
 
+    rev = m.get("revisao_manual") or {}
+    if pend and not erros and rev.get("por") and rev.get("nota"):
+        # uma pessoa conferiu o que a automação não comprova: fica registrado, não some
+        return "OK", erros, [f"revisão manual ({rev['por']}): {rev['nota']}"]
     status = "ERRO" if erros else ("REVISAR" if pend else "OK")
     return status, erros, pend
 
