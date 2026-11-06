@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 RAIZ = Path(__file__).resolve().parent
 TRI, TRI_AA, TRI_TT = "3T26", "3T25", "2T26"
 PAR = f"empresa_a_x_empresa_b_{TRI}"
-PASTA_COMP = RAIZ / "saida" / "comparativo" / PAR
+PASTA_COMP = RAIZ / "comparativo" / PAR  # fora de "saida/", que o .gitignore ignora
 
 EMPRESAS = {
     "a": {"slug": "empresa_a", "nome": "Empresa A", "ticker": "FCTA3", "cor": "#1f5fa8"},
@@ -170,6 +170,15 @@ def vencedor(melhor, a, b):
 
 
 # ---------------------------------------------------------------- gráficos
+def fontes_de(*chaves: str) -> dict:
+    """Fontes por empresa, no formato do comparativo: {"a": ["ITR p.29", ...], "b": [...]}."""
+    return {e: [BASE[e]["pag"][k] for k in chaves] for e in "ab"}
+
+
+def legenda(fontes: dict) -> str:
+    return "; ".join(f"{EMPRESAS[e]['nome']} — {', '.join(v)}" for e, v in fontes.items())
+
+
 def _rodape(fig, texto_fonte: str):
     fig.text(0.01, 0.01, f"Fonte: {texto_fonte} · DADOS FICTÍCIOS", fontsize=7, color="#555")
     fig.text(0.5, 0.5, "FICTÍCIO", fontsize=48, color="#000", alpha=0.06, ha="center",
@@ -197,8 +206,8 @@ def gerar_graficos(linhas: dict) -> list[dict]:
                    width=0.4, color=[cores[i] + "80", cores[i]])
         ax.set_xticks([0, 1], nomes)
         ax.set_title(f"{titulo} (R$ mi): {TRI_AA} × {TRI}", fontsize=10)
-    fontes = [f"{EMPRESAS[e]['nome']} — {BASE[e]['pag']['dre']}, {BASE[e]['pag']['ebitda']}" for e in "ab"]
-    _rodape(fig, "; ".join(fontes))
+    fontes = fontes_de("dre", "ebitda")
+    _rodape(fig, legenda(fontes))
     salvar(fig, "receita_ebitda", f"Receita e EBITDA ajustado, {TRI} × {TRI_AA} (A/A)", fontes)
 
     # 2. Margens lado a lado
@@ -209,8 +218,8 @@ def gerar_graficos(linhas: dict) -> list[dict]:
     ax.set_xticks([0, 1], ["Margem EBITDA ajustada", "Margem líquida"])
     ax.set_title(f"Margens no {TRI} (%)", fontsize=10)
     ax.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=c) for c in cores], labels=nomes)
-    fontes = [f"{EMPRESAS[e]['nome']} — {BASE[e]['pag']['dre']}, {BASE[e]['pag']['ebitda']}" for e in "ab"]
-    _rodape(fig, "; ".join(fontes))
+    fontes = fontes_de("dre", "ebitda")
+    _rodape(fig, legenda(fontes))
     salvar(fig, "margens", f"Margem EBITDA ajustada e margem líquida, {TRI}", fontes)
 
     # 3. DL/EBITDA
@@ -219,8 +228,8 @@ def gerar_graficos(linhas: dict) -> list[dict]:
     ax.axhline(0, color="#333", lw=0.8)
     ax.set_xticks([0, 1], nomes)
     ax.set_title("Dívida líquida / EBITDA ajustado (x; negativo = caixa líquido)", fontsize=10)
-    fontes = [f"{EMPRESAS[e]['nome']} — {BASE[e]['pag']['passivo']}, {BASE[e]['pag']['ebitda']}" for e in "ab"]
-    _rodape(fig, "; ".join(fontes))
+    fontes = fontes_de("passivo", "ebitda")
+    _rodape(fig, legenda(fontes))
     salvar(fig, "dl_ebitda", f"Alavancagem em 30/09 ({TRI})", fontes)
 
     # 4. Volume e R$/t
@@ -237,8 +246,8 @@ def gerar_graficos(linhas: dict) -> list[dict]:
     axs[1].set_xticks([0, 1], nomes)
     axs[1].set_xlim(-0.6, 1.6)
     axs[1].set_title(f"Receita por tonelada, {TRI} (R$/t)", fontsize=10)
-    fontes = [f"{EMPRESAS[e]['nome']} — {BASE[e]['pag']['volume']}, {BASE[e]['pag']['dre']}" for e in "ab"]
-    _rodape(fig, "; ".join(fontes))
+    fontes = fontes_de("volume", "dre")
+    _rodape(fig, legenda(fontes))
     salvar(fig, "volume_rpt", f"Volume e receita por tonelada, {TRI}", fontes)
 
     # 5. Mix de segmentos (% do EBITDA)
@@ -252,8 +261,8 @@ def gerar_graficos(linhas: dict) -> list[dict]:
             base += pct_ebitda
     ax.set_yticks([0, 1], nomes)
     ax.set_title(f"Mix do EBITDA por segmento, {TRI} (%)", fontsize=10)
-    fontes = [f"{EMPRESAS[e]['nome']} — {BASE[e]['pag']['segmentos']}" for e in "ab"]
-    _rodape(fig, "; ".join(fontes))
+    fontes = fontes_de("segmentos")
+    _rodape(fig, legenda(fontes))
     salvar(fig, "mix_segmentos", f"Participação de cada segmento no EBITDA, {TRI}", fontes)
     return graficos
 
@@ -281,11 +290,12 @@ def gerar_comparativo() -> dict:
         {"id": "alavancagem", "chaves": ["dl_ebitda", "divida_liquida"],
          "texto": f"Empresa B tem caixa líquido (DL/EBITDA {por_chave['dl_ebitda']['b']['texto']}); "
                   f"Empresa A, {por_chave['dl_ebitda']['a']['texto']}"},
-        {"id": "mineracao", "chaves": [],
+        {"id": "mineracao", "chaves": [], "fontes": {"b": [BASE["b"]["pag"]["segmentos"]]},
          "texto": f"Mineração responde por {fmt_br(SEGMENTOS['b'][1][2], 0)}% do EBITDA da Empresa B"},
     ]
     alertas = [
         {"tipo": "efeito_pontual", "empresa": "b", "fontes": ["ITR p.33"],
+         "chaves": ["lucro_liquido", "margem_liquida"],
          "texto": "Prejuízo de R$ 400,0 mi no 3T25 inclui impairment de R$ 500,0 mi: a variação A/A "
                   "do lucro da Empresa B engana"},
         {"tipo": "negocios_diferentes", "empresa": "b", "fontes": [BASE["b"]["pag"]["segmentos"]],

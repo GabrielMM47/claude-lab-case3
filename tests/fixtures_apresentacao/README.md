@@ -8,8 +8,8 @@
 
 | Arquivo | Formato (docs/TAREFAS.md) | Quem gera de verdade |
 |---|---|---|
-| `saida/comparativo/empresa_a_x_empresa_b_3T26/comparativo.json` | `comparativo.json` | CASE-05 |
-| `saida/comparativo/.../graficos/*.png` | os 5 gráficos do CASE-05 | CASE-05 |
+| `comparativo/empresa_a_x_empresa_b_3T26/comparativo.json` | `comparativo.json` | CASE-05 |
+| `comparativo/.../graficos/*.png` | os 5 gráficos do CASE-05 | CASE-05 |
 | `metricas/empresa_*_3T26_apresentacao_qualitativo.json` | fato qualitativo | CASE-03 |
 | `narrativa/empresa_a_x_empresa_b_3T26.json` | narrativa | CASE-06 |
 
@@ -35,7 +35,9 @@ O exemplo de `comparativo.json` em TAREFAS.md não mostra estes campos. A fixtur
 
 - `linhas[].periodo`: período do valor (rentabilidade é 9M26, o resto 3T26).
 - `linhas[].a|b.status` e `.obs`: `ok` | `ausente` | `nao_comparavel` | `nao_aplicavel` e o motivo. Igual ao `indicadores.json` (METODOLOGIA_INDICADORES.md). `texto` traz `N/D`, `N/C` ou `N/A`.
-- `segmentos[].fontes`, `alertas[].fontes` e `graficos[].fontes`: todo número na tela precisa de página.
+- `segmentos[].fontes`, `alertas[].fontes`: lista, como nas linhas (a empresa já está no item).
+- `alertas[].chaves`: linhas afetadas pelo alerta. Num efeito pontual, a apresentação não usa a variação A/A dessas linhas como destaque.
+- `graficos[].fontes` e `insights[].fontes` (este quando o número não vem de uma linha, ex.: mix de segmentos): por empresa, `{"a": ["ITR p.29"], "b": ["ITR p.14"]}`. Todo número na tela precisa de página.
 
 `fontes` segue o exemplo do contrato (`"ITR p.29"`, `"Apresentação p.12"`), com página = índice do PDF.
 

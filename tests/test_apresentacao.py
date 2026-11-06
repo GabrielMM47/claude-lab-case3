@@ -7,14 +7,19 @@ Quando o CASE-01/05 publicarem a fixture oficial, acrescentar o caminho dela em 
 """
 from __future__ import annotations
 
+import copy
 import json
 import re
+import sys
 from pathlib import Path
 
 import pytest
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+import apresentacao as ap  # noqa: E402
+
 FIXTURE = Path(__file__).resolve().parent / "fixtures_apresentacao"
-PASTAS_COMPARATIVO = [FIXTURE / "saida" / "comparativo" / "empresa_a_x_empresa_b_3T26"]
+PASTAS_COMPARATIVO = [FIXTURE / "comparativo" / "empresa_a_x_empresa_b_3T26"]
 NARRATIVA = FIXTURE / "narrativa" / "empresa_a_x_empresa_b_3T26.json"
 QUALITATIVOS = sorted((FIXTURE / "metricas").glob("*_apresentacao_qualitativo.json"))
 
@@ -178,3 +183,91 @@ def test_placeholders_da_narrativa_existem():
                 assert len(partes) == 2 or partes[2] in ("var_aa", "var_tt"), f"[{sid}] {{{nome}}}"
             else:
                 assert nome in ("periodo", "criterio_ebitda"), f"[{sid}] {{{nome}}}"
+
+
+# ---------------------------------------------------------------- gerador (src/apresentacao.py)
+@pytest.fixture
+def dados():
+    return ap.carregar(PASTAS_COMPARATIVO[0], FIXTURE / "metricas")
+
+
+def secoes(html_: str) -> list[str]:
+    return re.findall(r'<section class="slide".*?</section>', html_, flags=re.S)
+
+
+@pytest.mark.parametrize("com_narrativa", [True, False], ids=["narrativa", "insights"])
+def test_gera_8_slides_com_fonte_e_aviso_em_todos(dados, com_narrativa):
+    html_ = ap.gerar_html(dados, ler(NARRATIVA) if com_narrativa else None)
+    slides = secoes(html_)
+    assert [re.search(r'id="(\w+)"', s).group(1) for s in slides] == ap.IDS_SLIDES
+    for s in slides:
+        assert ap.AVISO in s
+        assert 'data-fontes="sim"' in s, f"slide sem fonte: {s[:80]}"
+        assert re.search(r"(ITR|Apresentação) p\. \d", s)
+    assert "{" not in "".join(re.sub(r"<style>.*?</style>|<script>.*?</script>", "", html_, flags=re.S))
+    assert html_.count("data:image/png;base64,") >= 4  # gráficos embutidos: arquivo único
+
+
+def test_tabela_mostra_nd_e_nc_com_motivo(dados):
+    html_ = ap.gerar_html(dados, None)
+    comparativo = next(s for s in secoes(html_) if 'id="comparativo"' in s)
+    assert "N/D" in comparativo and "falta ir_csll" in comparativo
+    setor = next(s for s in secoes(html_) if 'id="setor"' in s)
+    assert "N/C" in setor and "mineração" in setor
+
+
+def test_metodologia_traz_verificacao_e_numeracao_do_pdf(dados):
+    metodologia = next(s for s in secoes(ap.gerar_html(dados, None)) if 'id="metodologia"' in s)
+    assert "52 de 52" in metodologia and "numeração do PDF" in metodologia
+    sem = copy.deepcopy(dados)
+    sem.comp["verificacao"] = None
+    metodologia = next(s for s in secoes(ap.gerar_html(sem, None)) if 'id="metodologia"' in s)
+    assert "ainda não rodou" in metodologia
+
+
+def test_destaque_ignora_variacao_com_efeito_pontual(dados):
+    pos, neg, _ = ap.destaques_numericos(dados, "b")
+    assert pos is None or "Margem líquida" not in pos  # 3T25 com impairment: A/A engana
+    assert neg and neg.startswith("Margem EBITDA ajustada")
+
+
+def test_resolver_formata_e_registra_fonte(dados):
+    fontes = ap.Fontes()
+    texto = ap.resolver("{a.nome}: {a.margem_ebitda} ({a.margem_ebitda.var_aa} A/A), {b.dl_ebitda}", dados, fontes)
+    assert texto == "Empresa A: 16,0% (+2,6 p.p. A/A), -0,13x"
+    assert fontes.texto(dados.nomes) == "Empresa A — ITR p. 29, 71 · Empresa B — ITR p. 11, 12, 24"
+
+
+def test_narrativa_da_fixture_passa_no_verificador(dados):
+    assert ap.verificar_narrativa(ler(NARRATIVA), dados) == []
+
+
+@pytest.mark.parametrize("texto, trecho_do_erro", [
+    ("Margem de 16,0% na {a.nome}", "número escrito à mão"),
+    ("{a.margem_bruta} na {a.nome}", "não existe"),
+    ("ROIC de {b.roic}", "indisponível"),
+    ("Lucro {b.lucro_liquido.var_aa} A/A", "variação indisponível"),
+    ("Receita do 1T24: {a.receita_liquida}", "período 1T24"),
+    ("{c.receita_liquida}", "desconhecido"),
+])
+def test_verificador_reprova_narrativa_errada(dados, texto, trecho_do_erro):
+    narrativa = {"slides": [{"id": "resumo", "titulo": "ok", "bullets": [texto]}]}
+    problemas = ap.verificar_narrativa(narrativa, dados)
+    assert any(trecho_do_erro in p for p in problemas), problemas
+
+
+def test_cli_recusa_narrativa_reprovada(tmp_path, capsys):
+    ruim = tmp_path / "narrativa.json"
+    ruim.write_text(json.dumps({"slides": [{"id": "capa", "titulo": "Margem de 16,0%"}]}), encoding="utf-8")
+    saida = tmp_path / "deck.html"
+    codigo = ap.main(["--comparativo", str(PASTAS_COMPARATIVO[0]), "--narrativa", str(ruim),
+                      "--metricas", str(FIXTURE / "metricas"), "--saida", str(saida)])
+    assert codigo == 1 and not saida.exists()
+    assert "reprovada" in capsys.readouterr().err
+
+
+def test_cli_gera_arquivo(tmp_path):
+    saida = tmp_path / "deck.html"
+    codigo = ap.main(["--comparativo", str(PASTAS_COMPARATIVO[0]), "--narrativa", str(NARRATIVA),
+                      "--metricas", str(FIXTURE / "metricas"), "--saida", str(saida)])
+    assert codigo == 0 and len(secoes(saida.read_text(encoding="utf-8"))) == 8
