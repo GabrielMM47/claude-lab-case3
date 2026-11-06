@@ -1,0 +1,72 @@
+[
+  {
+    "chave": "qualitativo",
+    "metrica": "perfil",
+    "tema": "perfil",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A Usiminas se apresenta como produtora de laminados planos, com atuação integrada em mineração, logística, siderurgia e transformação.",
+    "pagina": 14,
+    "trecho": "Uma das maiores produtoras de laminados planos do Brasil"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "capacidade_footprint",
+    "tema": "capacidade_footprint",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A siderurgia opera em Ipatinga e Cubatão, com capacidade instalada de produtos laminados planos e linhas de acabamento.",
+    "pagina": 16,
+    "trecho": "CAPACIDADE INSTALADA"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "mercados_produtos",
+    "tema": "mercados_produtos",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A empresa destaca variedade de aços e exposição a mercados automotivo, industrial, distribuição, construção e exportação.",
+    "pagina": 18,
+    "trecho": "Diversificação de Produtos e mercados"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "estrategia",
+    "tema": "estrategia",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A estratégia operacional busca flexibilidade de produção para ajustar o mix às demandas nacionais e internacionais.",
+    "pagina": 18,
+    "trecho": "Temos capacidade para produzir uma grande variedade de aços"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "capex_investimentos",
+    "tema": "capex_investimentos",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "Os investimentos em coquerias, moagem, injeção de PCI e gasômetro são apresentados como projetos de competitividade industrial.",
+    "pagina": 21,
+    "trecho": "Reconstrução"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "riscos",
+    "tema": "riscos",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A governança inclui política de gestão de riscos e comitê com reporte trimestral ao comitê de auditoria.",
+    "pagina": 39,
+    "trecho": "Comitê de Gestão de Riscos"
+  },
+  {
+    "chave": "qualitativo",
+    "metrica": "esg",
+    "tema": "esg",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "resumo": "A apresentação conecta a operação de mineração à logística ferroviária e aos terminais que suportam acesso aos mercados de exportação.",
+    "pagina": 27,
+    "trecho": "Mineração Usiminas"
+  }
+]
