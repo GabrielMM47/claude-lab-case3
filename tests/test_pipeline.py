@@ -56,7 +56,7 @@ quali = sorted(p.name for p in Path(a.metricas).glob("*_qualitativo.json"))
 destino = Path(a.saida)
 destino.parent.mkdir(parents=True, exist_ok=True)
 v = comp["verificacao"]
-destino.write_text(f"<html>{v['ok']}/{v['total']} verificados · {v['status']} · {len(quali)} quali</html>",
+destino.write_text(f"<html><body>{v['ok']}/{v['total']} verificados · {v['status']} · {len(quali)} quali</html>",
                    encoding="utf-8")
 '''
 
@@ -268,6 +268,14 @@ def test_rascunho_nao_toca_arquivos_oficiais(raiz):
     html = (raiz / "saida" / "rascunho" / "empresa_c_x_empresa_d_3T26" /
             "RASCUNHO_empresa_c_x_empresa_d_3T26.html").read_text(encoding="utf-8")
     assert "rascunho" in html and "2 quali" in html  # slides leem o qualitativo aprovado do rascunho
+    assert html.count('id="faixa-rascunho"') == 1 and "RASCUNHO — NÃO ENTREGAR · 1 fato(s) reprovado(s)" in html
+
+
+def test_faixa_de_rascunho_entra_depois_do_body():
+    html = pipeline.marcar_rascunho('<html><body class="x"><p>slide</p></body></html>',
+                                    {"erro": 0, "pendencias": [{}]})
+    assert html.index('id="faixa-rascunho"') > html.index('<body class="x">')
+    assert pipeline.marcar_rascunho(html, {"erro": 9, "pendencias": []}) == html  # não duplica
 
 
 def test_indicadores_aprovados_saem_iguais_ao_cli_do_case04(raiz):
