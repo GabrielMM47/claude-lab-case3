@@ -244,3 +244,11 @@ def test_fato_do_contrato_sem_escopo_e_erro(pasta):
     f = fato()
     del f["escopo"]
     assert avaliar(f, pasta)[0] == "ERRO"
+
+
+def test_negrito_falso_triplicado_e_aceito_so_no_sentido_do_token():
+    import verificar_numeros as vn
+    pagina = "Volume de Vendas\n111...555888222 777...666999777 777666333 777444111\n"
+    assert vn.tem_token("1.582", pagina) and vn.tem_token("741", pagina)
+    assert not vn.tem_token("1.583", pagina)
+    assert not vn.tem_token("1", "valor 111 legítimo")  # não desfaz triplicação no texto

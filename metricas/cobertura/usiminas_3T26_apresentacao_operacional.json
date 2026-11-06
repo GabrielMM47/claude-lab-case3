@@ -1,0 +1,25 @@
+{
+  "itens": [
+    {
+      "chave": "capacidade_instalada",
+      "periodo": "3T26",
+      "escopo": "segmento:siderurgia",
+      "status": "nao_comparavel",
+      "motivo": "Capacidade instalada de aços laminados planos = 6,9 milhões de t/ano (p. 16): unidade fora do contrato e capacidade de laminados/usina, não de aço bruto (regra 9: não serve para utilização de capacidade)"
+    },
+    {
+      "chave": "capacidade_instalada",
+      "periodo": "3T26",
+      "escopo": "segmento:ipatinga",
+      "status": "nao_comparavel",
+      "motivo": "Capacidade instalada de Ipatinga = 4,6 milhões de t/ano (p. 16): unidade fora do contrato e capacidade de laminados/usina, não de aço bruto (regra 9: não serve para utilização de capacidade)"
+    },
+    {
+      "chave": "capacidade_instalada",
+      "periodo": "3T26",
+      "escopo": "segmento:cubatao",
+      "status": "nao_comparavel",
+      "motivo": "Capacidade instalada de Cubatão = 2,3 milhões de t/ano (p. 16): unidade fora do contrato e capacidade de laminados/usina, não de aço bruto (regra 9: não serve para utilização de capacidade)"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "itens": [
+    {
+      "chave": "receita_por_t_reportada",
+      "periodo": "3T26",
+      "escopo": "segmento:america_do_norte",
+      "status": "nao_comparavel",
+      "motivo": "p. 19 só traz a variação T/T (4,7%) da receita por tonelada em US$, não o nível; período '3T26 vs 2T26' fora do contrato"
+    }
+  ]
+}

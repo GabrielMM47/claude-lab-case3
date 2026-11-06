@@ -6,12 +6,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:brasil",
     "periodo": "3T25",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 1582,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.582",
     "pagina": 18,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; a extração textual fragmenta os dígitos e não produz um literal numérico parseável no pagina_18.txt. Não há volume consolidado reportado neste material; este item é por segmento."
+    "trecho": "111...555888222 777...666999777 777666333 777444111",
+    "obs": "Valor transcrito do gráfico do slide; a extração textual fragmenta os dígitos e não produz um literal numérico parseável no pagina_18.txt. Não há volume consolidado reportado neste material; este item é por segmento.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -20,12 +24,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:brasil",
     "periodo": "3T26",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 1351,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.351",
     "pagina": 18,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "111...333555222 111...333555111 666...666888666",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -36,10 +44,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 7697,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "7.697",
     "pagina": 18,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "111...555888222 777...666999777 777666333 777444111",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -50,10 +62,14 @@
     "periodo": "3T26",
     "unidade": "R$ milhões",
     "valor": 6948,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "6.948",
     "pagina": 18,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "666...999444888 777000555",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -64,10 +80,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 763,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "763",
     "pagina": 18,
-    "trecho": "EBITDA",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "111...555888222 777...666999777 777666333 777444111",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -78,10 +98,14 @@
     "periodo": "3T26",
     "unidade": "R$ milhões",
     "valor": 741,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "741",
     "pagina": 18,
-    "trecho": "EBITDA",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "111...555888222 777...666999777 777666333 777444111",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 18 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -90,12 +114,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:america_do_norte",
     "periodo": "3T25",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 1293,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.293",
     "pagina": 19,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "◼ Carteira de pedidos acima das médias 111...222999333 111...333444777 111...333111333 111000...111222666 111000...555111222 222...999111222",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -104,12 +132,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:america_do_norte",
     "periodo": "3T26",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 1313,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.313",
     "pagina": 19,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "◼ Carteira de pedidos acima das médias 111...222999333 111...333444777 111...333111333 111000...111222666 111000...555111222 222...999111222",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -120,10 +152,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 9185,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "9.185",
     "pagina": 19,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "999...111888555 222...666000000",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -134,10 +170,14 @@
     "periodo": "3T26",
     "unidade": "R$ milhões",
     "valor": 10512,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "10.512",
     "pagina": 19,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "◼ Carteira de pedidos acima das médias 111...222999333 111...333444777 111...333111333 111000...111222666 111000...555111222 222...999111222",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -148,10 +188,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 1820,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.820",
     "pagina": 19,
-    "trecho": "EBITDA",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "111...888222000",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -162,10 +206,14 @@
     "periodo": "3T26",
     "unidade": "R$ milhões",
     "valor": 2912,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "2.912",
     "pagina": 19,
-    "trecho": "EBITDA",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "◼ Carteira de pedidos acima das médias 111...222999333 111...333444777 111...333111333 111000...111222666 111000...555111222 222...999111222",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 19 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -174,12 +222,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:america_do_sul",
     "periodo": "3T25",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 289,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "289",
     "pagina": 20,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "222888999 222888222 111...333777666",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 20 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -188,12 +240,16 @@
     "documento": "apresentacao",
     "escopo": "segmento:america_do_sul",
     "periodo": "3T26",
-    "unidade": "1.000 toneladas",
+    "unidade": "mil t",
     "valor": 309,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "309",
     "pagina": 20,
-    "trecho": "Volume de Vendas",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "333000999 111...444444000 222333444",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 20 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -204,10 +260,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 1376,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.376",
     "pagina": 20,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "222888999 222888222 111...333777666",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 20 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -218,10 +278,14 @@
     "periodo": "3T26",
     "unidade": "R$ milhões",
     "valor": 1440,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "1.440",
     "pagina": 20,
-    "trecho": "Receita Líquida",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "333000999 111...444444000 222333444",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 20 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -232,10 +296,14 @@
     "periodo": "3T25",
     "unidade": "R$ milhões",
     "valor": 234,
-    "valor_como_aparece": null,
+    "valor_como_aparece": "234",
     "pagina": 20,
-    "trecho": "EBITDA",
-    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído."
+    "trecho": "333000999 111...444444000 222333444",
+    "obs": "Valor transcrito do gráfico do slide; dígitos fragmentados no texto extraído.",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "gráfico de barras com rótulos 3T25 | 2T26 | 3T26 (p. 20 renderizada e conferida); o texto extraído tem os dígitos triplicados (negrito falso), por isso a coluna não é provada por código"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -290,19 +358,5 @@
     "valor_como_aparece": "0,9",
     "pagina": 7,
     "trecho": "0,9MT"
-  },
-  {
-    "chave": "receita_por_t_reportada",
-    "metrica": "Crescimento da receita líquida por tonelada em dólares",
-    "empresa": "gerdau",
-    "documento": "apresentacao",
-    "escopo": "segmento:america_do_norte",
-    "periodo": "3T26 vs 2T26",
-    "unidade": "%",
-    "valor": 4.7,
-    "valor_como_aparece": "4,7%",
-    "pagina": 19,
-    "trecho": "receita líquida por tonelada em dólares cresceu 4,7%",
-    "obs": "O slide reporta a variação do indicador por tonelada, não o nível absoluto."
   }
 ]

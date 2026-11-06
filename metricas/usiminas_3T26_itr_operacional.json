@@ -10,7 +10,12 @@
     "valor": 1034,
     "valor_como_aparece": "1.034",
     "pagina": 24,
-    "trecho": "Volume de Vendas Aço (mil t)"
+    "trecho": "Volume de Vendas Aço (mil t) 1.034 989 5% 1.104 -6%",
+    "evidencia": {
+      "coluna": 1,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -23,7 +28,12 @@
     "valor": 1104,
     "valor_como_aparece": "1.104",
     "pagina": 24,
-    "trecho": "Volume de Vendas Aço (mil t)"
+    "trecho": "Volume de Vendas Aço (mil t) 1.034 989 5% 1.104 -6%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -36,7 +46,12 @@
     "valor": 2014,
     "valor_como_aparece": "2.014",
     "pagina": 24,
-    "trecho": "Volume de Vendas Minério (mil t)"
+    "trecho": "Volume de Vendas Minério (mil t) 2.014 2.469 -18% 2.503 -20%",
+    "evidencia": {
+      "coluna": 1,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -49,7 +64,12 @@
     "valor": 2503,
     "valor_como_aparece": "2.503",
     "pagina": 24,
-    "trecho": "Volume de Vendas Minério (mil t)"
+    "trecho": "Volume de Vendas Minério (mil t) 2.014 2.469 -18% 2.503 -20%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_producao",
@@ -62,7 +82,12 @@
     "valor": 1921,
     "valor_como_aparece": "1.921",
     "pagina": 34,
-    "trecho": "Produção de minério de ferro"
+    "trecho": "Produção de minério de ferro 1.921 2.209 -13,1% 2.412 -20,4%",
+    "evidencia": {
+      "coluna": 1,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 Δ 3T25 Δ"
+    }
   },
   {
     "chave": "volume_producao",
@@ -75,7 +100,12 @@
     "valor": 2412,
     "valor_como_aparece": "2.412",
     "pagina": 34,
-    "trecho": "Produção de minério de ferro"
+    "trecho": "Produção de minério de ferro 1.921 2.209 -13,1% 2.412 -20,4%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 Δ 3T25 Δ"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -101,7 +131,12 @@
     "valor": 2503,
     "valor_como_aparece": "2.503",
     "pagina": 34,
-    "trecho": "Vendas total 2.014 2.469"
+    "trecho": "Vendas total 2.014 2.469 -18,4% 2.503 -19,5%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 Δ 3T25 Δ"
+    }
   },
   {
     "chave": "volume_producao",
@@ -110,7 +145,7 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia",
     "periodo": "3T26",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 858,
     "valor_como_aparece": "858",
     "pagina": 36,
@@ -123,11 +158,16 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia",
     "periodo": "3T25",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 746,
     "valor_como_aparece": "746",
     "pagina": 36,
-    "trecho": "Produção de Aço Bruto 858 803"
+    "trecho": "Produção de Aço Bruto 858 803 7% 746 15%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -136,7 +176,7 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia",
     "periodo": "3T26",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 1034,
     "valor_como_aparece": "1.034",
     "pagina": 36,
@@ -149,11 +189,16 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia",
     "periodo": "3T25",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 1104,
     "valor_como_aparece": "1.104",
     "pagina": 36,
-    "trecho": "Volume de Vendas 1.034 989"
+    "trecho": "Volume de Vendas 1.034 989 5% 1.104 -6%",
+    "evidencia": {
+      "coluna": 4,
+      "n_colunas": 5,
+      "cabecalho_colunas": "3T26 2T26 ∆ 3T25 ∆"
+    }
   },
   {
     "chave": "volume_vendas",
@@ -162,7 +207,7 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia_mercado_interno",
     "periodo": "3T26",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 979,
     "valor_como_aparece": "979",
     "pagina": 36,
@@ -175,7 +220,7 @@
     "documento": "itr",
     "escopo": "segmento:siderurgia_exportacao",
     "periodo": "3T26",
-    "unidade": "Mil toneladas",
+    "unidade": "mil t",
     "valor": 55,
     "valor_como_aparece": "55",
     "pagina": 36,
@@ -192,7 +237,16 @@
     "valor": 668,
     "valor_como_aparece": "668",
     "pagina": 33,
-    "trecho": "Receita Líquida de Vendas"
+    "trecho": "Receita Líquida de Vendas 668 867 5.610 5.384 (76) (121) 6.202 6.131",
+    "evidencia": {
+      "coluna": 1,
+      "n_colunas": 8,
+      "cabecalho_colunas": "3T26 2T26 3T26 2T26 3T26 2T26 3T26 2T26"
+    },
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "p. 33: colunas por segmento (Mineração | Siderurgia | Ajustes | Consolidado), cada uma 3T26 | 2T26; a 1ª é Mineração"
+    }
   },
   {
     "chave": "receita_liquida",
@@ -205,7 +259,16 @@
     "valor": 5610,
     "valor_como_aparece": "5.610",
     "pagina": 33,
-    "trecho": "Receita Líquida de Vendas"
+    "trecho": "Receita Líquida de Vendas 668 867 5.610 5.384 (76) (121) 6.202 6.131",
+    "evidencia": {
+      "coluna": 3,
+      "n_colunas": 8,
+      "cabecalho_colunas": "3T26 2T26 3T26 2T26 3T26 2T26 3T26 2T26"
+    },
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "p. 33: colunas por segmento (Mineração | Siderurgia | Ajustes | Consolidado), cada uma 3T26 | 2T26; a 3ª é Siderurgia"
+    }
   },
   {
     "chave": "ebitda_ajustado",
@@ -244,6 +307,10 @@
     "valor": 4849,
     "valor_como_aparece": "4.849",
     "pagina": 38,
-    "trecho": "3T26"
+    "trecho": "59 4.849",
+    "revisao_manual": {
+      "por": "Gabriel Martins (CASE-07)",
+      "nota": "p. 38 renderizada: gráfico 'Variação do CPV/t Siderurgia', barra final 3T26 = 4.849 (o texto da página diz 'foi de R$4.849/t' no 3T26)"
+    }
   }
 ]
