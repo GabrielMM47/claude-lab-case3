@@ -1,0 +1,90 @@
+{
+  "versao": 1,
+  "gerado_por": "scripts/gerar_fixtures.py",
+  "extracao": "pdfplumber: page.extract_text() or \"\" (mesmo critério de src/extrair_release.py)",
+  "pdfplumber_versao": "0.11.10",
+  "fontes": {
+    "gerdau_ITR_3T26": {
+      "pdf": "data/itrs/gerdau_ITR_3T26.pdf",
+      "pdf_sha256": "1bb773ec9178633d01c205047f4babfed8df731d71dc4694b837113c1d733f59",
+      "n_paginas_pdf": 80
+    },
+    "usiminas_ITR_3T26": {
+      "pdf": "data/itrs/usiminas_ITR_3T26.pdf",
+      "pdf_sha256": "4bc2fcd69480d772320a0a797c256bf241f54b7d2aea21a1b03ecc4cf2fd516b",
+      "n_paginas_pdf": 110
+    }
+  },
+  "arquivos": [
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_15.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 15,
+      "bytes": 2119,
+      "sha256": "4325188da071c7e69250752daaf9922021e5bbd5c1bfba69b96552bab8eebabd"
+    },
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_16.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 16,
+      "bytes": 2740,
+      "sha256": "c57efaf664cf0b8fc04e95da2c3668499de36945fd31a63c115d717b7cdc510a"
+    },
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_17.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 17,
+      "bytes": 942,
+      "sha256": "8093a8cfb13b6388155fad749e57a62d43c0b550486550d1c363207b1f1adde3"
+    },
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_26.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 26,
+      "bytes": 2165,
+      "sha256": "e0bedb0ede6c01b4cb73a5571e361dd0d226fc1a9d6bff43d236f1ba41865b8f"
+    },
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_27.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 27,
+      "bytes": 2856,
+      "sha256": "8217dce6a946f2c117c8dc43ac76b003fafec2a666bde4330973c45bc12b9492"
+    },
+    {
+      "arquivo": "gerdau_ITR_3T26/pagina_28.txt",
+      "stem": "gerdau_ITR_3T26",
+      "pagina": 28,
+      "bytes": 1325,
+      "sha256": "bbb4b4a651cd1a4b7be172bf1504909082bf7ce416f862906fe490fd5d8721ab"
+    },
+    {
+      "arquivo": "usiminas_ITR_3T26/pagina_03.txt",
+      "stem": "usiminas_ITR_3T26",
+      "pagina": 3,
+      "bytes": 2075,
+      "sha256": "3d96e1ce4b982e05c9dd214df59c3a3e4a5a5fdfdbd060ed04cf88dd5481839f"
+    },
+    {
+      "arquivo": "usiminas_ITR_3T26/pagina_04.txt",
+      "stem": "usiminas_ITR_3T26",
+      "pagina": 4,
+      "bytes": 2436,
+      "sha256": "426ec9152027526905561c540fca97dd413b419eeee2574664197777edf9f9eb"
+    },
+    {
+      "arquivo": "usiminas_ITR_3T26/pagina_12.txt",
+      "stem": "usiminas_ITR_3T26",
+      "pagina": 12,
+      "bytes": 2159,
+      "sha256": "dd5af80dc5e49fc6a62eb00cf61c5eed1e003112ecef2e1b10c65eb6a1a22470"
+    },
+    {
+      "arquivo": "usiminas_ITR_3T26/pagina_13.txt",
+      "stem": "usiminas_ITR_3T26",
+      "pagina": 13,
+      "bytes": 2614,
+      "sha256": "9fc162781b1d93c40cce5154ed85ee6447522a196a813f34f446b6d855627928"
+    }
+  ]
+}

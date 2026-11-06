@@ -1,0 +1,41 @@
+Docusign Envelope ID: AA4DB11E-AF95-8FF6-8065-92BDF91157FE Versão : 1
+PÁGINA: 2 de 65
+ITR - Informações Trimestrais Ano: 2026 Versão: 1
+DFs Individuais / Balanço Patrimonial Ativo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+1 Ativo Total 61.544.961 60.465.956
+1.01 Ativo Circulante 2.493.248 4.633.464
+1.01.01 Caixa e Equivalentes de Caixa 552.746 374.284
+1.01.02 Aplicações Financeiras 211.663 2.251.634
+1.01.03 Contas a Receber 448.084 525.118
+1.01.04 Estoques 1.070.131 1.079.913
+1.01.06 Tributos a Recuperar 96.407 287.142
+1.01.06.01 Tributos Correntes a Recuperar 96.407 287.142
+1.01.06.01.01 Créditos Tributários 37.705 150.669
+1.01.06.01.02 Imposto de renda/contribuição social a recuperar 58.702 136.473
+1.01.08 Outros Ativos Circulantes 114.217 115.373
+1.01.08.03 Outros 114.217 115.373
+1.01.08.03.01 Dividendos a receber 5.098 4.981
+1.01.08.03.02 Valor justo de derivativos 16.684 0
+1.01.08.03.03 Outros ativos circulantes 92.435 110.392
+1.02 Ativo Não Circulante 59.051.713 55.832.492
+1.02.01 Ativo Realizável a Longo Prazo 1.795.258 754.455
+1.02.01.07 Tributos Diferidos 603.565 661.101
+1.02.01.07.01 Imposto de Renda e Contribuição Social Diferidos 603.565 661.101
+1.02.01.10 Outros Ativos Não Circulantes 1.191.693 93.354
+1.02.01.10.03 Créditos tributários 39.568 29.682
+1.02.01.10.04 Depósitos Judiciais 37.150 56.586
+1.02.01.10.05 Outros ativos não circulantes 13.979 6.090
+1.02.01.10.06 Gastos antecipados com plano de pensão 996 996
+1.02.01.10.07 Adiantamento para futuro aumento de capital em Controlada 1.100.000 0
+1.02.02 Investimentos 55.043.941 52.978.661
+1.02.03 Imobilizado 2.177.423 2.066.915
+1.02.03.01 Imobilizado em Operação 2.119.891 1.980.681
+1.02.03.01.01 Imobilizado 2.119.891 1.980.681
+1.02.03.02 Direito de Uso em Arrendamento 57.532 86.234
+1.02.03.02.01 Arrendamento mercantil - direito de uso de ativos 57.532 86.234
+1.02.04 Intangível 35.091 32.461
+1.02.04.01 Intangíveis 35.091 32.461
+ITR - InfoDrmFsa çInõedsiv Tidrimuaeisst r/a Bisa -l a3n0ç/0o9 P/2a0t2r6im -o GnEiaRlD AAtUiv So.A. 10

@@ -1,0 +1,35 @@
+# Cadastro manual do catálogo: só o que a máquina não sabe.
+# Fatos derivados (hash, páginas, contas, status) vêm de metricas/*.meta.json e dos próprios arquivos.
+versao = 1
+
+[[fonte]]
+stem = "gerdau_ITR_3T26"
+pdf = "data/itrs/gerdau_ITR_3T26.pdf"
+empresa = "gerdau"
+nome = "Gerdau"
+tipo = "ITR"
+periodo = "3T26"
+data_referencia = "2026-09-30"
+url_origem = ""            # a preencher pelo time (link de RI/CVM); vazio = "(a preencher)"
+descricao = "Informações Trimestrais do 3º trimestre de 2026, publicadas pela empresa e na CVM."
+
+[[fonte]]
+stem = "usiminas_ITR_3T26"
+pdf = "data/itrs/usiminas_ITR_3T26.pdf"
+empresa = "usiminas"
+nome = "Usiminas"
+tipo = "ITR"
+periodo = "3T26"
+data_referencia = "2026-09-30"
+url_origem = ""
+descricao = "Informações Trimestrais do 3º trimestre de 2026, publicadas pela empresa e na CVM."
+
+[[esperado]]
+artefato = "metricas/metricas_gerdau.json"
+fonte = "gerdau_ITR_3T26"
+descricao = "DRE, EBITDA e segmentos (consolidado), no formato de templates/metricas_exemplo.json"
+
+[[esperado]]
+artefato = "metricas/metricas_usiminas.json"
+fonte = "usiminas_ITR_3T26"
+descricao = "DRE, EBITDA e segmentos (consolidado), no formato de templates/metricas_exemplo.json"

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-lab-case3.invalid/schemas/balanco.schema.json",
+  "title": "Balanço Patrimonial verificável (saída de extrair_balanco.py)",
+  "description": "metricas/balanco_<empresa>[_controladora].json: registro-base + 12 campos do balanço (19 no total). Campos fora da lista são rejeitados (unevaluatedProperties). 'variacao_pct' é proibida (balanço compara posições). Não confere somas (V04–V06 ficam no extrator).",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "$ref": "#/$defs/registro_balanco"
+  },
+  "$defs": {
+    "data_iso": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Data AAAA-MM-DD (pattern, pois 'format' não é assertivo)."
+    },
+    "codigo_conta": {
+      "type": "string",
+      "pattern": "^[12](\\.\\d{2})*$",
+      "description": "Código CVM da conta: '1', '1.01', '2.03.05'…"
+    },
+    "registro_balanco": {
+      "title": "Conta do Balanço Patrimonial",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "metricas.schema.json#/$defs/registro"
+        }
+      ],
+      "required": [
+        "metrica",
+        "periodo",
+        "unidade",
+        "valor",
+        "valor_como_aparece",
+        "anterior",
+        "anterior_como_aparece",
+        "pagina",
+        "trecho",
+        "codigo_conta",
+        "descricao",
+        "codigo_pai",
+        "nivel",
+        "demonstracao",
+        "visao",
+        "empresa",
+        "data_atual",
+        "data_anterior",
+        "ambiguo"
+      ],
+      "properties": {
+        "metrica": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "periodo": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "unidade": {
+          "const": "R$ mil",
+          "description": "O extrator só aceita '(Reais Mil)'."
+        },
+        "valor": {
+          "type": "integer"
+        },
+        "valor_como_aparece": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "anterior": {
+          "type": "integer"
+        },
+        "anterior_como_aparece": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "pagina": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "trecho": {
+          "description": "Validado pelo registro-base (metricas.schema.json); listado aqui para contar como avaliado mesmo quando o registro-base falha."
+        },
+        "codigo_conta": {
+          "$ref": "#/$defs/codigo_conta"
+        },
+        "descricao": {
+          "type": "string",
+          "minLength": 1
+        },
+        "codigo_pai": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[12](\\.\\d{2})*$",
+          "description": "null só na conta de nível 1."
+        },
+        "nivel": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "demonstracao": {
+          "enum": [
+            "BPA",
+            "BPP"
+          ]
+        },
+        "visao": {
+          "enum": [
+            "consolidado",
+            "controladora"
+          ]
+        },
+        "empresa": {
+          "type": "string",
+          "pattern": "^[a-z0-9_-]+$"
+        },
+        "data_atual": {
+          "$ref": "#/$defs/data_iso"
+        },
+        "data_anterior": {
+          "$ref": "#/$defs/data_iso"
+        },
+        "ambiguo": {
+          "type": "boolean",
+          "description": "true se um dos literais aparece mais de uma vez como token na página."
+        },
+        "base_comparacao": {
+          "const": "posição",
+          "description": "Opcional; se presente, só 'posição'."
+        },
+        "variacao_pct": {
+          "not": {},
+          "description": "Proibido: balanço compara posições (não há variação A/A ou T/T)."
+        },
+        "criterio_ebitda": {
+          "not": {},
+          "description": "Proibido: não há EBITDA no balanço."
+        }
+      },
+      "unevaluatedProperties": false
+    }
+  }
+}

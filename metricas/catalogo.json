@@ -1,0 +1,325 @@
+{
+  "versao_catalogo": 1,
+  "gerado_por": "src/gerar_catalogo.py",
+  "aviso": "Gerado automaticamente; não edite à mão. Fonte manual: catalogo/fontes.toml.",
+  "fontes": [
+    {
+      "stem": "gerdau_ITR_3T26",
+      "pdf": "data/itrs/gerdau_ITR_3T26.pdf",
+      "empresa": "gerdau",
+      "nome": "Gerdau",
+      "tipo": "ITR",
+      "periodo": "3T26",
+      "data_referencia": "2026-09-30",
+      "url_origem": "",
+      "descricao": "Informações Trimestrais do 3º trimestre de 2026, publicadas pela empresa e na CVM.",
+      "presente": true,
+      "sha256": "1bb773ec9178633d01c205047f4babfed8df731d71dc4694b837113c1d733f59",
+      "bytes": 4099027
+    },
+    {
+      "stem": "usiminas_ITR_3T26",
+      "pdf": "data/itrs/usiminas_ITR_3T26.pdf",
+      "empresa": "usiminas",
+      "nome": "Usiminas",
+      "tipo": "ITR",
+      "periodo": "3T26",
+      "data_referencia": "2026-09-30",
+      "url_origem": "",
+      "descricao": "Informações Trimestrais do 3º trimestre de 2026, publicadas pela empresa e na CVM.",
+      "presente": true,
+      "sha256": "4bc2fcd69480d772320a0a797c256bf241f54b7d2aea21a1b03ecc4cf2fd516b",
+      "bytes": 9676426
+    }
+  ],
+  "artefatos": [
+    {
+      "caminho": "metricas/balanco_gerdau.csv",
+      "tipo": "csv",
+      "derivado_de": "metricas/balanco_gerdau.json",
+      "sha256": "f57477401ab43a3a3fa77ba499e50769489e708a8bf20b3c84894fa0ede8e602"
+    },
+    {
+      "caminho": "metricas/balanco_gerdau.json",
+      "tipo": "balanco",
+      "schema": "balanco",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "f3ee57b83d33e46d2127ad60c6fece301bd0a54a7dde9093a54d36f047599936",
+      "n_registros": 94,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": false,
+      "meta": "metricas/balanco_gerdau.meta.json",
+      "gerado_por": "extrair_balanco.py 1.0.0",
+      "empresa": "gerdau",
+      "visao": [
+        "consolidado"
+      ],
+      "unidade": [
+        "R$ mil"
+      ],
+      "escala_original": "Reais Mil",
+      "paginas": {
+        "ativo": [
+          26
+        ],
+        "passivo": [
+          27,
+          28
+        ]
+      },
+      "data_atual": "2026-09-30",
+      "data_anterior": "2025-12-31",
+      "base_comparacao": [],
+      "n_contas": {
+        "ativo": 33,
+        "passivo": 61,
+        "total": 94
+      },
+      "n_ambiguos": 32,
+      "autovalidacao": {
+        "status": "aprovado",
+        "falhas": []
+      },
+      "verificador": {
+        "status": "94/94 conferem",
+        "ok": 94,
+        "total": 94,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "f3ee57b83d33e46d2127ad60c6fece301bd0a54a7dde9093a54d36f047599936"
+      },
+      "criterio_ebitda": "n/a"
+    },
+    {
+      "caminho": "metricas/balanco_gerdau.meta.json",
+      "tipo": "meta",
+      "schema": "balanco_meta",
+      "derivado_de": "metricas/balanco_gerdau.json",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      }
+    },
+    {
+      "caminho": "metricas/balanco_gerdau_controladora.csv",
+      "tipo": "csv",
+      "derivado_de": "metricas/balanco_gerdau_controladora.json",
+      "sha256": "a3073a8815d8ac3cfb34240b7a7587dd9d41a6892102520004b481774ec3bd9e"
+    },
+    {
+      "caminho": "metricas/balanco_gerdau_controladora.json",
+      "tipo": "balanco",
+      "schema": "balanco",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "7f4cc3e23436f582fd7c45f1ee16773e2a51536c2953e0a6e86fcb81c64d866e",
+      "n_registros": 88,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": false,
+      "meta": "metricas/balanco_gerdau_controladora.meta.json",
+      "gerado_por": "extrair_balanco.py 1.0.0",
+      "empresa": "gerdau",
+      "visao": [
+        "controladora"
+      ],
+      "unidade": [
+        "R$ mil"
+      ],
+      "escala_original": "Reais Mil",
+      "paginas": {
+        "ativo": [
+          15
+        ],
+        "passivo": [
+          16,
+          17
+        ]
+      },
+      "data_atual": "2026-09-30",
+      "data_anterior": "2025-12-31",
+      "base_comparacao": [],
+      "n_contas": {
+        "ativo": 33,
+        "passivo": 55,
+        "total": 88
+      },
+      "n_ambiguos": 39,
+      "autovalidacao": {
+        "status": "aprovado",
+        "falhas": []
+      },
+      "verificador": {
+        "status": "88/88 conferem",
+        "ok": 88,
+        "total": 88,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "7f4cc3e23436f582fd7c45f1ee16773e2a51536c2953e0a6e86fcb81c64d866e"
+      },
+      "criterio_ebitda": "n/a"
+    },
+    {
+      "caminho": "metricas/balanco_gerdau_controladora.meta.json",
+      "tipo": "meta",
+      "schema": "balanco_meta",
+      "derivado_de": "metricas/balanco_gerdau_controladora.json",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      }
+    },
+    {
+      "caminho": "metricas/balanco_usiminas.csv",
+      "tipo": "csv",
+      "derivado_de": "metricas/balanco_usiminas.json",
+      "sha256": "6fb286a2dc9199340577bd71838c4926a7e80f403874ddee8e6b984e120c47a5"
+    },
+    {
+      "caminho": "metricas/balanco_usiminas.json",
+      "tipo": "balanco",
+      "schema": "balanco",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "597398c535c0bcae5646e460d4752c807f22bc701ed42eb621042028b3aeb313",
+      "n_registros": 81,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": false,
+      "meta": "metricas/balanco_usiminas.meta.json",
+      "gerado_por": "extrair_balanco.py 1.0.0",
+      "empresa": "usiminas",
+      "visao": [
+        "consolidado"
+      ],
+      "unidade": [
+        "R$ mil"
+      ],
+      "escala_original": "Reais Mil",
+      "paginas": {
+        "ativo": [
+          12
+        ],
+        "passivo": [
+          13
+        ]
+      },
+      "data_atual": "2026-09-30",
+      "data_anterior": "2025-12-31",
+      "base_comparacao": [],
+      "n_contas": {
+        "ativo": 36,
+        "passivo": 45,
+        "total": 81
+      },
+      "n_ambiguos": 18,
+      "autovalidacao": {
+        "status": "aprovado",
+        "falhas": []
+      },
+      "verificador": {
+        "status": "81/81 conferem",
+        "ok": 81,
+        "total": 81,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "597398c535c0bcae5646e460d4752c807f22bc701ed42eb621042028b3aeb313"
+      },
+      "criterio_ebitda": "n/a"
+    },
+    {
+      "caminho": "metricas/balanco_usiminas.meta.json",
+      "tipo": "meta",
+      "schema": "balanco_meta",
+      "derivado_de": "metricas/balanco_usiminas.json",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      }
+    },
+    {
+      "caminho": "metricas/balanco_usiminas_controladora.csv",
+      "tipo": "csv",
+      "derivado_de": "metricas/balanco_usiminas_controladora.json",
+      "sha256": "59b4dfb357a06d07119a6169fc85bf8107ff32a688b62ef1a6a9e1b4c1d2ac41"
+    },
+    {
+      "caminho": "metricas/balanco_usiminas_controladora.json",
+      "tipo": "balanco",
+      "schema": "balanco",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "9bdd0d0ec628e24ad80415bb4fe33f54d395c424cef7fee7dc15277e79b1e3a4",
+      "n_registros": 78,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": false,
+      "meta": "metricas/balanco_usiminas_controladora.meta.json",
+      "gerado_por": "extrair_balanco.py 1.0.0",
+      "empresa": "usiminas",
+      "visao": [
+        "controladora"
+      ],
+      "unidade": [
+        "R$ mil"
+      ],
+      "escala_original": "Reais Mil",
+      "paginas": {
+        "ativo": [
+          3
+        ],
+        "passivo": [
+          4
+        ]
+      },
+      "data_atual": "2026-09-30",
+      "data_anterior": "2025-12-31",
+      "base_comparacao": [],
+      "n_contas": {
+        "ativo": 35,
+        "passivo": 43,
+        "total": 78
+      },
+      "n_ambiguos": 17,
+      "autovalidacao": {
+        "status": "aprovado",
+        "falhas": []
+      },
+      "verificador": {
+        "status": "78/78 conferem",
+        "ok": 78,
+        "total": 78,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "9bdd0d0ec628e24ad80415bb4fe33f54d395c424cef7fee7dc15277e79b1e3a4"
+      },
+      "criterio_ebitda": "n/a"
+    },
+    {
+      "caminho": "metricas/balanco_usiminas_controladora.meta.json",
+      "tipo": "meta",
+      "schema": "balanco_meta",
+      "derivado_de": "metricas/balanco_usiminas_controladora.json",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      }
+    }
+  ],
+  "pendentes": [
+    {
+      "artefato": "metricas/metricas_gerdau.json",
+      "fonte": "gerdau_ITR_3T26",
+      "descricao": "DRE, EBITDA e segmentos (consolidado), no formato de templates/metricas_exemplo.json",
+      "status": "pendente"
+    },
+    {
+      "artefato": "metricas/metricas_usiminas.json",
+      "fonte": "usiminas_ITR_3T26",
+      "descricao": "DRE, EBITDA e segmentos (consolidado), no formato de templates/metricas_exemplo.json",
+      "status": "pendente"
+    }
+  ]
+}

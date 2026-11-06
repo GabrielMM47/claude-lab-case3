@@ -1,0 +1,42 @@
+ITR - Informações Trimestrais - 30/09/2026 - USINAS SID DE MINAS GERAIS S.A.-USIMINAS Versão : 1
+DFs Consolidadas / Balanço Patrimonial Ativo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+1 Ativo Total 34.836.026 35.684.766
+1.01 Ativo Circulante 16.594.884 16.801.273
+1.01.01 Caixa e Equivalentes de Caixa 4.071.514 5.141.617
+1.01.02 Aplicações Financeiras 2.675.655 1.801.978
+1.01.03 Contas a Receber 2.907.498 3.002.668
+1.01.04 Estoques 6.016.979 5.928.828
+1.01.08 Outros Ativos Circulantes 923.238 926.182
+1.01.08.03 Outros 923.238 926.182
+1.01.08.03.01 Impostos a Recuperar 613.730 676.762
+1.01.08.03.02 Imposto de Renda e Contribuição Social Antecipados 38.267 85.192
+1.01.08.03.03 Dividendos a Receber 74.087 39.637
+1.01.08.03.04 Adiantamentos a Fornecedores 39.903 3.405
+1.01.08.03.05 Instrumentos financeiros 8.331 0
+1.01.08.03.07 Outros 148.920 121.186
+1.02 Ativo Não Circulante 18.241.142 18.883.493
+1.02.01 Ativo Realizável a Longo Prazo 4.521.854 4.726.854
+1.02.01.04 Contas a Receber 218.868 251.715
+1.02.01.04.01 Clientes 17.579 23.975
+1.02.01.04.02 Outras Contas a Receber 201.289 227.740
+1.02.01.07 Tributos Diferidos 2.143.970 1.973.727
+1.02.01.07.01 Imposto de Renda e Contribuição Social Diferidos 2.143.970 1.973.727
+1.02.01.10 Outros Ativos Não Circulantes 2.159.016 2.501.412
+1.02.01.10.03 Depósitos Judiciais 658.747 602.020
+1.02.01.10.05 Impostos a Recuperar 591.559 828.504
+1.02.01.10.06 Imposto de Renda e Contribuição Social a Recuperar 234.763 415.032
+1.02.01.10.09 Adiantamentos Contratuais 383.516 403.979
+1.02.01.10.10 Outros 290.431 251.877
+1.02.02 Investimentos 1.826.122 1.718.546
+1.02.02.01 Participações Societárias 1.676.700 1.559.254
+1.02.02.01.01 Participações em Coligadas 1.152.683 1.061.586
+1.02.02.01.04 Participações em Controladas em Conjunto 524.017 497.668
+1.02.02.02 Propriedades para Investimento 149.422 159.292
+1.02.03 Imobilizado 9.968.187 10.424.479
+1.02.03.01 Imobilizado em Operação 8.321.469 7.671.489
+1.02.03.03 Imobilizado em Andamento 1.646.718 2.752.990
+1.02.04 Intangível 1.924.979 2.013.614
+PÁGINA: 11 de 109

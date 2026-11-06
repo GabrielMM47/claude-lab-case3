@@ -1,0 +1,41 @@
+Docusign Envelope ID: AA4DB11E-AF95-8FF6-8065-92BDF91157FE Versão : 1
+PÁGINA: 13 de 65
+ITR - Informações Trimestrais Ano: 2026 Versão: 1
+DFs Consolidadas / Balanço Patrimonial Ativo
+(Reais Mil)
+Código da Descrição da Conta Trimestre Atual Exercício Anterior
+Conta 30/09/2026 31/12/2025
+1 Ativo Total 83.945.525 81.688.175
+1.01 Ativo Circulante 30.645.669 28.605.081
+1.01.01 Caixa e Equivalentes de Caixa 5.695.892 5.929.170
+1.01.02 Aplicações Financeiras 347.571 445.627
+1.01.03 Contas a Receber 6.227.263 4.810.640
+1.01.04 Estoques 16.490.132 14.731.081
+1.01.06 Tributos a Recuperar 1.066.170 1.968.060
+1.01.06.01 Tributos Correntes a Recuperar 1.066.170 1.968.060
+1.01.06.01.01 Créditos tributários 789.335 1.282.249
+1.01.06.01.02 Imposto de renda/contribuição social a recuperar 276.835 685.811
+1.01.08 Outros Ativos Circulantes 818.641 720.503
+1.01.08.03 Outros 818.641 720.503
+1.01.08.03.01 Dividendos a receber 4.875 4.981
+1.01.08.03.02 Valor justo de derivativos 17.128 36.623
+1.01.08.03.03 Outros ativos circulantes 796.638 678.899
+1.02 Ativo Não Circulante 53.299.856 53.083.094
+1.02.01 Ativo Realizável a Longo Prazo 4.487.944 4.539.233
+1.02.01.07 Tributos Diferidos 2.542.755 2.561.980
+1.02.01.07.01 Imposto de Renda e Contribuição Social Diferidos 2.542.755 2.561.980
+1.02.01.10 Outros Ativos Não Circulantes 1.945.189 1.977.253
+1.02.01.10.03 Créditos tributários 1.453.777 1.429.324
+1.02.01.10.04 Depósitos Judiciais 145.750 150.893
+1.02.01.10.05 Outros ativos não circulantes 336.336 387.708
+1.02.01.10.06 Gastos antecipados com plano de pensão 9.326 9.328
+1.02.02 Investimentos 3.526.013 3.944.474
+1.02.03 Imobilizado 32.726.551 31.912.295
+1.02.03.01 Imobilizado em Operação 31.114.199 30.640.833
+1.02.03.01.01 Imobilizado 31.114.199 30.640.833
+1.02.03.02 Direito de Uso em Arrendamento 1.612.352 1.271.462
+1.02.03.02.01 Arrendamento mercantil - direito de uso de ativos 1.612.352 1.271.462
+1.02.04 Intangível 12.559.348 12.687.092
+1.02.04.01 Intangíveis 1.269.957 691.365
+1.02.04.02 Goodwill 11.289.391 11.995.727
+ITR - InfoDrmFsa çCõoens sTorilmideasdtraasis / -B 3a0l/a0n9ç/2o0 P26a t-r iGmEoRnDiaAlU A St.iAvo. 21

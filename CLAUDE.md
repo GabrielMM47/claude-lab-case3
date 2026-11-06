@@ -7,7 +7,9 @@ Leia primeiro: `docs/CASE3.md` (demanda e cuidados) e `docs/GUIA_TECNICO.md` (o 
 ## Fluxo
 1. `python src/extrair_release.py data/itrs/*.pdf` → gera `saida/<pdf>/pagina_NN.txt`
 2. Gerar `metricas/metricas_<empresa>.json` no formato de `templates/metricas_exemplo.json`, **a partir de `saida/<pdf>/pagina_NN.txt`**
+   - Validar a forma antes de conferir: `python src/contrato.py metricas/metricas_<empresa>.json` (schema `schemas/metricas.schema.json`)
 3. `python src/verificar_numeros.py saida/<pdf> metricas/metricas_<empresa>.json`; corrigir só os itens com ERRO, olhando a página indicada
+   - Código 2 = JSON fora do contrato: corrigir os campos apontados em `[CONTRATO]` antes de qualquer número. `[AVISO]` não bloqueia, mas revisar.
 4. Tabela comparativa e gráficos a partir dos JSONs verificados
 5. Slides (python-pptx ou HTML) seguindo `templates/roteiro_apresentacao.md`
 
@@ -23,6 +25,11 @@ Leia primeiro: `docs/CASE3.md` (demanda e cuidados) e `docs/GUIA_TECNICO.md` (o 
 - Gerdau tem América do Norte; Usiminas tem mineração. Olhar os segmentos antes de concluir.
 - Toda apresentação leva a página do ITR de cada número e o aviso "Não constitui recomendação de investimento".
 - Registrar em `docs/ERROS_ENCONTRADOS.md` cada erro que o verificador ou o time pegou (vai para o vídeo e o README).
+
+## Contrato e catálogo
+- Schemas em `schemas/` (`metricas`, `balanco`, `balanco_meta`). Regras, mensagens e avisos em `docs/CONTRATO_DADOS.md`.
+- Catálogo: `docs/CATALOGO_DADOS.md` e `metricas/catalogo.json` são gerados (`python src/gerar_catalogo.py`; não editar à mão). Cadastro manual em `catalogo/fontes.toml`.
+- Preencher `base_comparacao` (A/A, T/T ou `posição`) sempre que houver `anterior`, e `criterio_ebitda` em toda métrica de EBITDA.
 
 ## Mapa de páginas (impressas; confirmar o índice no pagina_NN.txt)
 - DRE consolidada: Gerdau pág. 29–30; Usiminas pág. 14
