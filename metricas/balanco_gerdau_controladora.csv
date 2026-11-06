@@ -1,0 +1,89 @@
+codigo_conta,descricao,nivel,demonstracao,valor,anterior,pagina,visao,data_atual,data_anterior
+1,Ativo Total,1,BPA,61544961,60465956,15,controladora,2026-09-30,2025-12-31
+1.01,Ativo Circulante,2,BPA,2493248,4633464,15,controladora,2026-09-30,2025-12-31
+1.01.01,Caixa e Equivalentes de Caixa,3,BPA,552746,374284,15,controladora,2026-09-30,2025-12-31
+1.01.02,Aplicações Financeiras,3,BPA,211663,2251634,15,controladora,2026-09-30,2025-12-31
+1.01.03,Contas a Receber,3,BPA,448084,525118,15,controladora,2026-09-30,2025-12-31
+1.01.04,Estoques,3,BPA,1070131,1079913,15,controladora,2026-09-30,2025-12-31
+1.01.06,Tributos a Recuperar,3,BPA,96407,287142,15,controladora,2026-09-30,2025-12-31
+1.01.06.01,Tributos Correntes a Recuperar,4,BPA,96407,287142,15,controladora,2026-09-30,2025-12-31
+1.01.06.01.01,Créditos Tributários,5,BPA,37705,150669,15,controladora,2026-09-30,2025-12-31
+1.01.06.01.02,Imposto de renda/contribuição social a recuperar,5,BPA,58702,136473,15,controladora,2026-09-30,2025-12-31
+1.01.08,Outros Ativos Circulantes,3,BPA,114217,115373,15,controladora,2026-09-30,2025-12-31
+1.01.08.03,Outros,4,BPA,114217,115373,15,controladora,2026-09-30,2025-12-31
+1.01.08.03.01,Dividendos a receber,5,BPA,5098,4981,15,controladora,2026-09-30,2025-12-31
+1.01.08.03.02,Valor justo de derivativos,5,BPA,16684,0,15,controladora,2026-09-30,2025-12-31
+1.01.08.03.03,Outros ativos circulantes,5,BPA,92435,110392,15,controladora,2026-09-30,2025-12-31
+1.02,Ativo Não Circulante,2,BPA,59051713,55832492,15,controladora,2026-09-30,2025-12-31
+1.02.01,Ativo Realizável a Longo Prazo,3,BPA,1795258,754455,15,controladora,2026-09-30,2025-12-31
+1.02.01.07,Tributos Diferidos,4,BPA,603565,661101,15,controladora,2026-09-30,2025-12-31
+1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,5,BPA,603565,661101,15,controladora,2026-09-30,2025-12-31
+1.02.01.10,Outros Ativos Não Circulantes,4,BPA,1191693,93354,15,controladora,2026-09-30,2025-12-31
+1.02.01.10.03,Créditos tributários,5,BPA,39568,29682,15,controladora,2026-09-30,2025-12-31
+1.02.01.10.04,Depósitos Judiciais,5,BPA,37150,56586,15,controladora,2026-09-30,2025-12-31
+1.02.01.10.05,Outros ativos não circulantes,5,BPA,13979,6090,15,controladora,2026-09-30,2025-12-31
+1.02.01.10.06,Gastos antecipados com plano de pensão,5,BPA,996,996,15,controladora,2026-09-30,2025-12-31
+1.02.01.10.07,Adiantamento para futuro aumento de capital em Controlada,5,BPA,1100000,0,15,controladora,2026-09-30,2025-12-31
+1.02.02,Investimentos,3,BPA,55043941,52978661,15,controladora,2026-09-30,2025-12-31
+1.02.03,Imobilizado,3,BPA,2177423,2066915,15,controladora,2026-09-30,2025-12-31
+1.02.03.01,Imobilizado em Operação,4,BPA,2119891,1980681,15,controladora,2026-09-30,2025-12-31
+1.02.03.01.01,Imobilizado,5,BPA,2119891,1980681,15,controladora,2026-09-30,2025-12-31
+1.02.03.02,Direito de Uso em Arrendamento,4,BPA,57532,86234,15,controladora,2026-09-30,2025-12-31
+1.02.03.02.01,Arrendamento mercantil - direito de uso de ativos,5,BPA,57532,86234,15,controladora,2026-09-30,2025-12-31
+1.02.04,Intangível,3,BPA,35091,32461,15,controladora,2026-09-30,2025-12-31
+1.02.04.01,Intangíveis,4,BPA,35091,32461,15,controladora,2026-09-30,2025-12-31
+2,Passivo Total,1,BPP,61544961,60465956,16,controladora,2026-09-30,2025-12-31
+2.01,Passivo Circulante,2,BPP,983335,997890,16,controladora,2026-09-30,2025-12-31
+2.01.01,Obrigações Sociais e Trabalhistas,3,BPP,87668,76665,16,controladora,2026-09-30,2025-12-31
+2.01.01.02,Obrigações Trabalhistas,4,BPP,87668,76665,16,controladora,2026-09-30,2025-12-31
+2.01.01.02.01,Salarios a pagar,5,BPP,87668,76665,16,controladora,2026-09-30,2025-12-31
+2.01.02,Fornecedores,3,BPP,351689,310991,16,controladora,2026-09-30,2025-12-31
+2.01.02.01,Fornecedores Nacionais,4,BPP,345392,301841,16,controladora,2026-09-30,2025-12-31
+2.01.02.01.01,Fornecedores mercado doméstico,5,BPP,317543,275560,16,controladora,2026-09-30,2025-12-31
+2.01.02.01.02,Fornecedores risco sacado,5,BPP,27849,26281,16,controladora,2026-09-30,2025-12-31
+2.01.02.02,Fornecedores Estrangeiros,4,BPP,6297,9150,16,controladora,2026-09-30,2025-12-31
+2.01.02.02.01,Fornecedores importação,5,BPP,6297,9150,16,controladora,2026-09-30,2025-12-31
+2.01.03,Obrigações Fiscais,3,BPP,26887,37837,16,controladora,2026-09-30,2025-12-31
+2.01.03.01,Obrigações Fiscais Federais,4,BPP,26887,37837,16,controladora,2026-09-30,2025-12-31
+2.01.03.01.01,Imposto de Renda e Contribuição Social a Pagar,5,BPP,183,4311,16,controladora,2026-09-30,2025-12-31
+2.01.03.01.02,Impostos e contribuições sociais a recolher,5,BPP,26704,33526,16,controladora,2026-09-30,2025-12-31
+2.01.04,Empréstimos e Financiamentos,3,BPP,212369,201838,16,controladora,2026-09-30,2025-12-31
+2.01.04.01,Empréstimos e Financiamentos,4,BPP,11838,157229,16,controladora,2026-09-30,2025-12-31
+2.01.04.01.01,Em Moeda Nacional,5,BPP,11838,157229,16,controladora,2026-09-30,2025-12-31
+2.01.04.02,Debêntures,4,BPP,200531,44609,16,controladora,2026-09-30,2025-12-31
+2.01.05,Outras Obrigações,3,BPP,251864,328575,16,controladora,2026-09-30,2025-12-31
+2.01.05.02,Outros,4,BPP,251864,328575,16,controladora,2026-09-30,2025-12-31
+2.01.05.02.05,Passivo de arrendamento,5,BPP,48385,44071,16,controladora,2026-09-30,2025-12-31
+2.01.05.02.07,Outros passivos circulantes,5,BPP,203479,284504,16,controladora,2026-09-30,2025-12-31
+2.01.06,Provisões,3,BPP,52858,41984,16,controladora,2026-09-30,2025-12-31
+2.01.06.02,Outras Provisões,4,BPP,52858,41984,16,controladora,2026-09-30,2025-12-31
+2.01.06.02.03,Provisões para Passivos Ambientais e de Desativação,5,BPP,52858,40870,16,controladora,2026-09-30,2025-12-31
+2.01.06.02.04,Valor justo de derivativos,5,BPP,0,1114,16,controladora,2026-09-30,2025-12-31
+2.02,Passivo Não Circulante,2,BPP,5906606,5882673,16,controladora,2026-09-30,2025-12-31
+2.02.01,Empréstimos e Financiamentos,3,BPP,4796260,4465281,16,controladora,2026-09-30,2025-12-31
+2.02.01.01,Empréstimos e Financiamentos,4,BPP,250402,102491,16,controladora,2026-09-30,2025-12-31
+2.02.01.01.01,Em Moeda Nacional,5,BPP,250402,102491,16,controladora,2026-09-30,2025-12-31
+2.02.01.02,Debêntures,4,BPP,4545858,4362790,16,controladora,2026-09-30,2025-12-31
+2.02.02,Outras Obrigações,3,BPP,907481,1191519,16,controladora,2026-09-30,2025-12-31
+2.02.02.01,Passivos com Partes Relacionadas,4,BPP,810724,1068764,16,controladora,2026-09-30,2025-12-31
+2.02.02.02,Outros,4,BPP,96757,122755,16,controladora,2026-09-30,2025-12-31
+2.02.02.02.04,Passivo de arrendamento,5,BPP,21167,55903,16,controladora,2026-09-30,2025-12-31
+2.02.02.02.05,Outros passivos não Circulantes,5,BPP,75590,66852,16,controladora,2026-09-30,2025-12-31
+2.02.04,Provisões,3,BPP,202865,225873,16,controladora,2026-09-30,2025-12-31
+2.02.04.01,Provisões Fiscais Previdenciárias Trabalhistas e Cíveis,4,BPP,184984,186574,16,controladora,2026-09-30,2025-12-31
+2.02.04.01.01,Provisões Fiscais,5,BPP,108746,116628,16,controladora,2026-09-30,2025-12-31
+2.02.04.01.02,Provisões Previdenciárias e Trabalhistas,5,BPP,75469,69233,16,controladora,2026-09-30,2025-12-31
+2.02.04.01.04,Provisões Cíveis,5,BPP,769,713,16,controladora,2026-09-30,2025-12-31
+2.02.04.02,Outras Provisões,4,BPP,17881,39299,16,controladora,2026-09-30,2025-12-31
+2.02.04.02.03,Provisões para Passivos Ambientais e de Desativação,5,BPP,17881,39299,16,controladora,2026-09-30,2025-12-31
+2.03,Patrimônio Líquido,2,BPP,54655020,53585393,16,controladora,2026-09-30,2025-12-31
+2.03.01,Capital Social Realizado,3,BPP,24273225,24273225,17,controladora,2026-09-30,2025-12-31
+2.03.02,Reservas de Capital,3,BPP,-395736,-508470,17,controladora,2026-09-30,2025-12-31
+2.03.02.05,Ações em Tesouraria,4,BPP,-407333,-520067,17,controladora,2026-09-30,2025-12-31
+2.03.02.07,Reserva de capital,4,BPP,11597,11597,17,controladora,2026-09-30,2025-12-31
+2.03.04,Reservas de Lucros,3,BPP,22449653,23054501,17,controladora,2026-09-30,2025-12-31
+2.03.04.01,Reserva Legal,4,BPP,2826340,2826340,17,controladora,2026-09-30,2025-12-31
+2.03.04.07,Reserva de Incentivos Fiscais,4,BPP,2914226,2914226,17,controladora,2026-09-30,2025-12-31
+2.03.04.10,Reserva de Investimentos e capital de giro,4,BPP,16709087,17313935,17,controladora,2026-09-30,2025-12-31
+2.03.05,Lucros/Prejuízos Acumulados,3,BPP,3204533,0,17,controladora,2026-09-30,2025-12-31
+2.03.06,Ajustes de Avaliação Patrimonial,3,BPP,5123345,6766137,17,controladora,2026-09-30,2025-12-31
