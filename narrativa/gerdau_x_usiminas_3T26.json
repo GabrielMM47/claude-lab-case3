@@ -1,0 +1,42 @@
+{
+  "slides": [
+    {
+      "id": "capa",
+      "titulo": "{a.nome} teve o trimestre mais rentável: margem EBITDA de {a.margem_ebitda} contra {b.margem_ebitda} da {b.nome}",
+      "subtitulo": "{b.nome} tem o balanço mais leve, com caixa líquido, mas receita em queda ({b.receita_liquida.var_aa} A/A)"
+    },
+    {
+      "id": "resumo",
+      "titulo": "Três coisas que o comitê precisa saber",
+      "bullets": [
+        "Rentabilidade (EBITDA {criterio_ebitda}): margem de {a.margem_ebitda} na {a.nome} ({a.margem_ebitda.var_aa} A/A) contra {b.margem_ebitda} na {b.nome}; ROIC 9M26 anualizado de {a.roic} contra {b.roic}",
+        "Crescimento: a {a.nome} aumenta receita ({a.receita_liquida.var_aa} A/A) e EBITDA ajustado ({a.ebitda_ajustado.var_aa} A/A); a {b.nome} perde receita ({b.receita_liquida.var_aa} A/A) e EBITDA ajustado no T/T ({b.ebitda_ajustado.var_tt})",
+        "Balanço: a {b.nome} tem caixa líquido (DL/EBITDA de {b.dl_ebitda}); a {a.nome} segue pouco alavancada, com {a.dl_ebitda}"
+      ]
+    },
+    {
+      "id": "perfil",
+      "titulo": "{a.nome} é global, com a maior parte do EBITDA na América do Norte; {b.nome} é aço plano no Brasil, com mineração"
+    },
+    {
+      "id": "comparativo",
+      "titulo": "{a.nome} vence em margens, ROE e ROIC; {b.nome} vence em alavancagem"
+    },
+    {
+      "id": "graficos",
+      "titulo": "{a.nome} cresce receita ({a.receita_liquida.var_aa} A/A) e amplia margem; {b.nome} perde receita ({b.receita_liquida.var_aa} A/A)"
+    },
+    {
+      "id": "setor",
+      "titulo": "Por tonelada não há comparação: falta volume consolidado da {a.nome}; a {b.nome} mostra só a siderurgia ({b.receita_por_t})"
+    },
+    {
+      "id": "destaques_riscos",
+      "titulo": "O lucro da {b.nome} ({b.lucro_liquido}) volta ao positivo sobre um 3T25 com impairment: a melhora A/A não é tendência"
+    },
+    {
+      "id": "metodologia",
+      "titulo": "Como chegamos aos números"
+    }
+  ]
+}

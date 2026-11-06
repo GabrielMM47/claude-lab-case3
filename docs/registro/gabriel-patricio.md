@@ -11,6 +11,7 @@
 | 5 | — | Direção `melhor` no indicadores.json | receita, EBITDA, lucro, dívida e volume saíam com `maior`/`menor`: o comparativo elegeria vencedor por tamanho | regra do CASE-05 em TAREFAS.md ("maior receita não é melhor desempenho") | leitura do indicadores.json real da Gerdau, bem maior que a Usiminas | valores absolutos saem com `melhor: "neutro"` |
 | 6 | Gerdau | Página da fonte | o mapa de páginas do CLAUDE.md e do GUIA_CASE3.md dizia "páginas impressas" | DRE consolidada: índice 29 do PDF, impressa como 24 e "PÁGINA: 16 de 65" | comparação dos `pagina_NN.txt` com o mapa | documentos corrigidos: página é sempre o índice do PDF |
 | 7 | — | Fixture do CASE-06 | o `comparativo.json` e os gráficos da fixture "estavam no commit" | o `.gitignore` ignora qualquer pasta `saida/`, inclusive dentro de `tests/` | testes rodados num clone limpo da branch | fixture movida para `tests/fixtures_apresentacao/comparativo/` |
+| 8 | Usiminas | Destaque positivo do slide 7 | "+ Margem líquida: 3,9% (+57,0 p.p. A/A)" como o melhor resultado do trimestre, no mesmo slide do alerta de impairment | ITR p. 28: impairment de R$ 2.226.332 mil no 3T25. Ele está no lucro e no EBIT; o EBITDA ajustado já o exclui. O `comparativo.json` real marca como distorcidas só as linhas de EBITDA, e a fixture marcava lucro e margem líquida | leitura dos slides gerados com dados reais | `destaques_numericos` também exclui as linhas contábeis (EBIT, lucro, margens) quando há efeito pontual. Sem margem que piorou, o destaque negativo passa a ser a pior linha financeira do trimestre (Usiminas: receita -6,1% A/A, ITR p. 14), em vez de "nenhum indicador piorou" |
 
 ## Observações dos dados
 
@@ -27,3 +28,11 @@
 - Ainda pendente no CASE-03: 37 violações do schema de fatos (24 em `gerdau_3T26_apresentacao_operacional.json`, 7 em `usiminas_3T26_apresentacao_operacional.json`, 6 em `usiminas_3T26_itr_operacional.json`). Incluem 17 valores literais nulos nos gráficos da Gerdau (p. 18–20), unidades fora da lista aceita e o período `3T26 vs 2T26` na variação da receita por tonelada (p. 19). Não foram inventados literais nem relaxado o schema para aprovar esses dados.
 - A apresentação gerada é rascunho para revisão: gerar slides e passar no schema dos indicadores não substitui a verificação dos fatos de origem.
 - Validação final: `python -m pytest -q --tb=short` executado no venv: 802 passaram, 3 ignorados e 1 falhou (`test_c_t3b_fatos_dentro_do_contrato`, pelas 37 violações acima). Catálogo e fixtures passaram em `--check`.
+
+## Narrativa e versão de entrega (CASE-06, itens 4 e 6)
+
+- `narrativa/gerdau_x_usiminas_3T26.json`: títulos-mensagem dos 8 slides e os 3 bullets do resumo, escritos com o Claude Code a partir do `comparativo.json`. Nenhum número digitado: tudo entra por placeholder (`{a.margem_ebitda}`, `{b.receita_liquida.var_aa}`...) e passa no verificador de narrativa.
+- Escolhas de redação: não citar o EBITDA ajustado A/A da Usiminas (base 3T25 marcada com efeito pontual); citar o T/T (-26,7%). O slide de destaques diz que a volta do lucro da Usiminas parte de um 3T25 com impairment.
+- `entrega/apresentacao_gerdau_x_usiminas_3T26.html` gerado com a narrativa. Continua rascunho: `verificacao` do comparativo está `null` (CASE-07) e os JSONs operacionais do CASE-03 ainda reprovam no verificador.
+- Prompt que funcionou: "Leia saida/comparativo/gerdau_x_usiminas_3T26/comparativo.json e escreva narrativa/gerdau_x_usiminas_3T26.json no contrato de docs/TAREFAS.md: título-mensagem por slide, só placeholders para números, nenhum A/A em linha marcada com efeito pontual; rode o verificador de narrativa."
+
