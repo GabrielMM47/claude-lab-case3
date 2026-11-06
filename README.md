@@ -8,12 +8,12 @@
 
 ## Equipe
 
-| Pessoa | Responsabilidade |
-|---|---|
-| Gabriel Patrício | indicadores (CASE-04) e apresentação executiva com narrativa verificada (CASE-06) |
-| Gabriel Martins | DFs CVM, EBITDA e verificador (CASE-02); pipeline de um comando (CASE-07) |
-| Geronimo | apresentações institucionais, dados operacionais e qualitativos (CASE-03); entrega (CASE-08) |
-| João Vitor | contrato de dados, catálogo e fixtures (CASE-01); comparativo e gráficos (CASE-05) |
+| Pessoa | Curso | Responsabilidade |
+|---|---|---|
+| Gabriel Patrício | Engenharia de Computação, 8º período | indicadores (CASE-04) e apresentação executiva com narrativa verificada (CASE-06) |
+| Gabriel Martins | Engenharia de Computação, 8º período | DFs CVM, EBITDA e verificador (CASE-02); pipeline de um comando (CASE-07) |
+| Geronimo | Economia, 7º período | apresentações institucionais, dados operacionais e qualitativos (CASE-03); entrega (CASE-08) |
+| João Vitor | Ciência da Computação, 7º período | contrato de dados, catálogo e fixtures (CASE-01); comparativo e gráficos (CASE-05) |
 
 ## O problema
 
@@ -76,7 +76,7 @@ Três camadas, todas automáticas e rodadas pelo pipeline:
 2. **Verificador literal** ([`src/verificar_numeros.py`](src/verificar_numeros.py)): o trecho tem de existir na página citada e o número tem de aparecer como token inteiro **na coluna do período certo**, conferindo unidade e escopo. Quando a automação não prova a coluna, o fato fica "para revisar" e só passa com revisão manual registrada (pessoa e nota).
 3. **Reconciliações em código:** EBITDA ajustado = EBITDA CVM 156 + ajustes (ex.: Usiminas 3T26: 588.039 − 80.452 + 50.430 = 558.017, ITR p. 28); identidades contábeis das DFs; dívida líquida calculada × reportada.
 
-**Resultado da rodada final: 202 de 239 números conferidos no PDF, 0 com erro.** Os 37 restantes são fatos operacionais sem evidência literal de período/unidade/escopo: não bloqueiam, mas estão listados no relatório `saida/verificacao_gerdau_x_usiminas_3T26.json` que o pipeline gera.
+**Resultado da rodada final: 233 de 272 números conferidos no PDF, 0 com erro.** Os 39 restantes são fatos operacionais sem evidência literal de período/unidade/escopo: não bloqueiam, mas estão listados no relatório `saida/verificacao_gerdau_x_usiminas_3T26.json` que o pipeline gera.
 
 Erros reais que o processo pegou (lista completa em [`docs/ERROS_ENCONTRADOS.md`](docs/ERROS_ENCONTRADOS.md)):
 
@@ -88,6 +88,8 @@ Erros reais que o processo pegou (lista completa em [`docs/ERROS_ENCONTRADOS.md`
 ## Como reproduzir
 
 ```bash
+git clone https://github.com/GabrielMM47/claude-lab-case3 && cd claude-lab-case3
+python3 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python src/pipeline.py --a gerdau --b usiminas --tri 3T26
 ```
