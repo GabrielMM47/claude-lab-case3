@@ -306,12 +306,18 @@ def slide_capa(d, n, fontes):
 
 def slide_resumo(d, n, fontes):
     titulo = resolver(n.get("titulo") or "Três coisas que o comitê precisa saber", d, fontes)
+    def item(texto: str) -> str:  # "Rentabilidade: ..." vira rótulo + texto
+        rot, sep, resto = texto.partition(": ")
+        if sep and len(rot) <= 40:
+            return f'<b class="rotulo">{esc(rot)}</b>{esc(resto)}'
+        return esc(texto)
+
     if n.get("bullets"):
-        bullets = [esc(resolver(b, d, fontes)) for b in n["bullets"]]
+        bullets = [item(resolver(b, d, fontes)) for b in n["bullets"]]
     else:
         bullets = []
         for ins in d.comp.get("insights", [])[:3]:
-            bullets.append(esc(ins["texto"]))
+            bullets.append(item(ins["texto"]))
             fontes_de_insight(ins, d, fontes)
     if not bullets:
         bullets = ['<span class="nd">Sem conclusões: o comparativo não trouxe insights.</span>']
@@ -510,57 +516,78 @@ SLIDES = {"capa": slide_capa, "resumo": slide_resumo, "perfil": slide_perfil, "c
 
 
 # ---------------------------------------------------------------- página
+# Design system "Comitê" (docs/DESIGN_SYSTEM.md): contenção; só números e as cores das empresas
+# chamam atenção. Fonte Archivo embutida (SIL OFL 1.1, templates/fontes/OFL-Archivo.txt): arquivo
+# único, abre offline. Sem o arquivo, cai na pilha de sistema.
+_FONTE = RAIZ / "templates" / "fontes" / "archivo-latin.woff2"
+FONTE_CSS = ("@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;"
+             "font-display:block;src:url(data:font/woff2;base64,"
+             + base64.b64encode(_FONTE.read_bytes()).decode() + ") format('woff2')}") if _FONTE.exists() else ""
+
 CSS = """
-:root{--tinta:#1d2430;--suave:#5b6474;--linha:#e3e6eb;--nd:#9a6b00}
+:root{--superficie:#F4F6F8;--palco:#D9DEE3;--tinta:#1F2328;--sec:#59636E;--linha:#D8DEE4;--nd:#9A6700;
+  --pos:#1A7F37;--neg:#CF222E;--t-xs:12px;--t-s:15px;--t-m:18px;--t-l:23px;--t-xl:29px;--t-capa:44px}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#2b2f36;color:var(--tinta);
-  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+html,body{margin:0;height:100%;background:var(--palco);color:var(--tinta);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased}
 #deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.slide{width:1280px;height:720px;flex:none;background:#fff;display:none;flex-direction:column;
-  padding:44px 64px 0;position:absolute}
+.slide{width:1280px;height:720px;flex:none;background:var(--superficie);display:none;flex-direction:column;
+  padding:52px 64px 0;position:absolute}
 .slide.ativo{display:flex}
-.slide h1{font-size:32px;line-height:1.2;margin:0 0 6px;font-weight:650;letter-spacing:-.01em}
-.slide .sub{color:var(--suave);font-size:18px;margin:0 0 10px}
-.corpo{flex:1;min-height:0;display:flex;flex-direction:column;gap:14px;font-size:18px;padding-top:10px}
-footer{display:flex;gap:18px;align-items:flex-end;border-top:1px solid var(--linha);
-  padding:8px 0 12px;font-size:11px;line-height:1.35;color:var(--suave)}
+.slide h1{font-size:var(--t-xl);line-height:1.2;margin:0 0 6px;font-weight:600;max-width:1080px}
+.slide .sub{color:var(--sec);font-size:var(--t-m);line-height:1.4;margin:0;max-width:900px}
+.corpo{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;font-size:var(--t-m);padding-top:22px}
+footer{display:flex;gap:24px;align-items:flex-end;border-top:1px solid var(--linha);
+  padding:10px 0 14px;font-size:11px;line-height:1.4;color:var(--sec)}
 footer .fontes{flex:1}
-footer .aviso{white-space:nowrap;font-weight:600}
+footer .aviso{white-space:nowrap}
 ul{margin:0;padding-left:1.1em}
-li{margin:0 0 .45em}
-ul.grande{font-size:24px}
-ul.grande li{margin-bottom:.8em}
-ul.compacta{font-size:15px}
-.capa{display:flex;gap:28px;align-items:baseline;font-size:46px;font-weight:700;margin-top:90px}
-.capa small{font-size:18px;color:var(--suave);font-weight:500}
-.capa .x{color:var(--suave);font-weight:300}
-.nota{font-size:13px;color:var(--suave);margin:0}
-.duas{display:grid;grid-template-columns:1fr 1fr;gap:36px;min-height:0}
-.empresa h2{font-size:21px;margin:0 0 10px;padding-bottom:6px;border-bottom:3px solid var(--cor)}
-.empresa h2 small{font-size:13px;color:var(--suave);font-weight:500}
-.tabela{width:100%;border-collapse:collapse;font-size:16px}
-.tabela th{text-align:left;font-size:13px;color:var(--suave);font-weight:600;padding:4px 10px;
-  border-bottom:2px solid var(--linha)}
-.tabela th[style]{border-bottom-color:var(--cor);color:var(--tinta)}
-.tabela td{padding:5px 10px;border-bottom:1px solid var(--linha);vertical-align:top}
-.tabela td.venc{box-shadow:inset 4px 0 0 var(--cor);font-weight:700}
-.tabela td.fonte{font-size:11px;color:var(--suave);max-width:250px}
+li{margin:0 0 .55em;line-height:1.45}
+li::marker{color:var(--sec)}
+#resumo .corpo{justify-content:center;padding-bottom:40px}
+ul.grande{font-size:var(--t-l);display:grid;grid-template-columns:repeat(3,1fr);gap:44px;padding:0;
+  list-style:none}
+ul.grande li{margin:0;line-height:1.4;border-top:2px solid var(--tinta);padding-top:18px}
+ul.grande .rotulo{display:block;font-size:var(--t-xl);font-weight:600;line-height:1.15;margin-bottom:14px}
+ul.compacta{font-size:var(--t-s)}
+#capa h1{font-size:52px;line-height:1.08;max-width:1150px;margin-top:80px}
+#capa .sub{font-size:var(--t-l);margin-top:18px}
+.capa{display:flex;gap:28px;align-items:baseline;font-size:48px;font-weight:600;margin-top:auto;
+  padding-top:22px;border-top:1px solid var(--linha)}
+.capa small{font-size:var(--t-m);color:var(--sec);font-weight:400;margin-left:6px}
+.capa .x{color:var(--sec);font-weight:400}
+.nota{font-size:var(--t-xs);color:var(--sec);margin:0 0 18px}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:56px;min-height:0}
+.empresa h2{font-size:var(--t-m);font-weight:600;margin:0 0 12px;color:var(--cor)}
+.empresa h2 small{font-size:var(--t-xs);color:var(--sec);font-weight:400}
+.tabela{width:100%;border-collapse:collapse;font-size:var(--t-s)}
+.tabela th{text-align:left;font-size:var(--t-xs);color:var(--sec);font-weight:400;padding:4px 12px 6px;
+  border-bottom:1px solid var(--tinta)}
+.tabela th[style]{color:var(--cor);font-size:var(--t-s);font-weight:600}
+.tabela td{padding:6px 12px;border-bottom:1px solid var(--linha);vertical-align:top}
+.tabela td.venc .v{font-weight:600}
+.tabela td.fonte{font-size:11px;color:var(--sec);max-width:240px}
 .v{display:inline}
-.var,.obs{display:block;font-size:11.5px;color:var(--suave);font-weight:400}
-.nd{color:var(--nd);font-weight:600}
-.melhor{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--cor);margin-left:6px}
-.graf{flex:1;min-height:0;display:flex;gap:16px;justify-content:center;align-items:center}
-.graf img{max-width:50%;max-height:100%;object-fit:contain}
+.var,.obs{display:block;font-size:var(--t-xs);color:var(--sec);font-weight:400}
+.nd{color:var(--nd)}
+.melhor{font-size:var(--t-xs);color:var(--cor);margin-left:6px;font-weight:600}
+.graf{flex:1;min-height:0;display:flex;gap:24px;justify-content:center;align-items:center}
+.graf img{max-width:50%;max-height:100%;object-fit:contain;background:#fff;border:1px solid var(--linha)}
 .graf.um img{max-width:100%}
-.tiles{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:10px}
-.tile{border:1px solid var(--linha);border-radius:8px;padding:10px;font-size:15px}
-.tile .nome{font-size:14px;font-weight:600;margin-bottom:6px}
-.tile .lado{padding:4px 0 4px 8px;border-left:3px solid transparent;margin-top:4px}
-.tile .lado.venc{border-left-color:var(--cor);font-weight:700}
-.tile .quem{display:block;font-size:11px;color:var(--suave);font-weight:400}
-.pos{color:#1a7f37}.neg{color:#b42318}
-.alerta{display:block;font-size:13px;color:#7a4b00;background:#fff6e5;border-radius:4px;padding:4px 8px}
-#nav{position:fixed;right:14px;bottom:10px;color:#cfd3da;font:12px system-ui,sans-serif}
+.tiles{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:32px}
+.tile{font-size:var(--t-s)}
+.tile .nome{font-size:var(--t-s);font-weight:600;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--linha)}
+.tile .lado{padding:4px 0;margin-top:4px}
+.tile .lado.venc .v{font-weight:600}
+.tile .quem{display:block;font-size:var(--t-xs);color:var(--cor);font-weight:600}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+.alerta{display:block;font-size:var(--t-s);color:var(--nd)}
+#destaques_riscos ul.compacta{font-size:var(--t-m)}
+#metodologia ul.compacta{font-size:var(--t-m);columns:2;column-gap:56px}
+#metodologia li{break-inside:avoid}
+.alerta::before{content:"Atenção: ";font-weight:600}
+#nav{position:fixed;right:16px;bottom:10px;color:var(--sec);font:12px Archivo,system-ui,sans-serif}
 @media print{
   @page{size:1280px 720px;margin:0}
   html,body{background:#fff;height:auto}
@@ -598,7 +625,7 @@ def gerar_html(d: Dados, narrativa: dict | None = None) -> str:
     a, b = d.nomes["a"], d.nomes["b"]
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{esc(a)} × {esc(b)} · {esc(d.comp["periodo"])}</title><style>{CSS}</style></head>'
+            f'<title>{esc(a)} × {esc(b)} · {esc(d.comp["periodo"])}</title><style>{FONTE_CSS}{CSS}</style></head>'
             f'<body><main id="deck">{"".join(secoes)}</main>'
             f'<div id="nav">← → navegar · <span id="pos"></span></div><script>{JS}</script></body></html>\n')
 
