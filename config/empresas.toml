@@ -6,12 +6,12 @@
 [empresas.gerdau]
 nome = "Gerdau"
 ticker = "GGBR4"
-cor = "#1f5fa8"
+cor = "#14529c"
 
 [empresas.usiminas]
 nome = "Usiminas"
 ticker = "USIM5"
-cor = "#d9822b"
+cor = "#e07818"
 
 # Empresas FICTÍCIAS usadas só nos testes (tests/fixtures_comparar/).
 # empresa_c fica de fora de propósito, para testar o fallback de slug ausente.

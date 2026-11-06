@@ -11,6 +11,7 @@ Os exemplos abaixo são evidências reais encontradas durante a extração e a c
 | 5 | Gerdau | Volumes, receita e EBITDA, p. 18–20 | O extrator fragmenta os dígitos dos gráficos, embora o slide seja visualmente legível. | Extração PDF versus conferência visual. | Valores foram marcados com observação e não usados como literal automatizado quando não havia token íntegro. |
 | 6 | Usiminas | Apresentação institucional, p. 40 | A página saiu sem texto. | Inspeção da pasta `saida/usiminas_APRESENTACAO_3T26`. | A página foi registrada como indisponível e não foi usada como evidência. |
 | 7 | Usiminas | Operacional, p. 24 e p. 36 | Volume de minério estava no consolidado; total de aço, mercado interno e exportação colidiam na mesma chave/escopo. | Recalculo dos indicadores e alertas de duplicidade. | Minério passou para `segmento:mineracao`; total de aço ficou em `segmento:siderurgia`; subcomponentes receberam subescopos próprios. |
+| 8 | Ambas | Caixa das operações, FCL e capex/receita (9M26) | A apresentação dizia “9M26 anualizado, sobre saldos médios” para esses indicadores, mas eles são o acumulado do 9M26, sem anualizar; só ROE, ROA e ROIC são anualizados (`src/indicadores.py`, modo `acum`). | Revisão do conteúdo dos slides durante o redesenho (time). | `src/apresentacao.py` passou a rotular “9M26 anualizado” só o grupo rentabilidade e “9M26 acumulado” os demais, na tabela e na metodologia. |
 
 ## Limitações ainda abertas
 

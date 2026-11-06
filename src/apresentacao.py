@@ -33,12 +33,21 @@ RAIZ = Path(__file__).resolve().parent.parent
 AVISO = "Não constitui recomendação de investimento"
 IDS_SLIDES = ["capa", "resumo", "perfil", "comparativo", "graficos", "setor", "destaques_riscos", "metodologia"]
 DOCUMENTOS = {"itr": "ITR", "apresentacao": "Apresentação"}
-TEMAS_PERFIL = ["perfil", "capacidade_footprint", "mercados_produtos", "estrategia"]
-# linhas preferidas para a tabela do slide comparativo (as que existirem, até 8)
+# "O que observar" no slide de destaques: o primeiro destes temas qualitativos que a empresa tiver.
+# "riscos" fica de fora: nas apresentações é texto padrão (governança, previsões); os riscos que
+# importam são os alertas do comparativo (efeito pontual, divergência), que aparecem no slide.
+TEMAS_OBSERVAR = ["guidance_perspectivas", "capex_investimentos"]
+# linhas preferidas para a tabela do slide comparativo (as que existirem, até 8). Fluxo de caixa
+# livre entra no lugar da margem líquida, que repete o lucro; margem líquida fica de reserva.
 TABELA = ["receita_liquida", "ebitda_ajustado", "ebitda_contabil", "margem_ebitda", "lucro_liquido",
-          "margem_liquida", "dl_ebitda", "roe", "roic"]
+          "fcl", "dl_ebitda", "roe", "roic", "margem_liquida"]
 GRUPOS_SETOR = {"setor"}
-EXTRA_SETOR = ["dl_ebitda"]
+# slide "setor": caixa e balanço (comparáveis nas duas) antes das métricas por tonelada
+LINHAS_CAIXA = ["fco", "fcl", "capex_receita", "divida_liquida"]
+GRAFICOS_SETOR = ["dl_ebitda", "volume_rpt"]  # o primeiro que existir
+# Só os indicadores de rentabilidade são anualizados (× 4/3, sobre saldos médios); os de caixa
+# no período acumulado (9M26) são a soma dos trimestres, sem anualizar (src/indicadores.py).
+GRUPOS_ANUALIZADOS = {"rentabilidade"}
 # Linhas contábeis que carregam os ajustes pontuais (impairment, venda de ativo...). O EBITDA
 # ajustado os exclui; EBIT, lucro e EBITDA contábil não. Um alerta de efeito pontual da empresa
 # distorce a variação A/A delas, mesmo que o comparativo só cite as linhas de EBITDA.
@@ -233,10 +242,38 @@ def verificar_narrativa(narrativa: dict, d: Dados) -> list[str]:
             resolver(texto, d, Fontes())
         except ErroNarrativa as erro:
             problemas.append(f"[{sid}] {erro}")
+    for slide in narrativa.get("slides", []):  # "destaques": par de números de cada bullet do resumo
+        for ref in slide.get("destaques") or []:
+            chave, _, var = (ref or "").partition(".")
+            if chave not in d.linhas or var not in ("", "var_aa", "var_tt"):
+                problemas.append(f"[{slide.get('id')}] destaque inválido: {ref!r} (use 'chave' ou 'chave.var_aa')")
     return problemas
 
 
 # ---------------------------------------------------------------- blocos de HTML
+SOBRESCRITOS = "¹²³⁴⁵⁶⁷⁸⁹"
+
+
+class Notas:
+    """Observações longas (base de cálculo, motivo de N/D) viram notas numeradas no pé do slide."""
+
+    def __init__(self) -> None:
+        self.textos: list[str] = []
+
+    def marca(self, texto: str | None) -> str:
+        if not texto:
+            return ""
+        if texto not in self.textos:
+            self.textos.append(texto)
+        i = self.textos.index(texto)
+        return f"<sup>{SOBRESCRITOS[i] if i < len(SOBRESCRITOS) else i + 1}</sup>"
+
+    def html(self, prefixo: str = "") -> str:
+        itens = [f"{SOBRESCRITOS[i] if i < len(SOBRESCRITOS) else i + 1} {esc(t)}." for i, t in enumerate(self.textos)]
+        corpo = " ".join(x for x in [prefixo] + itens if x)
+        return f'<p class="nota">{corpo}</p>' if corpo else ""
+
+
 def img_grafico(d: Dados, gid: str, fontes: Fontes) -> str | None:
     g = next((g for g in d.comp.get("graficos", []) if g.get("id") == gid), None)
     if not g or not (d.pasta / g["arquivo"]).is_file():
@@ -246,31 +283,71 @@ def img_grafico(d: Dados, gid: str, fontes: Fontes) -> str | None:
     return f'<img src="data:image/png;base64,{dados}" alt="{esc(g.get("descricao", gid))}">'
 
 
-def valor_html(lado: dict, mostrar_var: bool = True) -> str:
-    if not lado.get("disponivel"):
-        return (f'<span class="nd">{esc(lado.get("texto") or "N/D")}</span>'
-                f'<span class="obs">{esc(lado.get("obs") or "")}</span>')
-    partes = [f'<span class="v">{esc(lado["texto"])}</span>']
-    if mostrar_var:
-        variacoes = [f"{rot} {fmt_var(lado.get(k), lado.get('unidade_var'))}"
-                     for k, rot in (("var_aa", "A/A"), ("var_tt", "T/T")) if lado.get(k) is not None]
-        if variacoes:
-            partes.append(f'<span class="var">{esc(" · ".join(variacoes))}</span>')
-    if lado.get("obs"):  # motivo de variação omitida, base de cálculo, caixa líquido...
-        partes.append(f'<span class="obs">{esc(lado["obs"])}</span>')
-    return "".join(partes)
+def texto_var(lado: dict) -> str:
+    return " · ".join(f"{rot} {fmt_var(lado.get(k), lado.get('unidade_var'))}"
+                      for k, rot in (("var_aa", "A/A"), ("var_tt", "T/T")) if lado.get(k) is not None)
+
+
+def periodo_da_linha(linha: dict, periodo: str) -> str | None:
+    """'9M26 anualizado' (ROE/ROA/ROIC) ou '9M26 acumulado' (fluxos de caixa); None se for o trimestre."""
+    p = linha.get("periodo")
+    if not p or p == periodo:
+        return None
+    if "M" in p:
+        return f"{p} anualizado" if linha.get("grupo") in GRUPOS_ANUALIZADOS else f"{p} acumulado"
+    return p
 
 
 def rotulo_linha(linha: dict, periodo: str) -> str:
-    extra = []
-    if linha.get("periodo") and linha["periodo"] != periodo:
-        extra.append(f"{linha['periodo']} anualizado" if "M" in linha["periodo"] else linha["periodo"])
-    extra.append(linha["unidade"])
+    extra = [x for x in (periodo_da_linha(linha, periodo), linha["unidade"]) if x]
     return f'{esc(linha["nome"])}<span class="obs">{esc(" · ".join(extra))}</span>'
+
+
+def maiuscula(texto: str) -> str:
+    return texto[:1].upper() + texto[1:]
 
 
 def lista(itens: list[str], classe: str = "") -> str:
     return f'<ul class="{classe}">' + "".join(f"<li>{i}</li>" for i in itens) + "</ul>"
+
+
+def tarja(emp: dict, extra: str = "") -> str:
+    """Faixa na cor da empresa: a identidade visual do design system 'Tarja'."""
+    tk = f'<small>{esc(emp["ticker"])}</small>' if emp.get("ticker") else ""
+    return f'<div class="tarja" style="--cor:{esc(emp["cor"])}"><b>{esc(emp["nome"])}</b>{tk}{extra}</div>'
+
+
+def tabela(d: Dados, linhas: list[dict], fontes: Fontes, notas: Notas, classe: str = "") -> str:
+    """Métrica × empresas. Cada número leva a página dele (numeração do PDF) logo abaixo."""
+    emp = d.comp["empresas"]
+    cab = ""
+    for e in ("a", "b"):
+        tk = f"<small>{esc(emp[e]['ticker'])}</small>" if emp[e].get("ticker") else ""
+        cab += f'<th class="emp" style="--cor:{esc(emp[e]["cor"])}">{esc(emp[e]["nome"])}{tk}</th>'
+
+    corpo = []
+    for linha in linhas:
+        celulas = []
+        for e in ("a", "b"):
+            lado = linha[e]
+            fontes.add(e, lado.get("fontes"))
+            so_esta = Fontes()
+            so_esta.add(e, lado.get("fontes"))
+            pag = so_esta.texto({})
+            venc = linha.get("vencedor") == e
+            if lado.get("disponivel"):
+                valor = f'<span class="v">{esc(lado["texto"])}{notas.marca(lado.get("obs"))}</span>'
+                var = texto_var(lado)
+            else:
+                valor = (f'<span class="v nd">{esc(lado.get("texto") or "N/D")}'
+                         f'{notas.marca(lado.get("obs"))}</span>')
+                var = ""
+            meta = " · ".join(x for x in (esc(var), esc(pag)) if x)
+            celulas.append(f'<td class="{"venc" if venc else ""}" style="--cor:{esc(emp[e]["cor"])}">'
+                           f'{valor}<span class="var">{meta or "&nbsp;"}</span></td>')
+        corpo.append(f'<tr><th scope="row">{rotulo_linha(linha, d.comp["periodo"])}</th>{"".join(celulas)}</tr>')
+    return (f'<table class="tabela {classe}"><colgroup><col class="c-metrica"><col><col></colgroup><thead><tr><th></th>{cab}</tr></thead>'
+            f'<tbody>{"".join(corpo)}</tbody></table>')
 
 
 def fontes_de_insight(ins: dict, d: Dados, fontes: Fontes) -> None:
@@ -282,10 +359,35 @@ def fontes_de_insight(ins: dict, d: Dados, fontes: Fontes) -> None:
     fontes.add(None, ins.get("fontes") or {})
 
 
+def par_de_numeros(d: Dados, ref: str | None, fontes: Fontes) -> str:
+    """'margem_ebitda' ou 'receita_liquida.var_aa' -> o número de cada empresa lado a lado, na cor dela."""
+    if not ref:
+        return ""
+    chave, _, var = ref.partition(".")
+    linha = d.linhas.get(chave)
+    if not linha:
+        return ""
+    valores = []
+    for e in ("a", "b"):
+        lado = linha[e]
+        if not lado.get("disponivel"):
+            return ""
+        txt = fmt_var(lado.get(var), lado.get("unidade_var")) if var else lado["texto"]
+        if txt is None:
+            return ""
+        fontes.add(e, lado.get("fontes"))
+        tam = " longo" if len(txt) > 8 else ""  # "R$ 2.408,2 mi" não cabe no corpo grande
+        valores.append(f'<span class="campo{tam}" style="--cor:{esc(d.comp["empresas"][e]["cor"])}">'
+                       f'<small>{esc(d.nomes[e])}</small><b>{esc(txt)}</b></span>')
+    rot = linha["nome"] + {"var_aa": ", A/A", "var_tt": ", T/T"}.get(var, "")
+    per = periodo_da_linha(linha, d.comp["periodo"])
+    rot += f" ({per})" if per else ""
+    return f'<div class="par">{"".join(valores)}</div><p class="par-rot">{esc(rot)}</p>'
+
+
 # ---------------------------------------------------------------- slides
 # Cada função recebe (dados, narrativa do slide, fontes) e devolve (título, subtítulo, corpo).
 def slide_capa(d, n, fontes):
-    a, b = d.comp["empresas"]["a"], d.comp["empresas"]["b"]
     insights = d.comp.get("insights", [])
     if n.get("titulo"):
         titulo = resolver(n["titulo"], d, fontes)
@@ -293,35 +395,46 @@ def slide_capa(d, n, fontes):
         titulo = insights[0]["texto"]
         fontes_de_insight(insights[0], d, fontes)
     else:
-        titulo = f"{a['nome']} × {b['nome']} no {d.comp['periodo']}"
+        titulo = f"{d.nomes['a']} × {d.nomes['b']} no {d.comp['periodo']}"
     sub = resolver(n["subtitulo"], d, fontes) if n.get("subtitulo") else \
         f"Comparação de resultados do {d.comp['periodo']} para o comitê de investimentos"
-    corpo = (f'<div class="capa"><span style="color:{esc(a["cor"])}">{esc(a["nome"])}'
-             f' <small>{esc(a["ticker"])}</small></span><span class="x">×</span>'
-             f'<span style="color:{esc(b["cor"])}">{esc(b["nome"])} <small>{esc(b["ticker"])}</small></span></div>'
-             f'<p class="nota">Critério de EBITDA: {esc(d.comp["criterio_ebitda"])} para as duas empresas. '
-             f'Fontes: ITRs e apresentações das empresas.</p>')
+    margem = d.linhas.get("margem_ebitda")
+    campos = []
+    for e in ("a", "b"):
+        emp = d.comp["empresas"][e]
+        destaque = ""
+        if margem and margem[e].get("disponivel"):
+            fontes.add(e, margem[e].get("fontes"))
+            destaque = (f'<span class="mg">{esc(margem[e]["texto"])}'
+                        f'<small>{esc(margem["nome"].lower().replace("ebitda", "EBITDA"))}, {esc(d.comp["periodo"])}</small></span>')
+        tk = f'<span class="tk">{esc(emp["ticker"])}</span>' if emp.get("ticker") else ""
+        campos.append(f'<div class="campo" style="--cor:{esc(emp["cor"])}"><b>{esc(emp["nome"])}</b>{tk}{destaque}</div>')
+    corpo = (f'<div class="campos">{"".join(campos)}</div>'
+             f'<p class="nota">EBITDA {esc(d.comp["criterio_ebitda"])} para as duas empresas; números consolidados.</p>')
     return titulo, sub, corpo
 
 
 def slide_resumo(d, n, fontes):
     titulo = resolver(n.get("titulo") or "Três coisas que o comitê precisa saber", d, fontes)
-    def item(texto: str) -> str:  # "Rentabilidade: ..." vira rótulo + texto
-        rot, sep, resto = texto.partition(": ")
-        if sep and len(rot) <= 40:
-            return f'<b class="rotulo">{esc(rot)}</b>{esc(resto)}'
-        return esc(texto)
-
+    blocos = []  # (texto já resolvido, referência do par de números)
     if n.get("bullets"):
-        bullets = [item(resolver(b, d, fontes)) for b in n["bullets"]]
+        refs = n.get("destaques") or []
+        for i, b in enumerate(n["bullets"]):
+            blocos.append((resolver(b, d, fontes), refs[i] if i < len(refs) else None))
     else:
-        bullets = []
         for ins in d.comp.get("insights", [])[:3]:
-            bullets.append(item(ins["texto"]))
             fontes_de_insight(ins, d, fontes)
-    if not bullets:
-        bullets = ['<span class="nd">Sem conclusões: o comparativo não trouxe insights.</span>']
-    return titulo, None, lista(bullets, "grande")
+            blocos.append((ins["texto"], (ins.get("chaves") or [None])[0]))
+    if not blocos:
+        return titulo, None, '<p class="nd">Sem conclusões: o comparativo não trouxe insights.</p>'
+    html_blocos = []
+    for texto, ref in blocos:
+        rot, sep, resto = texto.partition(": ")
+        if not (sep and len(rot) <= 40):
+            rot, resto = "", texto
+        html_blocos.append(f'<div class="bloco">{f"<h2>{esc(rot)}</h2>" if rot else ""}'
+                           f'{par_de_numeros(d, ref, fontes)}<p>{esc(maiuscula(resto))}</p></div>')
+    return titulo, None, f'<div class="blocos">{"".join(html_blocos)}</div>'
 
 
 def slide_perfil(d, n, fontes):
@@ -330,26 +443,22 @@ def slide_perfil(d, n, fontes):
     for e in ("a", "b"):
         emp = d.comp["empresas"][e]
         itens = []
-        for tema in TEMAS_PERFIL:
-            for fato in d.qual(e, tema)[:1]:
-                itens.append(esc(fato["resumo"]))
-                fontes.add_fato(e, fato)
+        for fato in d.qual(e, "perfil")[:1]:  # uma frase por empresa; o resto é texto institucional
+            itens.append(f"<p>{esc(fato['resumo'])}</p>")
+            fontes.add_fato(e, fato)
         segs = d.comp.get("segmentos", {}).get(e, [])
         if segs:
             mix = ", ".join(f"{s.get('rotulo') or s['segmento']} {fmt_br(s['pct_receita'], 0)}% da receita / "
                             f"{fmt_br(s['pct_ebitda'], 0)}% do EBITDA" for s in segs)
-            itens.append(f"Segmentos: {esc(mix)}")
+            itens.append(f'<p class="segs">Segmentos: {esc(mix)}</p>')
             for s in segs:
                 fontes.add(e, s.get("fontes"))
         if not itens:
-            itens = ['<span class="nd">Sem dados da apresentação institucional.</span>']
-        colunas.append(f'<div class="empresa" style="--cor:{esc(emp["cor"])}"><h2>{esc(emp["nome"])} '
-                       f'<small>{esc(emp["ticker"])}</small></h2>{lista(itens, "compacta")}</div>')
-    corpo = f'<div class="duas">{"".join(colunas)}</div>'
+            itens = ['<p class="nd">Sem dados da apresentação institucional.</p>']
+        colunas.append(f'<div class="empresa">{tarja(emp)}{"".join(itens)}</div>')
     grafico = img_grafico(d, "mix_segmentos", fontes)
-    if grafico:
-        corpo += f'<div class="graf um">{grafico}</div>'
-    return titulo, None, corpo
+    lado = f'<div class="graf">{grafico}</div>' if grafico else ""
+    return titulo, None, f'<div class="perfil"><div class="pilha">{"".join(colunas)}</div>{lado}</div>'
 
 
 def slide_comparativo(d, n, fontes):
@@ -357,29 +466,13 @@ def slide_comparativo(d, n, fontes):
     escolhidas = [linhas[c] for c in TABELA if c in linhas][:8]
     if not escolhidas:
         escolhidas = [l for l in d.comp["linhas"] if l.get("grupo") not in GRUPOS_SETOR][:8]
-    a, b = d.comp["empresas"]["a"], d.comp["empresas"]["b"]
     titulo = resolver(n.get("titulo") or f"Comparativo do {d.comp['periodo']}", d, fontes)
-    corpo = [(f'<table class="tabela"><thead><tr><th>Métrica</th>'
-              f'<th style="--cor:{esc(a["cor"])}">{esc(a["nome"])}</th>'
-              f'<th style="--cor:{esc(b["cor"])}">{esc(b["nome"])}</th><th>Fonte</th></tr></thead><tbody>')]
-    for linha in escolhidas:
-        celulas = []
-        for e in ("a", "b"):
-            venc = linha.get("vencedor") == e
-            marca = '<span class="melhor">melhor</span>' if venc else ""
-            cor = esc(d.comp["empresas"][e]["cor"])
-            celulas.append(f'<td class="{"venc" if venc else ""}" style="--cor:{cor}">{valor_html(linha[e])}{marca}</td>')
-            fontes.add(e, linha[e].get("fontes"))
-        fonte_linha = Fontes()
-        for e in ("a", "b"):
-            fonte_linha.add(e, linha[e].get("fontes"))
-        celulas.append(f'<td class="fonte">{esc(fonte_linha.texto({"a": a["nome"], "b": b["nome"]}))}</td>')
-        corpo.append(f"<tr><td>{rotulo_linha(linha, d.comp['periodo'])}</td>{''.join(celulas)}</tr>")
-    corpo.append("</tbody></table>")
-    nota = (f'<p class="nota">EBITDA {esc(d.comp["criterio_ebitda"])} nas duas empresas. A/A = '
-            f'{d.comp["periodo"]} × mesmo trimestre do ano anterior; T/T = contra o trimestre anterior. '
-            f'"melhor" só onde há regra econômica clara.</p>')
-    return titulo, None, "".join(corpo) + nota
+    notas = Notas()
+    corpo = tabela(d, escolhidas, fontes, notas)
+    legenda = (f'<span class="marca"></span> melhor no indicador, só onde há regra econômica clara. '
+               f'EBITDA {esc(d.comp["criterio_ebitda"])} nas duas. A/A = {esc(d.comp["periodo"])} × mesmo '
+               f'trimestre do ano anterior; T/T = × trimestre anterior.')
+    return titulo, None, corpo + notas.html(legenda)
 
 
 def slide_graficos(d, n, fontes):
@@ -387,28 +480,26 @@ def slide_graficos(d, n, fontes):
     imgs = [i for i in (img_grafico(d, gid, fontes) for gid in ("receita_ebitda", "margens")) if i]
     if not imgs:
         return titulo, None, '<p class="nd">Gráficos não encontrados no comparativo.</p>'
-    return titulo, None, f'<div class="graf">{"".join(imgs)}</div>'
+    return titulo, None, f'<div class="graf dois">{"".join(imgs)}</div>'
 
 
 def slide_setor(d, n, fontes):
-    titulo = resolver(n.get("titulo") or "Métricas de siderurgia", d, fontes)
-    linhas = [l for l in d.comp["linhas"] if l.get("grupo") in GRUPOS_SETOR]
-    linhas += [d.linhas[c] for c in EXTRA_SETOR if c in d.linhas and d.linhas[c] not in linhas]
-    tiles = []
-    for linha in linhas[:5]:
-        lados = []
-        for e in ("a", "b"):
-            venc = " venc" if linha.get("vencedor") == e else ""
-            lados.append(f'<div class="lado{venc}" style="--cor:{esc(d.comp["empresas"][e]["cor"])}">'
-                         f'<span class="quem">{esc(d.nomes[e])}</span>{valor_html(linha[e])}</div>')
-            fontes.add(e, linha[e].get("fontes"))
-        tiles.append(f'<div class="tile"><div class="nome">{rotulo_linha(linha, d.comp["periodo"])}</div>'
-                     f'{"".join(lados)}</div>')
-    grafico = img_grafico(d, "volume_rpt", fontes)
-    corpo = f'<div class="tiles" style="--n:{max(len(tiles), 1)}">{"".join(tiles)}</div>'
-    if grafico:
-        corpo += f'<div class="graf um">{grafico}</div>'
-    return titulo, None, corpo
+    """Caixa e balanço (comparáveis) + métricas por tonelada (com o motivo quando não comparáveis)."""
+    titulo = resolver(n.get("titulo") or "Caixa, balanço e métricas por tonelada", d, fontes)
+    notas = Notas()
+    caixa = [d.linhas[c] for c in LINHAS_CAIXA if c in d.linhas]
+    por_t = [l for l in d.comp["linhas"] if l.get("grupo") in GRUPOS_SETOR]
+    partes = []
+    if caixa:
+        partes.append(tabela(d, caixa, fontes, notas, "compacta"))
+    if por_t:
+        partes.append('<h2 class="secao">Por tonelada</h2>' + tabela(d, por_t, fontes, notas, "compacta sem-cab"))
+    if not partes:
+        partes.append('<p class="nd">Sem métricas de caixa ou por tonelada no comparativo.</p>')
+    grafico = next((g for g in (img_grafico(d, gid, fontes) for gid in GRAFICOS_SETOR) if g), None)
+    lado = f'<div class="graf">{grafico}</div>' if grafico else ""
+    return titulo, None, (f'<div class="setor"><div class="pilha">{"".join(partes)}</div>{lado}</div>'
+                          + notas.html())
 
 
 def destaques_numericos(d: Dados, e: str) -> tuple[str | None, str | None, Fontes]:
@@ -462,18 +553,25 @@ def slide_destaques_riscos(d, n, fontes):
         emp = d.comp["empresas"][e]
         pos, neg, f_num = destaques_numericos(d, e)
         fontes.juntar(f_num)
-        itens = [f'<b class="pos">+</b> {esc(pos or "Nenhum indicador comparável melhorou A/A")}',
-                 f'<b class="neg">−</b> {esc(neg or "Nenhum indicador comparável piorou A/A")}']
-        for tema, rotulo in (("destaques_trimestre", "Trimestre"), ("riscos", "Riscos"),
-                             ("guidance_perspectivas", "O que observar")):
-            for fato in d.qual(e, tema)[:1]:
-                itens.append(f"<b>{rotulo}:</b> {esc(fato['resumo'])}")
+        linhas = [("pos", "+", esc(pos or "Nenhum indicador comparável melhorou A/A")),
+                  ("neg", "−", esc(neg or "Nenhum indicador comparável piorou A/A"))]
+        for tema in TEMAS_OBSERVAR:  # o primeiro tema que a empresa tiver
+            fato = next(iter(d.qual(e, tema)), None)
+            if fato:
+                linhas.append(("obs", "Observar", esc(fato["resumo"])))
                 fontes.add_fato(e, fato)
-        for alerta in d.alertas(e)[:2]:
-            itens.append(f'<span class="alerta">{esc(alerta["texto"])}</span>')
+                break
+        sem_dado = []
+        for alerta in d.alertas(e):
+            if alerta.get("tipo") == "indisponivel":  # vários N/D viram uma linha só
+                sem_dado += [d.linhas[c]["nome"] for c in alerta.get("chaves", []) if c in d.linhas]
+            else:
+                linhas.append(("alerta", "Atenção", esc(maiuscula(alerta["texto"]))))
             fontes.add(e, alerta.get("fontes"))
-        colunas.append(f'<div class="empresa" style="--cor:{esc(emp["cor"])}"><h2>{esc(emp["nome"])}</h2>'
-                       f'{lista(itens, "compacta")}</div>')
+        if sem_dado:
+            linhas.append(("alerta", "Sem dado", esc(", ".join(dict.fromkeys(sem_dado)))))
+        itens = "".join(f'<div class="item {c}"><b>{r}</b><span>{t}</span></div>' for c, r, t in linhas)
+        colunas.append(f'<div class="empresa">{tarja(emp)}{itens}</div>')
     return titulo, None, f'<div class="duas">{"".join(colunas)}</div>'
 
 
@@ -485,29 +583,39 @@ def slide_metodologia(d, n, fontes):
     for linha in d.comp["linhas"]:
         for e in ("a", "b"):
             todas.add(e, linha[e].get("fontes"))
-    acumulados = sorted({l["periodo"] for l in d.comp["linhas"] if l.get("periodo") not in (None, periodo)})
-    nomes_acum = [l["nome"] for l in d.comp["linhas"] if l.get("periodo") in acumulados]
+    acumulados = {}
+    for l in d.comp["linhas"]:
+        rot = periodo_da_linha(l, periodo)
+        if rot:
+            acumulados.setdefault(rot, []).append(l["nome"])
     ver = d.comp.get("verificacao")
     if ver:
-        txt_ver = (f"Verificação automática: {ver['ok']} de {ver['total']} números conferidos no PDF "
-                   f"(trecho, valor e página).")
+        num_ver = f'<p class="grande">{esc(ver["ok"])} de {esc(ver["total"])}</p>'
+        txt_ver = ("números conferidos automaticamente no PDF (trecho, valor e página); "
+                   f"{ver.get('erro', 0)} com erro.")
     else:
+        num_ver = ""
         txt_ver = "Verificação automática ainda não rodou para este comparativo: números não conferidos."
-    itens = [
-        esc(f"EBITDA {d.comp['criterio_ebitda']}, o mesmo critério para as duas empresas. Números consolidados."),
-        esc(f"A/A = {periodo} × mesmo trimestre do ano anterior; T/T = × trimestre anterior; "
-            f"variação de percentuais em p.p."),
+    periodos = [f"A/A = {periodo} × mesmo trimestre do ano anterior; T/T = × trimestre anterior; "
+                f"percentuais variam em p.p."]
+    periodos += [f"{', '.join(nomes)}: {rot}" + (", sobre saldos médios" if "anualizado" in rot else "") + "."
+                 for rot, nomes in acumulados.items()]
+    blocos = [
+        ("Critério", [f"EBITDA {d.comp['criterio_ebitda']}, o mesmo para as duas empresas.",
+                      "Números consolidados, nunca os da controladora."]),
+        ("Períodos", periodos),
+        ("Verificação", [txt_ver]),
+        ("Fontes", [f"{todas.texto(d.nomes)}.",
+                    "Páginas na numeração do PDF (a que o leitor de PDF mostra), não a impressa na folha."]),
     ]
-    if acumulados:
-        itens.append(esc(f"{', '.join(nomes_acum)}: {', '.join(acumulados)} anualizado, sobre saldos médios."))
-    itens += [
-        f'<span class="{"" if ver else "nd"}">{esc(txt_ver)}</span>',
-        esc("Páginas na numeração do PDF (a que o leitor de PDF mostra), não a impressa na folha."),
-        esc(f"Fontes completas: {todas.texto(d.nomes)}"),
-        f"<b>{esc(AVISO)}.</b> Trabalho acadêmico (Claude Lab · PUC-Rio).",
-    ]
+    html_blocos = []
+    for nome, textos in blocos:
+        extra = num_ver if nome == "Verificação" else ""
+        html_blocos.append(f'<div class="bloco"><h2>{nome}</h2>{extra}'
+                           + "".join(f"<p>{esc(t)}</p>" for t in textos) + "</div>")
     fontes.juntar(todas)
-    return titulo, None, lista(itens, "compacta")
+    aviso = f'<p class="nota"><b>{esc(AVISO)}.</b> Trabalho acadêmico (Claude Lab · PUC-Rio).</p>'
+    return titulo, None, f'<div class="quatro">{"".join(html_blocos)}</div>{aviso}'
 
 
 SLIDES = {"capa": slide_capa, "resumo": slide_resumo, "perfil": slide_perfil, "comparativo": slide_comparativo,
@@ -516,77 +624,122 @@ SLIDES = {"capa": slide_capa, "resumo": slide_resumo, "perfil": slide_perfil, "c
 
 
 # ---------------------------------------------------------------- página
-# Design system "Comitê" (docs/DESIGN_SYSTEM.md): contenção; só números e as cores das empresas
-# chamam atenção. Fonte Archivo embutida (SIL OFL 1.1, templates/fontes/OFL-Archivo.txt): arquivo
-# único, abre offline. Sem o arquivo, cai na pilha de sistema.
+# Design system "Tarja" (docs/DESIGN_SYSTEM.md): a cor de cada empresa ocupa faixas inteiras
+# (capa, cabeçalhos, colunas); o resto é cinza-concreto e tinta. Títulos em Archivo condensada.
+# Fonte embutida (SIL OFL 1.1, templates/fontes/OFL-Archivo.txt): arquivo único, abre offline.
 _FONTE = RAIZ / "templates" / "fontes" / "archivo-latin.woff2"
 FONTE_CSS = ("@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;"
              "font-display:block;src:url(data:font/woff2;base64,"
              + base64.b64encode(_FONTE.read_bytes()).decode() + ") format('woff2')}") if _FONTE.exists() else ""
 
 CSS = """
-:root{--superficie:#F4F6F8;--palco:#D9DEE3;--tinta:#1F2328;--sec:#59636E;--linha:#D8DEE4;--nd:#9A6700;
-  --pos:#1A7F37;--neg:#CF222E;--t-xs:12px;--t-s:15px;--t-m:18px;--t-l:23px;--t-xl:29px;--t-capa:44px}
+:root{--superficie:#E7EAEC;--palco:#B9C0C6;--tinta:#161B21;--sec:#56616C;--linha:#C9D0D6;--faixa:#DDE1E4;
+  --nd:#8A5A00;--pos:#1A7F37;--neg:#C4262E;--t-xs:12px;--t-s:15px;--t-m:18px;--t-l:22px;--t-xl:36px}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--palco);color:var(--tinta);
-  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums;
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums lining-nums;
   -webkit-font-smoothing:antialiased}
 #deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .slide{width:1280px;height:720px;flex:none;background:var(--superficie);display:none;flex-direction:column;
-  padding:52px 64px 0;position:absolute}
+  padding:48px 64px 0;position:absolute;overflow:hidden}
 .slide.ativo{display:flex}
-.slide h1{font-size:var(--t-xl);line-height:1.2;margin:0 0 6px;font-weight:600;max-width:1080px}
-.slide .sub{color:var(--sec);font-size:var(--t-m);line-height:1.4;margin:0;max-width:900px}
-.corpo{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;font-size:var(--t-m);padding-top:22px}
+.slide h1{font-size:var(--t-xl);line-height:1.06;margin:0;font-weight:700;font-stretch:75%;max-width:1150px;
+  text-wrap:balance}
+.slide .sub{color:var(--sec);font-size:var(--t-m);line-height:1.4;margin:10px 0 0;max-width:960px}
+.corpo{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;font-size:var(--t-m);padding:24px 0 14px}
 footer{display:flex;gap:24px;align-items:flex-end;border-top:1px solid var(--linha);
   padding:10px 0 14px;font-size:11px;line-height:1.4;color:var(--sec)}
 footer .fontes{flex:1}
-footer .aviso{white-space:nowrap}
-ul{margin:0;padding-left:1.1em}
-li{margin:0 0 .55em;line-height:1.45}
-li::marker{color:var(--sec)}
-#resumo .corpo{justify-content:center;padding-bottom:40px}
-ul.grande{font-size:var(--t-l);display:grid;grid-template-columns:repeat(3,1fr);gap:44px;padding:0;
-  list-style:none}
-ul.grande li{margin:0;line-height:1.4;border-top:2px solid var(--tinta);padding-top:18px}
-ul.grande .rotulo{display:block;font-size:var(--t-xl);font-weight:600;line-height:1.15;margin-bottom:14px}
-ul.compacta{font-size:var(--t-s)}
-#capa h1{font-size:52px;line-height:1.08;max-width:1150px;margin-top:80px}
-#capa .sub{font-size:var(--t-l);margin-top:18px}
-.capa{display:flex;gap:28px;align-items:baseline;font-size:48px;font-weight:600;margin-top:auto;
-  padding-top:22px;border-top:1px solid var(--linha)}
-.capa small{font-size:var(--t-m);color:var(--sec);font-weight:400;margin-left:6px}
-.capa .x{color:var(--sec);font-weight:400}
-.nota{font-size:var(--t-xs);color:var(--sec);margin:0 0 18px}
-.duas{display:grid;grid-template-columns:1fr 1fr;gap:56px;min-height:0}
-.empresa h2{font-size:var(--t-m);font-weight:600;margin:0 0 12px;color:var(--cor)}
-.empresa h2 small{font-size:var(--t-xs);color:var(--sec);font-weight:400}
-.tabela{width:100%;border-collapse:collapse;font-size:var(--t-s)}
-.tabela th{text-align:left;font-size:var(--t-xs);color:var(--sec);font-weight:400;padding:4px 12px 6px;
-  border-bottom:1px solid var(--tinta)}
-.tabela th[style]{color:var(--cor);font-size:var(--t-s);font-weight:600}
-.tabela td{padding:6px 12px;border-bottom:1px solid var(--linha);vertical-align:top}
-.tabela td.venc .v{font-weight:600}
-.tabela td.fonte{font-size:11px;color:var(--sec);max-width:240px}
-.v{display:inline}
-.var,.obs{display:block;font-size:var(--t-xs);color:var(--sec);font-weight:400}
+footer .aviso{white-space:nowrap;color:var(--tinta)}
+p{margin:0}
+.nota{font-size:var(--t-xs);line-height:1.45;color:var(--sec);margin-top:auto}
+.nota .marca{display:inline-block;width:6px;height:12px;background:var(--tinta);vertical-align:-1px}
 .nd{color:var(--nd)}
-.melhor{font-size:var(--t-xs);color:var(--cor);margin-left:6px;font-weight:600}
-.graf{flex:1;min-height:0;display:flex;gap:24px;justify-content:center;align-items:center}
-.graf img{max-width:50%;max-height:100%;object-fit:contain;background:#fff;border:1px solid var(--linha)}
-.graf.um img{max-width:100%}
-.tiles{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:32px}
-.tile{font-size:var(--t-s)}
-.tile .nome{font-size:var(--t-s);font-weight:600;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--linha)}
-.tile .lado{padding:4px 0;margin-top:4px}
-.tile .lado.venc .v{font-weight:600}
-.tile .quem{display:block;font-size:var(--t-xs);color:var(--cor);font-weight:600}
-.pos{color:var(--pos)}.neg{color:var(--neg)}
-.alerta{display:block;font-size:var(--t-s);color:var(--nd)}
-#destaques_riscos ul.compacta{font-size:var(--t-m)}
-#metodologia ul.compacta{font-size:var(--t-m);columns:2;column-gap:56px}
-#metodologia li{break-inside:avoid}
-.alerta::before{content:"Atenção: ";font-weight:600}
+sup{font-size:.6em;margin-left:2px;color:var(--sec);font-weight:400}
+h2{margin:0;font-weight:700;font-stretch:75%}
+
+/* tarja: faixa na cor da empresa */
+.tarja{background:var(--cor);color:#fff;padding:10px 16px;display:flex;align-items:baseline;gap:10px}
+.tarja b{font-size:var(--t-l);font-stretch:75%;font-weight:700}
+.tarja small{font-size:var(--t-xs);opacity:.85}
+
+/* capa */
+#capa{padding:0}
+#capa h1{order:2;font-size:48px;padding:34px 64px 0;max-width:1180px}
+#capa .sub{order:3;padding:0 64px;font-size:var(--t-m)}
+#capa .corpo{order:1;flex:none;padding:0;gap:0}
+#capa .corpo .nota{display:none}
+#capa footer{order:5;margin:0 64px}
+#capa::after{content:"";order:4;flex:1}
+.campos{display:grid;grid-template-columns:1fr 1fr;height:380px}
+.campo{background:var(--cor);color:#fff;padding:44px 64px;display:flex;flex-direction:column}
+.campo b{font-size:84px;font-stretch:75%;font-weight:800;line-height:.9}
+.campo .tk{font-size:var(--t-s);opacity:.85;margin-top:8px}
+.campo .mg{margin-top:auto;font-size:56px;font-weight:700;font-stretch:75%;line-height:1}
+.campo .mg small{display:block;font-size:var(--t-s);font-weight:400;font-stretch:100%;opacity:.9;margin-top:6px}
+
+/* resumo */
+.blocos{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;flex:1;align-content:start;padding-top:40px}
+.bloco h2{font-size:28px;line-height:1.05;margin-bottom:14px}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.par .campo{padding:12px 14px 14px}
+.par .campo small{font-size:var(--t-xs);opacity:.9}
+.par .campo b{font-size:40px;line-height:1;margin-top:4px;font-weight:700;white-space:nowrap}
+.par .campo.longo b{font-size:27px;line-height:1.48}
+.par-rot{font-size:var(--t-xs);color:var(--sec);margin:6px 0 14px}
+.bloco p:last-child{font-size:19px;line-height:1.45}
+
+/* tabela */
+.tabela{width:100%;border-collapse:collapse;table-layout:fixed}
+.tabela thead th{text-align:left;font-size:var(--t-l);font-weight:700;font-stretch:75%;padding:10px 16px}
+.tabela col.c-metrica{width:31%}
+.tabela thead th.emp{background:var(--cor);color:#fff}
+.tabela thead th small{font-size:var(--t-xs);font-weight:400;font-stretch:100%;opacity:.85;margin-left:8px}
+.tabela tbody tr:nth-child(odd)>*{background:var(--faixa)}
+.tabela tbody th{text-align:left;font-weight:400;font-size:16px;padding:7px 12px;vertical-align:top}
+.tabela td{padding:7px 16px;vertical-align:top}
+.tabela .v{display:block;font-size:20px;line-height:1.2}
+.tabela .var{display:block;font-size:var(--t-xs);color:var(--sec);margin-top:2px}
+.tabela td.venc{box-shadow:inset 6px 0 0 var(--cor)}
+.tabela td.venc .v{font-weight:700}
+.obs{display:block;font-size:var(--t-xs);color:var(--sec)}
+.tabela.compacta tbody th{font-size:var(--t-s);padding:5px 12px}
+.tabela.compacta td{padding:5px 16px}
+.tabela.compacta .v{font-size:18px}
+.tabela.compacta thead th{font-size:var(--t-m);padding:7px 16px}
+.tabela.sem-cab thead tr{visibility:collapse}  /* some, mas mantém as larguras das colunas */
+.secao{font-size:var(--t-m);margin:14px 0 6px}
+
+/* gráficos: PNG de fundo branco, placas lado a lado */
+.graf{flex:1;min-height:0;display:flex;gap:20px;justify-content:center;align-items:center}
+.graf img{max-width:100%;max-height:100%;object-fit:contain;background:#fff}
+.graf.dois img{max-width:calc(50% - 10px)}
+
+/* perfil e setor: texto à esquerda, gráfico à direita */
+.perfil,.setor{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;flex:1;min-height:0}
+.setor{grid-template-columns:1.35fr 1fr;gap:32px}
+.pilha{display:flex;flex-direction:column;gap:22px;min-height:0}
+.setor .pilha{gap:0}
+.perfil .graf,.setor .graf{align-items:flex-start}
+.empresa p{font-size:var(--t-m);line-height:1.45;margin-top:12px}
+.empresa p.segs{font-size:var(--t-s);color:var(--sec)}
+
+/* destaques */
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:40px;min-height:0}
+.item{display:grid;grid-template-columns:84px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--linha);
+  font-size:var(--t-s);line-height:1.4}
+.item b{font-stretch:75%;font-size:var(--t-s)}
+.item.pos b{color:var(--pos);font-size:var(--t-l);line-height:1}
+.item.neg b{color:var(--neg);font-size:var(--t-l);line-height:1}
+.item.pos span,.item.neg span{font-size:var(--t-m)}
+.item.alerta b,.item.alerta span{color:var(--nd)}
+
+/* metodologia */
+.quatro{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;flex:1;align-content:start}
+.quatro .bloco h2{font-size:var(--t-l);border-top:4px solid var(--tinta);padding-top:8px;margin-bottom:8px}
+.quatro .bloco p{font-size:17px;line-height:1.45;margin-bottom:6px}
+.quatro .bloco p.grande{font-size:52px;font-weight:700;font-stretch:75%;line-height:1;margin-bottom:4px}
+
 #nav{position:fixed;right:16px;bottom:10px;color:var(--sec);font:12px Archivo,system-ui,sans-serif}
 @media print{
   @page{size:1280px 720px;margin:0}

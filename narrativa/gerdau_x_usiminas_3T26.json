@@ -9,9 +9,14 @@
       "id": "resumo",
       "titulo": "Três coisas que o comitê precisa saber",
       "bullets": [
-        "Rentabilidade (EBITDA {criterio_ebitda}): margem de {a.margem_ebitda} na {a.nome} ({a.margem_ebitda.var_aa} A/A) contra {b.margem_ebitda} na {b.nome}; ROIC 9M26 anualizado de {a.roic} contra {b.roic}",
-        "Crescimento: a {a.nome} aumenta receita ({a.receita_liquida.var_aa} A/A) e EBITDA ajustado ({a.ebitda_ajustado.var_aa} A/A); a {b.nome} perde receita ({b.receita_liquida.var_aa} A/A) e EBITDA ajustado no T/T ({b.ebitda_ajustado.var_tt})",
-        "Balanço: a {b.nome} tem caixa líquido (DL/EBITDA de {b.dl_ebitda}); a {a.nome} segue pouco alavancada, com {a.dl_ebitda}"
+        "Rentabilidade: a {a.nome} ampliou a margem ({a.margem_ebitda.var_aa} A/A) e lidera também em ROIC 9M26 anualizado ({a.roic} contra {b.roic})",
+        "Crescimento: a {a.nome} cresce receita e EBITDA {criterio_ebitda} ({a.ebitda_ajustado.var_aa} A/A); a {b.nome} perde receita e o EBITDA recua no T/T ({b.ebitda_ajustado.var_tt})",
+        "Caixa e balanço: a {b.nome} tem caixa líquido ({b.dl_ebitda} de DL/EBITDA); a {a.nome} segue pouco alavancada ({a.dl_ebitda}) e gera mais caixa livre"
+      ],
+      "destaques": [
+        "margem_ebitda",
+        "receita_liquida.var_aa",
+        "fcl"
       ]
     },
     {
@@ -28,7 +33,7 @@
     },
     {
       "id": "setor",
-      "titulo": "Por tonelada não há comparação: falta volume consolidado da {a.nome}; a {b.nome} mostra só a siderurgia ({b.receita_por_t})"
+      "titulo": "{a.nome} gerou {a.fcl} de caixa livre no 9M26, contra {b.fcl} da {b.nome}; por tonelada não há base comparável"
     },
     {
       "id": "destaques_riscos",
