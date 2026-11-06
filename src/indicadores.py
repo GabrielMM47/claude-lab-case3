@@ -31,13 +31,21 @@ PRIORIDADE_DOCUMENTO = {"itr": 0, "apresentacao": 1}
 CRITERIOS_EBITDA = ("contabil", "ajustado")
 SETOR_SIDERURGIA = "siderurgia"
 STATUS = ("ok", "ausente", "nao_comparavel", "nao_aplicavel")   # exibidos como valor, N/D, N/C, N/A
+# Valores absolutos medem tamanho, não desempenho: entre empresas de portes diferentes não há
+# "melhor" (TAREFAS.md, CASE-05: maior receita não é melhor desempenho). Margens, múltiplos,
+# retornos e valores por tonelada mantêm a direção.
+VALORES_ABSOLUTOS = {"receita_liquida", "ebit", "lucro_liquido", "lucro_liquido_controladores",
+                     "ebitda_contabil", "ebitda_ajustado", "divida_bruta", "divida_liquida",
+                     "caixa_total", "fco", "fcl", "volume_vendas", "volume_producao",
+                     "capacidade_instalada", "volume_minerio"}
 
 # --- Entrada: usa o contrato (CASE-01) quando ele existir ---------------------
 try:
     from contrato import carregar_fatos, para_milhoes  # type: ignore[import-not-found]
 except ImportError:  # provisório até o CASE-01 entrar no main; mesmas assinaturas do card
-    _FATOR_MONETARIO = {"r$ mil": 1e-3, "r$ milhões": 1.0, "r$ milhoes": 1.0,
-                        "r$ bilhões": 1e3, "r$ bilhoes": 1e3}
+    _FATOR_MONETARIO = {"r$ mil": 1e-3, "r$ milhões": 1.0, "r$ milhoes": 1.0, "r$ milhão": 1.0,
+                        "r$ milhao": 1.0, "r$ bilhões": 1e3, "r$ bilhoes": 1e3, "r$ bilhão": 1e3,
+                        "r$ bilhao": 1e3}
 
     def carregar_fatos(slug: str, tri: str, pasta: str = "metricas") -> list[dict]:
         fatos: list[dict] = []
@@ -55,9 +63,13 @@ except ImportError:  # provisório até o CASE-01 entrar no main; mesmas assinat
 
 
 # --- Unidades -----------------------------------------------------------------
-_VOLUME_EM_MIL_T = {"t": 1e-3, "toneladas": 1e-3, "mil t": 1.0, "kt": 1.0, "mil toneladas": 1.0,
+_VOLUME_EM_MIL_T = {"t": 1e-3, "toneladas": 1e-3, "mil t": 1.0, "kt": 1.0, "kton": 1.0, "ktons": 1.0,
+                    "mil toneladas": 1.0, "1.000 t": 1.0, "1.000 toneladas": 1.0,
                     "milhões de t": 1e3, "milhoes de t": 1e3, "milhões de toneladas": 1e3,
-                    "milhoes de toneladas": 1e3, "mt": 1e3}
+                    "milhoes de toneladas": 1e3}
+# "MT"/"Mt" aparece tanto como milhões de t quanto como mil t (ex.: "6884 MT" e "0,9 MT" no mesmo
+# arquivo). Sem a caixa original não dá para saber: o fato é ignorado com alerta, nunca adivinhado.
+_VOLUME_AMBIGUO = {"mt", "mts"}
 _SEM_CONVERSAO = {"%", "x", "r$/t", "us$/t"}
 
 
@@ -70,6 +82,9 @@ def normalizar(valor: float, unidade: str) -> tuple[float, str]:
     base = u.removesuffix("/ano").strip()
     if base in _VOLUME_EM_MIL_T:
         return valor * _VOLUME_EM_MIL_T[base], "mil t/ano" if por_ano else "mil t"
+    if base in _VOLUME_AMBIGUO:
+        raise ValueError(f"unidade ambígua: {unidade!r} (milhões de t ou mil t?); registrar 'mil t' "
+                         f"ou 'milhões de t' no JSON de origem")
     if u in _SEM_CONVERSAO:
         return valor, unidade.strip()
     raise ValueError(f"unidade não suportada: {unidade!r}")
@@ -160,44 +175,73 @@ class Base:
         self.dados: dict[tuple[str, str, str], Valor] = {}
         self.ajustes: dict[tuple[str, str], list[dict]] = {}
         self.alertas: list[dict] = []
+        # (chave, período, escopo) com valores diferentes no documento de maior prioridade
+        self.ambiguos: dict[tuple[str, str, str], list[Valor]] = {}
+        candidatos: dict[tuple[str, str, str], list[Valor]] = {}
         for fato in fatos:
-            self._incluir(fato)
+            v = self._incluir(fato)
+            if v is not None:
+                candidatos.setdefault((v.fonte["chave"], v.fonte["periodo"], v.fonte["escopo"]), []).append(v)
+        for chave, valores in candidatos.items():
+            self._resolver(chave, valores)
 
-    def _incluir(self, f: dict) -> None:
+    def _incluir(self, f: dict) -> Valor | None:
         if f.get("chave") in (None, "qualitativo") or f.get("valor") is None:
-            return
+            return None
         escopo = f.get("escopo") or "consolidado"
         try:
             valor, unidade = normalizar(float(f["valor"]), f.get("unidade", ""))
         except ValueError as erro:
             self.alertas.append({"tipo": "unidade", "texto":
                                  f"{f['chave']} {f.get('periodo')} ({escopo}) ignorado: {erro}"})
-            return
+            return None
         fonte = {"chave": f["chave"], "periodo": f.get("periodo"), "escopo": escopo,
                  "documento": f.get("documento"), "pagina": f.get("pagina")}
         if f["chave"] == "ajuste_ebitda":
             self.ajustes.setdefault((f["periodo"], escopo), []).append(
-                {"descricao": f.get("metrica", ""), "valor": valor, "unidade": unidade, **fonte})
-            return
-        # A chave inclui período e escopo, e EBITDA contábil e ajustado são chaves distintas:
-        # a prioridade abaixo só decide entre fontes do MESMO fato, nunca entre bases diferentes.
-        chave = (f["chave"], f["periodo"], escopo)
-        novo, atual = Valor(valor, unidade, fonte), self.dados.get(chave)
-        if atual is None:
-            self.dados[chave] = novo
-            return
-        mantido = novo if self._prioridade(novo) < self._prioridade(atual) else atual
-        if _diferenca_relativa(atual.valor, novo.valor) > TOLERANCIA_DUPLICATA:
+                {"descricao": f.get("metrica", ""), "valor": valor, "unidade": unidade,
+                 "natureza": f.get("natureza"), **fonte})
+            return None
+        return Valor(valor, unidade, {**fonte, "metrica": f.get("metrica")})
+
+    def _resolver(self, chave: tuple[str, str, str], valores: list[Valor]) -> None:
+        """Escolhe o valor de um fato que veio de mais de um lugar.
+
+        A chave inclui período e escopo, e EBITDA contábil e ajustado são chaves distintas: a
+        prioridade (itr > apresentacao) só decide entre fontes do MESMO fato. Se o documento de
+        maior prioridade traz valores diferentes para a mesma chave, a prioridade não decide e
+        escolher pela ordem de leitura poderia trocar aço por minério: nenhum valor é usado.
+        """
+        melhor = min(self._prioridade(v) for v in valores)
+        topo = [v for v in valores if self._prioridade(v) == melhor]
+        escolhido = topo[0]
+        if any(_diferenca_relativa(escolhido.valor, v.valor) > TOLERANCIA_DUPLICATA for v in topo[1:]):
+            self.ambiguos[chave] = valores
             self.alertas.append({
-                "tipo": "divergencia", "chave": chave[0], "periodo": chave[1], "escopo": escopo,
+                "tipo": "ambiguo", "chave": chave[0], "periodo": chave[1], "escopo": chave[2],
                 "valores": [{"documento": v.fonte["documento"], "pagina": v.fonte["pagina"],
-                             "valor": round(v.valor, 4), "unidade": v.unidade} for v in (atual, novo)],
-                "mantido": mantido.fonte["documento"],
-                "texto": (f"{chave[0]} {chave[1]} ({escopo}): {atual.fonte['documento']} "
-                          f"p.{atual.fonte['pagina']} = {atual.valor:.1f} x {novo.fonte['documento']} "
-                          f"p.{novo.fonte['pagina']} = {novo.valor:.1f} {novo.unidade}; mantido o do "
-                          f"{mantido.fonte['documento']} (itr > apresentacao)")})
-        self.dados[chave] = mantido
+                             "metrica": v.fonte.get("metrica"), "valor": round(v.valor, 4),
+                             "unidade": v.unidade} for v in valores],
+                "texto": (f"{chave[0]} {chave[1]} ({chave[2]}): valores diferentes no mesmo tipo de "
+                          f"documento, nenhum foi usado: "
+                          + "; ".join(f"{v.fonte['documento']} p.{v.fonte['pagina']} "
+                                      f"'{v.fonte.get('metrica') or ''}' = {v.valor:.1f}" for v in valores)
+                          + ". Provável recorte (mercado, unidade, produto) gravado com a mesma chave e "
+                            "escopo: corrigir o JSON de origem")})
+            return
+        self.dados[chave] = escolhido
+        for v in valores:
+            if self._prioridade(v) != melhor and \
+                    _diferenca_relativa(escolhido.valor, v.valor) > TOLERANCIA_DUPLICATA:
+                self.alertas.append({
+                    "tipo": "divergencia", "chave": chave[0], "periodo": chave[1], "escopo": chave[2],
+                    "valores": [{"documento": x.fonte["documento"], "pagina": x.fonte["pagina"],
+                                 "valor": round(x.valor, 4), "unidade": x.unidade} for x in (escolhido, v)],
+                    "mantido": escolhido.fonte["documento"],
+                    "texto": (f"{chave[0]} {chave[1]} ({chave[2]}): {escolhido.fonte['documento']} "
+                              f"p.{escolhido.fonte['pagina']} = {escolhido.valor:.1f} x "
+                              f"{v.fonte['documento']} p.{v.fonte['pagina']} = {v.valor:.1f} {v.unidade}; "
+                              f"mantido o do {escolhido.fonte['documento']} (itr > apresentacao)")})
 
     @staticmethod
     def _prioridade(v: Valor) -> int:
@@ -206,14 +250,19 @@ class Base:
     def get(self, chave: str, periodo: str, escopo: str = "consolidado") -> Valor:
         valor = self.dados.get((chave, periodo, escopo))
         if valor is None:
+            if (chave, periodo, escopo) in self.ambiguos:
+                n = len(self.ambiguos[(chave, periodo, escopo)])
+                raise Faltando(f"{chave} {periodo} ({escopo}) ambíguo: {n} valores diferentes no mesmo "
+                               f"tipo de documento (ver alerta 'ambiguo')")
             raise Faltando(f"falta {chave} {periodo} ({escopo})")
         return valor
 
     def tem(self, chave: str, escopo: str = "consolidado") -> bool:
-        return any(c == chave and e == escopo for (c, _, e) in self.dados)
+        return any(c == chave and e == escopo for (c, _, e) in [*self.dados, *self.ambiguos])
 
     def escopos_segmento(self, chave: str) -> list[str]:
-        return sorted({e for (c, _, e) in self.dados if c == chave and e.startswith("segmento:")})
+        return sorted({e for (c, _, e) in [*self.dados, *self.ambiguos]
+                       if c == chave and e.startswith("segmento:")})
 
 
 class Leitor:
@@ -560,7 +609,7 @@ def avaliar(spec: Spec, base: Base, tri: str) -> dict:
     obs = [o for o in (spec.obs, motivo_atual, omit_aa and f"A/A: {omit_aa}") if o]
     item = {
         "chave": spec.chave, "nome": spec.nome, "grupo": spec.grupo, "unidade": unidade,
-        "melhor": spec.melhor, "escopo": spec.escopo,
+        "melhor": "neutro" if spec.chave in VALORES_ABSOLUTOS else spec.melhor, "escopo": spec.escopo,
         "periodo": rotulo(tri), "periodo_aa": rotulo(papeis["aa"]), "periodo_tt": None,
         "valores": valores, "var_aa": var_aa, "var_tt": None, "unidade_var": _unidade_var(unidade),
     }
@@ -629,15 +678,19 @@ def _mix_segmentos(base: Base, tri: str, chave_fato: str, chave: str, nome: str)
 def _alertas_derivados(base: Base, tri: str) -> list[dict]:
     alertas = []
     for q in (tri, periodo_aa(tri), periodo_tt(tri)):
-        ajustes = base.ajustes.get((q, "consolidado"))
+        # Só conta o que é pontual. Ajuste com natureza "recorrente" (ex.: EBITDA proporcional de
+        # controladas em conjunto) é critério de cálculo, não evento; sem natureza, conta por cautela.
+        ajustes = [a for a in base.ajustes.get((q, "consolidado"), []) if a.get("natureza") != "recorrente"]
         ebitda = base.dados.get(("ebitda_ajustado", q, "consolidado"))
         if not ajustes or ebitda is None or ebitda.valor == 0:
             continue
         peso = sum(abs(a["valor"]) for a in ajustes) / abs(ebitda.valor)
         if peso > LIMITE_EFEITO_PONTUAL:
-            descricoes = "; ".join(a["descricao"] or "sem descrição" for a in ajustes)
-            alertas.append({"tipo": "efeito_pontual", "periodo": q, "texto": (
-                f"ajustes não recorrentes somam {peso * 100:.0f}% do EBITDA ajustado do {q} "
+            descricoes = "; ".join((a["descricao"] or "sem descrição")
+                                   + ("" if a.get("natureza") else " (natureza não informada)") for a in ajustes)
+            alertas.append({"tipo": "efeito_pontual", "periodo": q,
+                            "paginas": sorted({a["pagina"] for a in ajustes if a.get("pagina")}), "texto": (
+                f"ajustes pontuais somam {peso * 100:.0f}% do EBITDA ajustado do {q} "
                 f"({descricoes}); variações contra esse período podem enganar")})
     calculada, reportada = Leitor(base), base.dados.get(("divida_liquida_reportada", tri, "consolidado"))
     try:
