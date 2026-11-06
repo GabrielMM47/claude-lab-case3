@@ -497,7 +497,33 @@ def _montar_linha(entrada: tuple, ind: dict[str, dict], criterio: str | None,
 
 # --------------------------------------------------------------------------- segmentos
 
-def _segmentos(ind: dict, tri: str, rotulos: dict | None = None) -> list[dict]:
+# Métricas por tonelada de cada segmento (numerador e denominador do mesmo segmento, CASE-04).
+# É aqui que a comparação por negócio fica justa: o consolidado mistura aço e minério, ou
+# Brasil e EUA. `{c}` = critério de EBITDA comum às duas empresas.
+POR_T_SEGMENTO = (("volume_vendas", "volume_vendas"), ("receita_por_t", "receita_por_t"),
+                  ("ebitda_por_t", "ebitda_por_t_{c}"))
+
+
+def _por_t_segmento(ind: dict, escopo: str, tri: str, criterio: str | None) -> dict:
+    """{campo: {valor, texto, var_aa, unidade, unidade_var, fontes}} só com o que tem valor."""
+    indice = _indice(ind)
+    saida = {}
+    for campo, chave in POR_T_SEGMENTO:
+        if "{c}" in chave:
+            if not criterio:
+                continue
+            chave = chave.format(c=criterio)
+        i = indice.get((chave, escopo))
+        valor = _num((i.get("valores") or {}).get(tri)) if i and i.get("status") == "ok" else None
+        if valor is None:
+            continue
+        saida[campo] = {"valor": valor, "texto": contrato.fmt_br(valor, i.get("unidade")),
+                        "var_aa": _num(i.get("var_aa")), "unidade": i.get("unidade"),
+                        "unidade_var": i.get("unidade_var"), "fontes": fontes_de(i.get("insumos"))}
+    return saida
+
+
+def _segmentos(ind: dict, tri: str, rotulos: dict | None = None, criterio: str | None = None) -> list[dict]:
     por_nome: dict[str, dict] = {}
     for i in ind.get("indicadores") or []:
         if not isinstance(i, dict):
@@ -514,6 +540,10 @@ def _segmentos(ind: dict, tri: str, rotulos: dict | None = None) -> list[dict]:
         if valor is not None:
             seg["fontes"] = _juntar_fontes(seg["fontes"], fontes_de(i.get("insumos")))
     segs = [s for s in por_nome.values() if s["pct_receita"] is not None or s["pct_ebitda"] is not None]
+    for s in segs:
+        por_t = _por_t_segmento(ind, PREFIXO_SEGMENTO + s["segmento"], tri, criterio)
+        if por_t:
+            s["por_t"] = por_t
     return sorted(segs, key=lambda s: (s["pct_receita"] is None, -(s["pct_receita"] or 0), s["segmento"]))
 
 
@@ -714,7 +744,7 @@ def montar_comparativo(ind_a: dict, ind_b: dict, cfg: dict, tri: str,
         forcar_nc = {chave: obs for chave in metod["chaves"]}
 
     linhas = [_montar_linha(e, ind, criterio, forcar_nc, tri) for e in _catalogo(ind_a, ind_b)]
-    segmentos = {lado: _segmentos(ind[lado], tri, rotulos_segmentos) for lado in LADOS}
+    segmentos = {lado: _segmentos(ind[lado], tri, rotulos_segmentos, criterio) for lado in LADOS}
 
     insights = [i for i in (
         _insight_margem(linhas, empresas),

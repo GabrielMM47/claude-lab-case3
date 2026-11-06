@@ -186,7 +186,8 @@ class Base:
             self._resolver(chave, valores)
 
     def _incluir(self, f: dict) -> Valor | None:
-        if f.get("chave") in (None, "qualitativo") or f.get("valor") is None:
+        # qualitativo e contexto_macro (tarifa, importações do país...) não são resultado da empresa
+        if f.get("chave") in (None, "qualitativo", "contexto_macro") or f.get("valor") is None:
             return None
         escopo = f.get("escopo") or "consolidado"
         try:

@@ -29,7 +29,9 @@ Um fluxo em Python + Claude Code que vai dos PDFs oficiais até a apresentação
 - **Gerdau cresceu, Usiminas encolheu:** receita +3,9% A/A e EBITDA ajustado +37,8% A/A na Gerdau; na Usiminas, receita -6,1% A/A e EBITDA ajustado -26,7% T/T.
 - **Usiminas tem o balanço mais leve:** caixa líquido (dívida líquida/EBITDA de -0,22x) contra 0,57x da Gerdau.
 - **Cuidado com o lucro da Usiminas:** R$ 243,4 mi no 3T26, positivo sobre um 3T25 com impairment de R$ 2,23 bi (ITR p. 28). A melhora A/A não é tendência, e a apresentação não a usa como destaque.
-- **Por tonelada não há comparação limpa:** a Gerdau não divulga volume consolidado (só por divisão) e a receita consolidada da Usiminas inclui mineração. A apresentação diz isso em vez de inventar um número.
+- **Por negócio, o Brasil quase empata:** EBITDA ajustado por tonelada de R$ 549/t na Gerdau Brasil contra R$ 520/t na siderurgia da Usiminas. A Gerdau se distancia na América do Norte (R$ 2.217/t, +57,5% A/A), que gera 76% do seu EBITDA. A comparação é por segmento (numerador e denominador do mesmo negócio), porque a Gerdau não divulga volume consolidado e o consolidado da Usiminas inclui mineração.
+- **O macro explica a distância:** nos EUA, a Seção 232 taxa o aço importado em 50% (apresentação da Gerdau, p. 9); no Brasil, as importações subiram 19,8% sobre o 2T26, com planos +33,8% (p. 18), e as projeções de demanda para 2026 vão de -4,0% (automotivo) a +0,4% (indústria) (p. 14).
+- **Cenários (leitura do time):** o quadro atual, uma pressão dupla (importação indireta + minério fraco) e um real mais fraco favorecem a Gerdau. A Usiminas ganha mais numa virada do Brasil (antidumping de bobinas a quente confirmado, juros em queda, montadoras reagindo) e encosta se a Seção 232 for afrouxada na revisão do USMCA.
 
 Fontes de cada número no rodapé de cada slide (Gerdau: ITR p. 29 e 72; Usiminas: ITR p. 14 e 28, entre outras). Páginas sempre na numeração do PDF.
 
@@ -47,7 +49,8 @@ data/itrs/*.pdf + data/apresentacoes/*.pdf
 5. verificação       contrato (schemas/) + verificador literal de cada fato → ERRO bloqueia
 6. indicadores       margens, ROE, ROIC, DL/EBITDA, R$/t… só com fatos aprovados
 7. comparativo       tabela, vencedor só com regra econômica clara, alertas, 5 gráficos
-8. apresentação      8 slides HTML; títulos da narrativa/ resolvidos por código
+8. apresentação      8 slides HTML; títulos da narrativa/ resolvidos por código;
+                     contexto macro (metricas/*_macro.json) e cenários no slide 7
       ▼
 entrega/apresentacao_gerdau_x_usiminas_3T26.html
 ```
@@ -99,11 +102,12 @@ Skill para o Claude Code repetir o fluxo: [`.claude/skills/apresentacao-resultad
 
 ## Limitações e próximos passos
 
-- **Sem volume consolidado da Gerdau:** receita/t e EBITDA/t da Gerdau ficam N/D; da Usiminas só há o indicador da siderurgia. Próximo passo: somar o volume das divisões com critério documentado.
+- **Sem volume consolidado da Gerdau:** a comparação por tonelada é feita por segmento (slide 6). A receita da divisão Brasil da Gerdau inclui minério e coprodutos (apresentação p. 26).
+- **Contexto macro só do que as empresas publicam:** tarifas, importações e projeções de demanda vêm das apresentações e do ITR, com página e verificador. Não há dado externo (Selic, preço do minério em US$, exportações da China): para usá-los, é preciso uma fonte em PDF no mesmo fluxo. Os cenários do slide 7 são julgamento do time, não projeção.
 - **Sem 2T26 da Gerdau no ITR:** variações T/T só existem para a Usiminas.
 - **Dívida líquida/EBITDA** usa o EBITDA 9M26 anualizado (× 4/3); as empresas divulgam com o EBITDA dos últimos 12 meses. A dívida líquida calculada da Usiminas difere 17% da reportada (a reportada inclui tributos parcelados, ITR p. 32).
 - **ROIC** usa uma hipótese de alíquota efetiva (limitada a 34%), indicada no slide.
-- **37 fatos "para revisar"** ainda sem evidência literal completa; próximo passo: completar a `evidencia` desses fatos.
+- **39 fatos "para revisar"** ainda sem evidência literal completa (dois deles de contexto macro: importação de longos nos EUA e tarifa acima da cota no Brasil); próximo passo: completar a `evidencia` desses fatos.
 - **Extração assistida:** complementar, operacional e qualitativo exigem o Claude Code com os prompts prontos; o pipeline não chama o modelo sozinho.
 - Testado com Gerdau, Usiminas e empresas fictícias (A/B invertidos, arquivo ausente, fato reprovado). Duas empresas reais não provam cobertura de qualquer layout de ITR.
 

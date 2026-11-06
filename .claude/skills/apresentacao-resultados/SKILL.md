@@ -25,6 +25,8 @@ Precisa de `data/itrs/<slug>_ITR_<tri>.pdf`, `data/apresentacoes/<slug>_APRESENT
 
 Saída aprovada: `entrega/apresentacao_<a>_x_<b>_<tri>.html`. Para os títulos-mensagem, escreva `narrativa/<a>_x_<b>_<tri>.json` a partir do `comparativo.json`, usando só placeholders (`{a.margem_ebitda}`, `{b.receita_liquida.var_aa}`, `{a.nome}`) e nenhum número digitado; o gerador reprova a narrativa que não passar.
 
+Contexto macro e cenários: o que as empresas publicam sobre o mercado (importações, tarifas, defesa comercial, demanda, minério) vai em `metricas/<slug>_<tri>_<doc>_macro.json` (número = `contexto_macro` com `id`; afirmação = `qualitativo` com tema `contexto_macro`) e passa no verificador como os demais. A narrativa cita `{a.macro.<id>}`, `{a.seg.<segmento>.ebitda_por_t}` e `"cita": ["a.<id>"]`; os cartões do slide `setor` vão em `contexto` e a tabela de cenários do slide `destaques_riscos` em `cenarios` (contrato em `docs/TAREFAS.md`).
+
 ## Fluxo passo a passo (quando precisar entender ou depurar)
 
 1. Leia `docs/CONTRATO_DADOS.md` e `CLAUDE.md`.

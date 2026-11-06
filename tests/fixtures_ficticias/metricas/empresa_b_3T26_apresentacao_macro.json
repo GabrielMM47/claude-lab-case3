@@ -1,0 +1,4 @@
+[
+{"empresa": "empresa_b", "documento": "apresentacao", "documento_id": "empresa_b_APRESENTACAO_3T26", "tema": "contexto_macro", "chave": "contexto_macro", "id": "importacoes_pais", "assunto": "importacoes", "metrica": "Importações de aço do país, 3T26 contra 2T26", "resumo": "Texto fictício da empresa_b.", "escopo": "consolidado", "periodo": "3T26", "unidade": "%", "valor": 10.0, "valor_como_aparece": "10,0%", "pagina": 30, "trecho": "Importações 10,0% (FICTÍCIO)"},
+{"empresa": "empresa_b", "documento": "apresentacao", "documento_id": "empresa_b_APRESENTACAO_3T26", "tema": "contexto_macro", "chave": "qualitativo", "id": "defesa_comercial", "assunto": "defesa_comercial", "metrica": "Defesa comercial", "resumo": "Texto fictício sobre defesa comercial da empresa_b.", "pagina": 31, "trecho": "defesa comercial (FICTÍCIO)"}
+]

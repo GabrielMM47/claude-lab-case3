@@ -6,6 +6,8 @@
 Valores redondos e claramente falsos, para nunca vazarem para a apresentação real.
 - empresa_a: todas as chaves do catálogo; ITR em R$ mil, release em R$ milhões; segmentos brasil/exterior.
 - empresa_b: todas as chaves; segmentos siderurgia/mineracao; prejuízo no 3T25 e efeito pontual.
+- empresa_a e empresa_b: `*_apresentacao_macro.json` com contexto macro (um número com `id` e uma
+  afirmação qualitativa), que os slides de setor e de cenários citam.
 - comparativo/empresa_a_x_empresa_b_3T26/: `comparativo.json` A × B (base: fixtures_comparar/
   comparativo_exemplo.json) com 2 PNGs placeholder em `graficos/`.
 - empresa_c: dados INCOMPLETOS (só DRE e balanço do ITR, sem EBITDA, sem operacionais), para testar
@@ -175,6 +177,19 @@ def _qualitativo(empresa: str) -> list[dict]:
             for i, tema in enumerate(("perfil", "estrategia", "riscos"))]
 
 
+def _macro(empresa: str) -> list[dict]:
+    """Contexto macro citado pela empresa: um número (contexto_macro) e uma afirmação (qualitativo)."""
+    base = {"empresa": empresa, "documento": "apresentacao", "documento_id": f"{empresa}_APRESENTACAO_{TRI}",
+            "tema": "contexto_macro"}
+    return [{**base, "chave": "contexto_macro", "id": "importacoes_pais", "assunto": "importacoes",
+             "metrica": "Importações de aço do país, 3T26 contra 2T26", "resumo": f"Texto fictício da {empresa}.",
+             "escopo": "consolidado", "periodo": TRI, "unidade": "%", "valor": 10.0, "valor_como_aparece": "10,0%",
+             "pagina": 30, "trecho": "Importações 10,0% (FICTÍCIO)"},
+            {**base, "chave": "qualitativo", "id": "defesa_comercial", "assunto": "defesa_comercial",
+             "metrica": "Defesa comercial", "resumo": f"Texto fictício sobre defesa comercial da {empresa}.",
+             "pagina": 31, "trecho": "defesa comercial (FICTÍCIO)"}]
+
+
 def png_placeholder(largura: int = 160, altura: int = 90, cinza: int = 200) -> bytes:
     """PNG 16:9 cinza, sem metadados (bytes determinísticos)."""
     def bloco(tipo: bytes, dados: bytes) -> bytes:
@@ -207,6 +222,7 @@ def montar() -> dict[str, list[dict]]:
         arquivos[f"{empresa}_{TRI}_apresentacao_operacional.json"] = _operacional(
             empresa, escala, segmentos, "apresentacao")
         arquivos[f"{empresa}_{TRI}_apresentacao_qualitativo.json"] = _qualitativo(empresa)
+        arquivos[f"{empresa}_{TRI}_apresentacao_macro.json"] = _macro(empresa)
     # empresa_c: incompleta de propósito (sem EBITDA, DFC, operacionais nem apresentação)
     arquivos[f"empresa_c_{TRI}_itr_dfs.json"] = _dfs("empresa_c", 0.2, so_basico=True)
     return arquivos
