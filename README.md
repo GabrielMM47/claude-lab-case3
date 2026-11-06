@@ -2,8 +2,8 @@
 
 > Claude Lab · Economia & Finanças · PUC-Rio · 06/11/2026
 
-**Artefato público (apresentação de 8 slides):** https://claude.ai/artifact/CuFHhUEJA44KkaTf9MNsYC  
-**Vídeo (até 2 min):** _inserir o link público_ · arquivo: [`entrega/video_jornada_gerdau_x_usiminas_3T26.mp4`](entrega/video_jornada_gerdau_x_usiminas_3T26.mp4) (fonte em [`video/`](video/), HyperFrames)  
+**Artefato público (apresentação de 8 slides):** https://claude.ai/artifact/JxvcGaxB6T6mTx8CYU2JH4  
+**Vídeo (1:52, só texto):** https://github.com/GabrielMM47/claude-lab-case3/blob/main/entrega/video_jornada_gerdau_x_usiminas_3T26.mp4 (fonte em [`video/`](video/), HyperFrames)  
 **Arquivo da apresentação no repositório:** [`entrega/apresentacao_gerdau_x_usiminas_3T26.html`](entrega/apresentacao_gerdau_x_usiminas_3T26.html) (abre em qualquer navegador; setas, clique ou toque para navegar)
 
 ## Equipe
