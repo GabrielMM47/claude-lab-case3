@@ -7,7 +7,28 @@
 
 Um fluxo que recebe **ITR + apresentação institucional de duas empresas quaisquer** e devolve uma **apresentação executiva** comparando as duas, com métricas comuns (receita, margens, ROE, ROA, ROI, ROIC, dívida líquida...) e métricas de siderurgia (volume, R$/t, EBITDA/t...). Gerdau × Usiminas no 3T26 é o primeiro caso, não o único: **nada de código específico por empresa**.
 
-A chave da generalidade: todo ITR entregue à CVM traz as demonstrações no **formato padronizado**, com cabeçalho `DFs Consolidadas / Demonstração do Resultado` e contas codificadas (`3.01 Receita de Venda de Bens e/ou Serviços`, `2.03 Patrimônio Líquido Consolidado`...). Isso dá para ler com código determinístico, para qualquer empresa listada. O que não é padronizado (EBITDA ajustado, volumes, segmentos, apresentação institucional) é extraído com o Claude Code e conferido pelo verificador.
+A generalização deve vir de um **contrato único e adaptadores de entrada**, sem condicionar regras ao nome da empresa. O primeiro adaptador será para PDFs textuais de ITRs no padrão CVM. Cabeçalhos e códigos ajudam, mas não garantem extração correta de qualquer PDF: layout, subcontas, setores e documentos digitalizados exigem tratamento ou rejeição explícita. Outros formatos contábeis e moedas exigem novos adaptadores e políticas de conversão.
+
+O núcleo compara quaisquer duas empresas cadastradas com fatos compatíveis. O perfil `siderurgia` acrescenta volumes e indicadores por tonelada; para outros setores essas métricas ficam **não aplicáveis**. Bancos e seguradoras, por exemplo, exigem catálogo e critérios próprios. Não prometer cobertura universal só por funcionar com Gerdau e Usiminas. O que não for extraído deterministicamente terá uma etapa assistida documentada, com conferência antes do uso.
+
+### Diagnóstico do repositório em 06/11/2026
+
+**Conclusão: há uma base aproveitável, mas o sistema solicitado ainda não está pronto.** Esta é uma inspeção de código e arquivos, sem validação ponta a ponta dos PDFs.
+
+| Requisito | Evidência atual | Situação / card |
+|---|---|---|
+| PDF → texto e tabelas | `src/extrair_release.py`: páginas TXT e tabelas CSV, caminho de entrada parametrizado | Base existente; não extrai fatos financeiros estruturados nem faz OCR (02/03) |
+| Fatos estruturados reutilizáveis | `templates/metricas_exemplo.json`: exemplo com nome, valor, página e trecho | Faltam contrato validado, catálogo e identificadores de documento/empresa/escopo (01/02/03) |
+| Verificação | `src/verificar_numeros.py`: procura trecho e token na página, converte número e recalcula variação | Não comprova unidade, coluna temporal ou escopo; campos omitidos podem passar. Endurecer em 02 e aplicar em 07 |
+| Indicadores comuns e siderurgia | `src/indicadores.py`: funções de normalização, leitura e cálculo parcial | Trabalho local não rastreado no Git; falta montagem dos indicadores, CLI e escrita de saída. Não está concluído (04) |
+| Apresentação institucional | Não há PDFs institucionais nos arquivos inspecionados | Entrada e extração ausentes (03) |
+| Comparação genérica | Não existem `src/contrato.py`, `src/dfs_cvm.py` ou `src/comparar.py` | Implementar 01/02/05 |
+| Apresentação executiva | Existe roteiro em Markdown e dependência `python-pptx` | Não há gerador de apresentação executiva nem pipeline (06/07) |
+| Entrada do projeto | `main.py` na pasta externa imprime `Hello from workshop!`; projeto efetivo em `claude-lab-case3/` | Usar a raiz interna nos comandos e documentar isso (08) |
+
+O `docs/quadro_tarefas.html` existente é um quadro de trabalho, não a apresentação executiva das empresas. Os oito cards abaixo eram planejamento, não evidência de funcionalidades implementadas. Preservar o código local de indicadores e concluir no CASE-04.
+
+**Estratégia de implementação:** contrato e fixtures primeiro; quatro frentes em paralelo com arquivos próprios; integração por etapas. As estimativas abaixo são iniciais de workshop, não garantia de concluir no horário do case: reestimar após testar o parser nos PDFs. OCR e extração totalmente autônoma ficam fora do primeiro incremento e devem aparecer como limitações.
 
 ```
 data/itrs/*.pdf ──────────┐
@@ -72,7 +93,9 @@ CASE-03 ─┘                            ▲
 - `src/contrato.py`: chave nova no catálogo pode entrar no seu PR; o conflito, se houver, é numa lista e se resolve rápido.
 - `docs/ERROS_ENCONTRADOS.md` e `docs/PROMPTS.md`: ninguém edita direto. Cada um registra em `docs/registro/<seu-nome>.md`; o CASE-08 consolida.
 - `metricas/`: cada arquivo tem um dono só (o nome diz de qual card ele vem).
-- `src/verificar_numeros.py`: ninguém altera; o CASE-07 importa a função `checar`.
+- `src/verificar_numeros.py`: Gabriel Martins altera no CASE-02, mantendo `checar(m, pasta) -> list[str]`; CASE-07 reutiliza. Nenhum outro card edita esse arquivo.
+- `uv.lock`: João Vitor atualiza junto de `pyproject.toml`. Cada pessoa cria e altera seus próprios testes e registros; CASE-01 fornece só as fixtures compartilhadas.
+- A branch `Joao-Maia` já consta no quadro existente; mantida para João Vitor. Não criar nem trocar branches neste planejamento. Cada pessoa abre PRs menores na própria branch e atualiza sua base após os merges.
 
 ## Marcos sugeridos
 
@@ -136,6 +159,9 @@ Lista JSON no topo (compatível com o verificador atual). Campos novos são igno
 - `unidade`: **como aparece no documento** (`R$ mil`, `R$ milhões`, `mil t`, `R$/t`, `US$/t`, `%`, `x`). A conversão é feita em código no CASE-04.
 - `pagina`: índice do PDF a partir de 1 (o mesmo de `pagina_NN.txt`), não o número impresso na folha.
 - Opcionais: `codigo_cvm`, `obs`, e os campos do verificador `anterior`, `anterior_como_aparece`, `variacao_pct`.
+- Rastreabilidade obrigatória: `documento_id` identifica o PDF exato (caminho e hash em manifesto), `data_documento`, `moeda` quando monetário, `criterio` (contábil/ajustado quando aplicável), início/fim do período e evidência da unidade e dos cabeçalhos. `documento` sozinho identifica apenas o tipo. O manifesto mantém URL, data de acesso e data de referência do documento.
+- Registrar ausência separadamente em um relatório de cobertura: `ausente`, `nao_aplicavel` ou `nao_comparavel`, com motivo. Não criar fato de valor zero para preencher ausência. `null` nos indicadores mantém essa distinção em `obs`/status.
+- Apresentações de datas distintas preservam a data original; o nome do arquivo não transforma conteúdo histórico em dado do trimestre analisado. Guidance e metas são projeções identificadas, nunca resultados realizados.
 
 **Rótulos de período**
 - Fluxo (DRE, DFC, volumes): `3T26` (trimestre), `9M26` (acumulado do ano), `3T25`, `9M25`, `2T26`.
@@ -263,6 +289,8 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 5. Rotular A/A (3T26 × 3T25) e T/T (3T26 × 2T26). Sem dado de 2T26 → `null`, nunca estimar.
 6. Cada erro que o verificador ou você pegar vai em `docs/registro/<seu-nome>.md` (empresa, métrica, o que o Claude disse, o que estava no ITR, como pegou, correção). É material do vídeo e do README.
 7. Prompts que funcionaram vão no mesmo arquivo.
+8. Conflitos entre fontes ficam registrados com ambos os valores e suas referências. ITR tem preferência para fatos contábeis de mesmo critério; essa preferência não resolve divergência entre escopos, períodos ou EBITDA contábil/ajustado.
+9. Indicadores por tonelada exigem numerador e denominador do mesmo negócio, produto, período, moeda e escopo. Receita consolidada incluindo mineração não pode ser dividida só pelo volume de aço.
 
 **Definição de pronto (todo card):** PR aberto para `main`; testes passando (`pytest`); nenhum arquivo de outro dono alterado (exceto catálogo em `contrato.py`); registro de erros/prompts atualizado.
 
@@ -292,6 +320,7 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 5. `requirements.txt` + `pyproject.toml`: adicionar `pytest`; `[tool.pytest.ini_options] pythonpath = ["src"]`.
 6. `CLAUDE.md`: atualizar o fluxo e a convenção de arquivos (o Claude Code de todos lê isso sozinho).
 7. Criar `docs/registro/` com um arquivo vazio por pessoa.
+8. Formalizar os campos de rastreabilidade e cobertura acima e a configuração de setor, moeda e aplicabilidade. Acrescentar uma terceira empresa fictícia, com dados incompletos, para testar generalização sem nomes fixos. O catálogo deve aceitar novas empresas só por configuração e dados.
 
 **Critérios de aceite**
 - [ ] `pytest` roda; `validar_fato` aceita todas as fixtures e rejeita um fato sem `pagina`.
@@ -324,17 +353,19 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
    - Procurar efeitos pontuais no 3T25 e no 2T26 (ex.: comparar a linha 3.04 da Usiminas entre 3T26 e 3T25 na p. 14) e registrar cada um como `ajuste_ebitda`.
    - Prompt reutilizável em `prompts/extracao_financeira_complementar.md` (sem nada específico de empresa).
 4. `verificar_numeros.py` nos 4 arquivos (2 empresas × dfs/complementar) até 100% OK.
+5. Endurecer `src/verificar_numeros.py` e criar `tests/test_verificar_numeros.py`: rejeitar campos obrigatórios ausentes; verificar token na linha/contexto citado; exigir evidências do período, unidade e consolidado/segmento. Testar um número que existe na página, mas pertence à coluna ou ao escopo errado. Onde a automação não comprovar o vínculo, marcar revisão pendente; não declarar validação semântica completa por mera ocorrência do token.
+6. PDF sem camada de texto ou layout não suportado gera diagnóstico acionável e etapa assistida; nunca JSON vazio tratado como sucesso. Não fixar páginas nem subcontas por empresa.
 
 **Fora de escopo:** volumes, R$/t e dados por segmento (CASE-03); cálculo de indicadores (CASE-04).
 
 **Critérios de aceite**
 - [ ] O mesmo comando funciona para Gerdau e Usiminas, sem `if empresa == ...`.
-- [ ] Todas as chaves do bloco "DFs padronizadas" presentes: 3T26, 3T25, 9M26, 9M25 (fluxo) e 3T26, 4T25 (saldo).
+- [ ] Extrair os períodos efetivamente divulgados e emitir cobertura das chaves ausentes. DFC acumulada não vira trimestral sem saldos acumulados anteriores compatíveis. Ausência não impede estruturar os demais dados.
 - [ ] Checagens de consistência passam nas duas empresas.
 - [ ] Verificador: 100% OK nos 4 arquivos.
 - [ ] Erros e prompts em `docs/registro/gabriel-martins.md`.
 
-**Arquivos:** `src/dfs_cvm.py`, `tests/test_dfs_cvm.py`, `prompts/extracao_financeira_complementar.md`, `metricas/*_itr_dfs.json`, `metricas/*_itr_complementar.json`, `docs/registro/gabriel-martins.md`.
+**Arquivos:** `src/dfs_cvm.py`, `src/verificar_numeros.py`, `tests/test_dfs_cvm.py`, `tests/test_verificar_numeros.py`, `prompts/extracao_financeira_complementar.md`, `metricas/*_itr_dfs.json`, `metricas/*_itr_complementar.json`, `docs/registro/gabriel-martins.md`.
 
 ---
 
@@ -355,12 +386,13 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
    - `metricas/<slug>_<tri>_apresentacao_operacional.json`: volumes, R$/t, capacidade, mix, exportação.
    - `metricas/<slug>_<tri>_apresentacao_qualitativo.json`: 5 a 8 temas, `resumo` em palavras nossas (a regra de uso dos dados proíbe trechos longos), `trecho` curto e literal só para verificar.
 6. Verificar todos os arquivos com `verificar_numeros.py` (pasta certa para cada documento) até 100% OK.
+7. Preservar data e referência de cada apresentação, distinguir afirmação da administração de fato realizado e marcar metas/guidance. Não preencher os cinco temas por inferência quando não estiverem no documento; emitir cobertura e pendências. PDF sem texto deve ser identificado como não suportado no MVP.
 
 **Fora de escopo:** dados consolidados das DFs e EBITDA consolidado (CASE-02); cálculos (CASE-04).
 
 **Critérios de aceite**
-- [ ] Para as duas empresas: `volume_vendas` 3T26 e 3T25 (consolidado e por segmento quando houver), receita e EBITDA por segmento, capacidade instalada, ao menos um indicador por tonelada reportado (ou os insumos para calcular).
-- [ ] Qualitativo com pelo menos 5 temas por empresa, incluindo `perfil`, `estrategia` e `riscos` ou `guidance_perspectivas`.
+- [ ] Buscar volumes, receita/EBITDA por segmento e capacidade nos períodos divulgados; cada item disponível tem fonte, cada ausência tem motivo no relatório de cobertura.
+- [ ] Qualitativo cobre os temas disponíveis, buscando ao menos `perfil`, `estrategia` e `riscos` ou `guidance_perspectivas`; temas não divulgados ficam explícitos.
 - [ ] Verificador: 100% OK em todos os arquivos.
 - [ ] `localizar_paginas.py` testado nas duas empresas sem mudar código.
 - [ ] Erros e prompts em `docs/registro/geronimo.md`.
@@ -403,6 +435,9 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 4. Dado faltando → `disponivel: false` + `obs` com o motivo. Nunca estimar. (Ex.: EBITDA contábil do trimestre sem D&A trimestral → indisponível.)
 5. `docs/METODOLOGIA_INDICADORES.md`: fórmulas, anualização, saldos médios e escolhas (vai para o slide de metodologia e o README).
 6. `tests/test_indicadores.py` com as fixtures, valores esperados calculados à mão.
+7. Concluir o `src/indicadores.py` parcial já existente: registro dos indicadores, chamada dos cálculos, CLI e serialização. Revisar o fallback provisório de contrato e a função `_por_tonelada`; importar o contrato oficial quando CASE-01 estiver integrado.
+8. Fórmulas da tabela são convenções propostas, a documentar. ROI não tem definição única: rotular explicitamente como retorno sobre capital investido antes de impostos. ROIC deve declarar a política tributária; limitar alíquota ou adotar 34% é hipótese metodológica e exige identificação e parametrização. Não apresentar essas hipóteses como dado reportado.
+9. Para A/A de retornos com saldos médios, buscar também o saldo inicial do ano anterior (ex.: 4T24 para 9M25); sem ele, variação fica indisponível. LTM e acumulado anualizado são bases distintas. Não substituir uma silenciosamente pela outra. Sem escopo compatível, receita/t e EBITDA/t ficam não comparáveis.
 
 **Critérios de aceite**
 - [ ] Roda nas fixtures e, quando 02/03 mergearem, em Gerdau e Usiminas sem mudar código.
@@ -432,6 +467,8 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
    3. DL/EBITDA (calculado e reportado);
    4. Volume e R$/t;
    5. Mix de segmentos (receita e EBITDA).
+7. Antes de comparar, validar período, moeda, escopo, critério e metodologia. Sem EBITDA de mesmo critério nas duas, apresentar N/C com motivo. `vencedor` só existe em linha comparável com regra econômica justificada; não eleger vencedor global, nem tratar maior receita como melhor desempenho. Dívida e retorno com base negativa exigem tratamento específico.
+8. Generalização obrigatória: terceira empresa fictícia e inversão A/B; inclusão por configuração sem alteração no código. Exibir N/D, N/A e N/C com motivos, sem converter ausência em zero.
 
 **Critérios de aceite**
 - [ ] Trocar `--a/--b` funciona (testar com `empresa_a`/`empresa_b` invertidas).
@@ -466,12 +503,12 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 
 3. Rodapé em todos os slides: fontes ("Gerdau — ITR p. 29; Apresentação p. 7") e "Não constitui recomendação de investimento".
 4. `narrativa/<a>_x_<b>_<tri>.json`: títulos-mensagem e bullets escritos com o Claude Code **a partir do `comparativo.json`**. Sem narrativa → usar `insights` automáticos (o produto continua genérico).
-5. **Verificador de narrativa:** todo número que aparecer em título ou bullet tem que existir (formatado) no `comparativo.json`; senão, falha e diz qual. É o mesmo princípio do `verificar_numeros.py`, aplicado ao texto.
+5. **Verificador de narrativa:** cada afirmação numérica referencia a chave da métrica, empresa, período, critério e fonte; o código resolve e formata os valores. Testar troca indevida de empresa/período e fatos qualitativos sem fonte. A simples existência de um número igual no JSON não comprova a afirmação. Datas e números de slides devem ser tratados separadamente dos valores financeiros.
 6. Gerar a versão final em `entrega/apresentacao_gerdau_x_usiminas_3T26.html` (versionada).
 
 **Critérios de aceite**
 - [ ] Gera os 8 slides a partir da fixture e, depois, de Gerdau × Usiminas, sem mudar código.
-- [ ] Nenhum título descritivo ("Margem EBITDA"); todos dizem a mensagem.
+- [ ] Títulos comunicam conclusões sustentadas pelos dados; quando faltarem evidências, comunicam a limitação e não inventam uma conclusão.
 - [ ] Verificador de narrativa passa.
 - [ ] Abre bem no navegador e imprime em PDF sem cortar.
 
@@ -492,11 +529,12 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
    2. Extrai páginas se `saida/<pdf>/` não existir (ou com `--forcar`).
    3. Roda `dfs_cvm`.
    4. Faltou JSON assistido (complementar, operacional, qualitativo)? Para e imprime o prompt pronto (de `prompts/`) já com as páginas candidatas do `localizar_paginas.py`, para colar no Claude Code.
-   5. Verifica **todos** os `metricas/{slug}_{tri}_*.json` (importando `checar` do verificador, na pasta certa de cada documento) e grava `saida/verificacao_<a>_x_<b>_<tri>.json` (X/Y por arquivo). Algum ERRO → para e lista item e página; com `--permitir-pendencias`, segue e marca no slide de metodologia.
+   5. Valida o contrato e verifica **somente arquivos de fatos de entrada**, excluindo `*_indicadores.json` e relatórios derivados. Importa `checar` do verificador na pasta do documento exato e grava `saida/verificacao_<a>_x_<b>_<tri>.json`. Erro bloqueia a entrega. `--permitir-pendencias` gera apenas rascunho identificado, excluindo fatos reprovados de cálculos e slides; ausência legítima pode seguir como N/D com motivo.
    6. Indicadores → comparativo (preenchendo `verificacao`) → apresentação.
 2. Idempotente: rodar duas vezes não muda nada.
 3. Teste de fumaça com as fixtures.
-4. Opcional (diferencial forte): baixar o ITR 3T26 de uma terceira siderúrgica listada e rodar `dfs_cvm` + comparativo financeiro sem tocar no código. Prova o "quaisquer duas empresas".
+4. Obrigatório: integrar terceira empresa fictícia sem alterar o código, testar A/B invertidos, arquivo ausente, fato reprovado e execução repetida com indicadores antigos presentes. Recomendado: validar uma terceira empresa real fornecida pelo time e documentar os limites do adaptador. Três empresas não comprovam cobertura universal.
+5. O modo inicial é assistido: se faltar extração complementar, o comando pausa e orienta a revisão, retomando depois. Extração totalmente automática requer integração adicional com modelo e configuração de acesso; não está implementada apenas por imprimir prompts.
 
 **Critérios de aceite**
 - [ ] `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` gera a apresentação final.
