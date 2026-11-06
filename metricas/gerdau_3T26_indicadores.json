@@ -19,7 +19,7 @@
     "nao_aplicavel": "N/A"
   },
   "cobertura": {
-    "ok": 34,
+    "ok": 43,
     "ausente": 7,
     "nao_comparavel": 0,
     "nao_aplicavel": 0
@@ -30,7 +30,7 @@
       "nome": "Receita líquida",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -50,14 +50,16 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -69,7 +71,7 @@
       "nome": "EBIT",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -89,14 +91,16 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "ebit",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         }
       ],
       "disponivel": true,
@@ -108,7 +112,7 @@
       "nome": "Lucro líquido consolidado",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -128,14 +132,16 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Lucro/Prejuízo Consolidado do Período"
         },
         {
           "chave": "lucro_liquido",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Lucro/Prejuízo Consolidado do Período"
         }
       ],
       "disponivel": true,
@@ -147,7 +153,7 @@
       "nome": "Lucro líquido dos controladores",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -167,14 +173,16 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 30
+          "pagina": 30,
+          "metrica": "Atribuído a Sócios da Empresa Controladora"
         },
         {
           "chave": "lucro_liquido_controladores",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 30
+          "pagina": 30,
+          "metrica": "Atribuído a Sócios da Empresa Controladora"
         }
       ],
       "disponivel": true,
@@ -186,7 +194,7 @@
       "nome": "EBITDA contábil",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -206,28 +214,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "depreciacao_amortizacao_tri",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Depreciação e amortização"
         },
         {
           "chave": "ebit",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "depreciacao_amortizacao_tri",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Depreciação e amortização"
         }
       ],
       "disponivel": true,
@@ -239,7 +251,7 @@
       "nome": "EBITDA ajustado",
       "grupo": "escala",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -259,14 +271,16 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         }
       ],
       "disponivel": true,
@@ -298,28 +312,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Bruto"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "lucro_bruto",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Bruto"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -351,28 +369,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "ebit",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -404,28 +426,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Lucro/Prejuízo Consolidado do Período"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "lucro_liquido",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Lucro/Prejuízo Consolidado do Período"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -457,42 +483,48 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "depreciacao_amortizacao_tri",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Depreciação e amortização"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "ebit",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "depreciacao_amortizacao_tri",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Depreciação e amortização"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -524,28 +556,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -557,7 +593,7 @@
       "nome": "Dívida bruta",
       "grupo": "endividamento",
       "unidade": "R$ milhões",
-      "melhor": "menor",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -580,28 +616,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_cp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         }
       ],
       "disponivel": true,
@@ -613,7 +653,7 @@
       "nome": "Caixa e aplicações",
       "grupo": "endividamento",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -636,28 +676,32 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         }
       ],
       "disponivel": true,
@@ -669,7 +713,7 @@
       "nome": "Dívida líquida",
       "grupo": "endividamento",
       "unidade": "R$ milhões",
-      "melhor": "menor",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -692,56 +736,64 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "emprestimos_cp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         }
       ],
       "disponivel": true,
@@ -776,70 +828,80 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "emprestimos_cp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         }
       ],
       "disponivel": true,
@@ -874,42 +936,48 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "ebit",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "depreciacao_amortizacao",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Depreciação e amortização"
         }
       ],
       "disponivel": true,
@@ -944,35 +1012,40 @@
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 73
+          "pagina": 73,
+          "metrica": "EBITDA ajustado"
         }
       ],
       "disponivel": true,
@@ -1003,35 +1076,40 @@
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "pl_nao_controladores",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Participação dos Acionistas Não Controladores"
         },
         {
           "chave": "pl_total",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "pl_nao_controladores",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Participação dos Acionistas Não Controladores"
         },
         {
           "chave": "lucro_liquido_controladores",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 30
+          "pagina": 30,
+          "metrica": "Atribuído a Sócios da Empresa Controladora"
         }
       ],
       "disponivel": true,
@@ -1062,21 +1140,24 @@
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Ativo Total"
         },
         {
           "chave": "ativo_total",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Ativo Total"
         },
         {
           "chave": "lucro_liquido",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Lucro/Prejuízo Consolidado do Período"
         }
       ],
       "disponivel": true,
@@ -1107,77 +1188,88 @@
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "emprestimos_cp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "ebit",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         }
       ],
       "disponivel": true,
@@ -1208,91 +1300,104 @@
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "4T25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "emprestimos_cp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "emprestimos_lp",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 27
+          "pagina": 27,
+          "metrica": "Empréstimos e Financiamentos"
         },
         {
           "chave": "caixa_equivalentes",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Caixa e Equivalentes de Caixa"
         },
         {
           "chave": "aplicacoes_financeiras",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 26
+          "pagina": 26,
+          "metrica": "Aplicações Financeiras"
         },
         {
           "chave": "pl_total",
           "periodo": "3T26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 28
+          "pagina": 28,
+          "metrica": "Patrimônio Líquido Consolidado"
         },
         {
           "chave": "ebit",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes do Resultado Financeiro e dos Tributos"
         },
         {
           "chave": "lair",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Resultado Antes dos Tributos sobre o Lucro"
         },
         {
           "chave": "ir_csll",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Imposto de Renda e Contribuição Social sobre o Lucro"
         }
       ],
       "disponivel": true,
@@ -1304,7 +1409,7 @@
       "nome": "Caixa das operações",
       "grupo": "caixa",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "9M26",
       "periodo_aa": "9M25",
@@ -1323,14 +1428,16 @@
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Caixa Líquido Atividades Operacionais"
         },
         {
           "chave": "fco",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Caixa Líquido Atividades Operacionais"
         }
       ],
       "disponivel": true,
@@ -1361,14 +1468,16 @@
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         },
         {
           "chave": "capex",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         }
       ],
       "disponivel": true,
@@ -1380,7 +1489,7 @@
       "nome": "Fluxo de caixa livre",
       "grupo": "caixa",
       "unidade": "R$ milhões",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "9M26",
       "periodo_aa": "9M25",
@@ -1399,28 +1508,32 @@
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Caixa Líquido Atividades Operacionais"
         },
         {
           "chave": "capex",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         },
         {
           "chave": "fco",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Caixa Líquido Atividades Operacionais"
         },
         {
           "chave": "capex",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         }
       ],
       "disponivel": true,
@@ -1451,28 +1564,32 @@
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         },
         {
           "chave": "receita_liquida",
           "periodo": "9M26",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         },
         {
           "chave": "capex",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 32
+          "pagina": 32,
+          "metrica": "Adições de imobilizado"
         },
         {
           "chave": "receita_liquida",
           "periodo": "9M25",
           "escopo": "consolidado",
           "documento": "itr",
-          "pagina": 29
+          "pagina": 29,
+          "metrica": "Receita de Venda de Bens e/ou Serviços"
         }
       ],
       "disponivel": true,
@@ -1484,7 +1601,7 @@
       "nome": "Volume vendido",
       "grupo": "setor",
       "unidade": "mil t",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "consolidado",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -1624,11 +1741,476 @@
       "obs": "falta volume_producao 3T26 (consolidado)"
     },
     {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 1313.0,
+        "3T25": 1293.0,
+        "2T26": null
+      },
+      "var_aa": 1.5468,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 8006.3899,
+        "3T25": 7103.3357,
+        "2T26": null
+      },
+      "var_aa": 12.7131,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_por_t_ajustado",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_norte",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 2217.2826,
+        "3T25": 1407.5383,
+        "2T26": null
+      },
+      "var_aa": 57.5291,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_norte",
+          "documento": "apresentacao",
+          "pagina": 19,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "neutro",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 309.0,
+        "3T25": 289.0,
+        "2T26": null
+      },
+      "var_aa": 6.9204,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 4658.835,
+        "3T25": 4762.263,
+        "2T26": null
+      },
+      "var_aa": -2.1718,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_por_t_ajustado",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:america_do_sul",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 517.3883,
+        "3T25": 811.1003,
+        "2T26": null
+      },
+      "var_aa": -36.2116,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:america_do_sul",
+          "documento": "apresentacao",
+          "pagina": 20,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "volume_vendas",
+      "nome": "Volume vendido",
+      "grupo": "setor",
+      "unidade": "mil t",
+      "melhor": "neutro",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 1351.0,
+        "3T25": 1582.0,
+        "2T26": null
+      },
+      "var_aa": -14.6018,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "volume_vendas",
+      "insumos": [
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "receita_por_t",
+      "nome": "Receita por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 5142.9408,
+        "3T25": 4864.9197,
+        "2T26": null
+      },
+      "var_aa": 5.7148,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "receita_liquida × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "receita_liquida",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
+      "chave": "ebitda_por_t_ajustado",
+      "nome": "EBITDA ajustado por tonelada",
+      "grupo": "setor",
+      "unidade": "R$/t",
+      "melhor": "maior",
+      "escopo": "segmento:brasil",
+      "periodo": "3T26",
+      "periodo_aa": "3T25",
+      "periodo_tt": "2T26",
+      "valores": {
+        "3T26": 548.795,
+        "3T25": 481.8989,
+        "2T26": null
+      },
+      "var_aa": 13.8818,
+      "var_tt": null,
+      "unidade_var": "%",
+      "formula": "ebitda_ajustado × 1000 / volume_vendas (mesmo escopo)",
+      "insumos": [
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T26",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        },
+        {
+          "chave": "ebitda_ajustado",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "itr",
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
+        },
+        {
+          "chave": "volume_vendas",
+          "periodo": "3T25",
+          "escopo": "segmento:brasil",
+          "documento": "apresentacao",
+          "pagina": 18,
+          "metrica": "Volume de vendas de aço"
+        }
+      ],
+      "disponivel": true,
+      "status": "ok",
+      "obs": null
+    },
+    {
       "chave": "capacidade_instalada",
       "nome": "Capacidade instalada",
       "grupo": "setor",
       "unidade": "mil t/ano",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "segmento:america_do_norte",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -1651,7 +2233,8 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_norte",
           "documento": "apresentacao",
-          "pagina": 8
+          "pagina": 8,
+          "metrica": "Capacidade de aço bruto"
         }
       ],
       "disponivel": true,
@@ -1663,7 +2246,7 @@
       "nome": "Capacidade instalada",
       "grupo": "setor",
       "unidade": "mil t/ano",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "segmento:america_do_sul",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -1686,7 +2269,8 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_sul",
           "documento": "apresentacao",
-          "pagina": 7
+          "pagina": 7,
+          "metrica": "Capacidade de aço bruto"
         }
       ],
       "disponivel": true,
@@ -1698,7 +2282,7 @@
       "nome": "Capacidade instalada",
       "grupo": "setor",
       "unidade": "mil t/ano",
-      "melhor": "maior",
+      "melhor": "neutro",
       "escopo": "segmento:brasil",
       "periodo": "3T26",
       "periodo_aa": "3T25",
@@ -1721,7 +2305,8 @@
           "periodo": "3T26",
           "escopo": "segmento:brasil",
           "documento": "apresentacao",
-          "pagina": 12
+          "pagina": 12,
+          "metrica": "Capacidade de aço bruto"
         }
       ],
       "disponivel": true,
@@ -1777,14 +2362,16 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_norte",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "segmento:america_do_norte",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         }
       ],
       "disponivel": true,
@@ -1816,14 +2403,16 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_sul",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "segmento:america_do_sul",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         }
       ],
       "disponivel": true,
@@ -1855,14 +2444,16 @@
           "periodo": "3T26",
           "escopo": "segmento:brasil",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         },
         {
           "chave": "receita_liquida",
           "periodo": "3T25",
           "escopo": "segmento:brasil",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "Receita líquida de vendas"
         }
       ],
       "disponivel": true,
@@ -1894,14 +2485,16 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_norte",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T25",
           "escopo": "segmento:america_do_norte",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         }
       ],
       "disponivel": true,
@@ -1933,14 +2526,16 @@
           "periodo": "3T26",
           "escopo": "segmento:america_do_sul",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T25",
           "escopo": "segmento:america_do_sul",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         }
       ],
       "disponivel": true,
@@ -1972,14 +2567,16 @@
           "periodo": "3T26",
           "escopo": "segmento:brasil",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         },
         {
           "chave": "ebitda_ajustado",
           "periodo": "3T25",
           "escopo": "segmento:brasil",
           "documento": "itr",
-          "pagina": 72
+          "pagina": 72,
+          "metrica": "EBITDA ajustado"
         }
       ],
       "disponivel": true,
@@ -1993,6 +2590,7 @@
         "descricao": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
         "valor": 229.34900000000002,
         "unidade": "R$ milhões",
+        "natureza": "recorrente",
         "chave": "ajuste_ebitda",
         "periodo": "3T25",
         "escopo": "consolidado",
@@ -2005,6 +2603,7 @@
         "descricao": "Recuperação de créditos / provisões (itens não recorrentes)",
         "valor": -60.412,
         "unidade": "R$ milhões",
+        "natureza": "pontual",
         "chave": "ajuste_ebitda",
         "periodo": "3T26",
         "escopo": "consolidado",
@@ -2015,6 +2614,7 @@
         "descricao": "EBITDA ajustado proporcional das controladas em conjunto e coligadas",
         "valor": 193.594,
         "unidade": "R$ milhões",
+        "natureza": "recorrente",
         "chave": "ajuste_ebitda",
         "periodo": "3T26",
         "escopo": "consolidado",
@@ -2023,30 +2623,5 @@
       }
     ]
   },
-  "alertas": [
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T25 (segmento:brasil) ignorado: unidade não suportada: '1.000 toneladas'"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T26 (segmento:brasil) ignorado: unidade não suportada: '1.000 toneladas'"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T25 (segmento:america_do_norte) ignorado: unidade não suportada: '1.000 toneladas'"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T26 (segmento:america_do_norte) ignorado: unidade não suportada: '1.000 toneladas'"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T25 (segmento:america_do_sul) ignorado: unidade não suportada: '1.000 toneladas'"
-    },
-    {
-      "tipo": "unidade",
-      "texto": "volume_vendas 3T26 (segmento:america_do_sul) ignorado: unidade não suportada: '1.000 toneladas'"
-    }
-  ]
+  "alertas": []
 }

@@ -306,3 +306,66 @@ def test_cli_grava_json(tmp_path):
     assert pegar(saida, "margem_bruta")["valores"]["3T26"] == pytest.approx(30)
     # rodar de novo não lê o próprio arquivo de saída como fato
     ind.main(["--empresa", "empresa_teste", "--tri", "3T26", "--metricas", str(tmp_path)])
+
+
+# --- Integração com os JSONs reais do CASE-02/03 (06/11) ------------------------
+@pytest.mark.parametrize("unidade, esperado", [
+    ("1.000 toneladas", (1351.0, "mil t")), ("Mil toneladas", (1351.0, "mil t")),
+    ("kton", (1351.0, "mil t")), ("milhões de toneladas/ano", (1_351_000.0, "mil t/ano")),
+])
+def test_variantes_de_unidade_de_volume(unidade, esperado):
+    assert ind.normalizar(1351, unidade) == esperado
+
+
+def test_r_milhao_no_singular():
+    assert ind.normalizar(12.5, "R$ milhão") == (12.5, "R$ milhões")
+
+
+@pytest.mark.parametrize("unidade", ["MT", "Mt"])
+def test_mt_e_ambiguo_e_nao_e_adivinhado(unidade):
+    # o mesmo arquivo trazia "6884 MT" (mil t) e "0,9 MT" (milhões de t)
+    with pytest.raises(ValueError, match="ambígua"):
+        ind.normalizar(6884, unidade)
+
+
+def test_valores_diferentes_no_mesmo_documento_ficam_ambiguos():
+    # aço e minério gravados como volume_vendas consolidado no mesmo ITR: nenhum é usado
+    fatos = fatos_base() + [
+        {**fato("volume_vendas", "3T26", 1034, "mil t", pagina=24), "metrica": "Volume de vendas de aço"},
+        {**fato("volume_vendas", "3T26", 2014, "mil t", pagina=24), "metrica": "Volume de vendas de minério"},
+    ]
+    res = calcular(fatos)
+    alerta = next(a for a in res["alertas"] if a["tipo"] == "ambiguo")
+    assert {1034, 2014} <= {v["valor"] for v in alerta["valores"]}  # e o 2000 da apresentação
+    item = pegar(res, "volume_vendas")
+    assert item["status"] == "ausente" and "ambíguo" in item["obs"]
+
+
+def test_documento_de_maior_prioridade_resolve_ambiguidade_da_apresentacao():
+    fatos = fatos_base() + [
+        fato("volume_vendas", "3T26", 1034, "mil t", "apresentacao", pagina=16),
+        fato("volume_vendas", "3T26", 979, "mil t", "apresentacao", pagina=17),
+        fato("volume_vendas", "3T26", 1034, "mil t", "itr", pagina=36),
+    ]
+    res = calcular(fatos)
+    assert not any(a["tipo"] == "ambiguo" for a in res["alertas"])
+    assert pegar(res, "volume_vendas")["valores"]["3T26"] == pytest.approx(1034)
+
+
+def test_ajuste_recorrente_nao_conta_como_efeito_pontual():
+    recorrente = {**fato("ajuste_ebitda", "3T25", 300.0, "R$ milhões", pagina=72),
+                  "metrica": "EBITDA proporcional de controladas em conjunto", "natureza": "recorrente"}
+    assert not any(a["tipo"] == "efeito_pontual" for a in calcular(fatos_base() + [recorrente])["alertas"])
+    pontual = {**recorrente, "metrica": "Impairment", "natureza": "pontual"}
+    alertas = calcular(fatos_base() + [recorrente, pontual])["alertas"]
+    texto = next(a["texto"] for a in alertas if a["tipo"] == "efeito_pontual")
+    assert "Impairment" in texto and "controladas" not in texto
+
+
+def test_valor_absoluto_nao_tem_melhor():
+    # tamanho não é desempenho: o comparativo não pode eleger vencedor por receita ou volume
+    res = calcular()
+    for chave in ("receita_liquida", "ebitda_ajustado", "lucro_liquido", "divida_liquida", "volume_vendas"):
+        assert pegar(res, chave)["melhor"] == "neutro", chave
+    assert pegar(res, "margem_ebitda_ajustado")["melhor"] == "maior"
+    assert pegar(res, "dl_ebitda_ajustado")["melhor"] == "menor"

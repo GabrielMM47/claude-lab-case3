@@ -30,9 +30,11 @@ O cabeçalho traz `cobertura`, com a contagem de indicadores em cada status. `di
 
 | Grandeza | Unidade final | Conversão |
 |---|---|---|
-| Dinheiro | R$ milhões | R$ mil ÷ 1.000; R$ bilhões × 1.000 |
-| Volume | mil t | t ÷ 1.000; milhões de t × 1.000 |
+| Dinheiro | R$ milhões | R$ mil ÷ 1.000; R$ bilhões × 1.000 (singular e plural: "R$ milhão" = "R$ milhões") |
+| Volume | mil t | t ÷ 1.000; milhões de t × 1.000; "1.000 toneladas", "mil toneladas", "kt" e "kton" já são mil t |
 | Capacidade | mil t/ano | idem |
+
+"MT"/"Mt" é **ambígua** e o fato é ignorado com alerta: no mesmo arquivo apareceram "6884 MT" (mil t) e "0,9 MT" (milhões de t). O JSON de origem deve dizer "mil t" ou "milhões de t".
 | %, x, R$/t, US$/t | como no documento | — |
 
 Unidade fora da lista (ex.: US$ milhões) não é convertida: o fato é ignorado e vira um alerta do tipo `unidade`. Converter moeda exigiria um câmbio, que não está nos fatos.
@@ -85,6 +87,8 @@ Todo indicador que usa EBITDA sai em duas versões, com sufixo `_contabil` e `_a
 
 **Setor:** o padrão é `siderurgia`. Com outro `--setor`, as métricas por tonelada e os fatos operacionais de siderurgia ficam `nao_aplicavel`; margens, endividamento e rentabilidade continuam valendo.
 
+**Direção (`melhor`):** valores absolutos (receita, EBIT, EBITDA, lucro, dívida, caixa, FCO, FCL, volume, capacidade) saem com `melhor: "neutro"`. Eles medem tamanho, e entre empresas de portes diferentes não há vencedor. Margens, múltiplos, retornos e valores por tonelada mantêm `maior` ou `menor`.
+
 **Fatos reportados que entram como estão** (quando existem): produção, capacidade, R$/t, custo/t e EBITDA/t reportados, vendas de minério, participação da exportação, dívida líquida e DL/EBITDA reportados.
 
 ## Alertas
@@ -92,9 +96,10 @@ Todo indicador que usa EBITDA sai em duas versões, com sufixo `_contabil` e `_a
 | Tipo | Quando |
 |---|---|
 | `divergencia` | O mesmo fato (chave, período, escopo) aparece em dois arquivos com diferença acima de 0,5%. O alerta guarda os dois valores com documento e página (`valores`) e diz qual foi mantido (`mantido`: ITR antes da apresentação). A prioridade só decide entre fontes do mesmo fato: escopos, períodos e EBITDA contábil × ajustado nunca se substituem |
+| `ambiguo` | O documento de maior prioridade traz **valores diferentes** para a mesma chave, período e escopo (ex.: aço e minério, ou mercado interno e exportação, gravados como `volume_vendas`). A prioridade não decide e a ordem de leitura não pode decidir: **nenhum valor é usado** e o indicador sai N/D com o motivo. Corrige-se no JSON de origem, com chave ou escopo próprios |
 | `divergencia_definicao` | Dívida líquida calculada difere da reportada em mais de 5% (costuma ser critério: arrendamentos, derivativos) |
-| `efeito_pontual` | Ajustes não recorrentes passam de 10% do EBITDA ajustado de um período (3T26, 3T25 ou 2T26): variações contra esse período podem enganar. Os ajustes vão em `ajustes_ebitda` |
-| `unidade` | Fato com unidade não suportada, ignorado |
+| `efeito_pontual` | Ajustes **pontuais** passam de 10% do EBITDA ajustado de um período (3T26, 3T25 ou 2T26): variações contra esse período podem enganar. Ajuste com `natureza: "recorrente"` (ex.: EBITDA proporcional de controladas em conjunto) é critério de cálculo e não conta; sem `natureza`, conta por cautela. Todos os ajustes vão em `ajustes_ebitda` |
+| `unidade` | Fato com unidade não suportada ou ambígua, ignorado |
 
 ## Limitações conhecidas
 

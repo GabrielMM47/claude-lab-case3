@@ -142,6 +142,12 @@ def test_c_t3_artefatos_por_tipo(raiz):
     assert len(cat["artefatos"]) == 12 + n_fatos + n_indicadores
     assert tipos.count("fato") == n_fatos
     assert tipos.count("indicadores") == n_indicadores
+    for artefato in cat["artefatos"]:
+        if artefato["tipo"] == "indicadores":
+            assert artefato["contrato"]["valido"]
+            assert artefato["fonte"] is None
+            assert artefato["verificador"]["ok"] is None
+            assert artefato["verificador"]["status"].startswith("não aplicável")
     assert tipos.count("balanco") == 4
     assert tipos.count("meta") == 4
     assert tipos.count("csv") == 4
