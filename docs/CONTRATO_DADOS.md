@@ -67,6 +67,7 @@ A `unidade` é a do documento. Demonstrações vêm em `R$ mil`. O release da Us
 - Para fatos numéricos (todos, exceto `chave` igual a `qualitativo`) também são obrigatórios `escopo` (`consolidado` ou `segmento:<nome>`), `periodo` (`3T26`, `9M26`...), `unidade`, `valor` e `valor_como_aparece`. Fato `qualitativo` exige `tema` e `resumo`.
 - `unidade` aceita `R$ mil`, `R$ milhões`, `R$ bilhões`, `mil t`, `mil t/ano`, `R$/t`, `US$/t`, `%` e `x`; `criterio` é `contabil` ou `ajustado`; `tipo` é `fluxo` ou `saldo`.
 - `revisao_manual`, se presente, exige `por` e `nota`. É o que o verificador usa para transformar um REVISAR em OK.
+- **Contexto macro** (`metricas/<slug>_<tri>_<itr|apresentacao>_macro.json`): o que a própria empresa publica sobre o mercado (importações, defesa comercial, tarifas, demanda, minério e insumos). Número vai com `chave` = `contexto_macro` (mesmos campos de um fato numérico); afirmação sem número vai como `qualitativo` com `tema` = `contexto_macro`. Os dois levam `id` (estável, citado pela narrativa como `{a.macro.<id>}` ou em `"cita": ["a.<id>"]`) e `resumo` sem dígitos. O verificador confere igual aos demais; os indicadores ignoram esses fatos (não são resultado da empresa).
 
 ### Balanço (`balanco.schema.json`)
 

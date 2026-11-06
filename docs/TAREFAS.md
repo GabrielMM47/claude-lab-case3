@@ -123,6 +123,7 @@ CASE-03 ─┘                            ▲
 | `metricas/<slug>_<tri>_itr_operacional.json` | Volumes, R$/t, segmentos vindos do ITR/release | CASE-03 |
 | `metricas/<slug>_<tri>_apresentacao_operacional.json` | Idem, vindos da apresentação | CASE-03 |
 | `metricas/<slug>_<tri>_apresentacao_qualitativo.json` | Temas da apresentação institucional | CASE-03 |
+| `metricas/<slug>_<tri>_<itr\|apresentacao>_macro.json` | Contexto macro/setorial citado pela empresa (importações, tarifas, demanda...) | melhorias-arquitetura |
 | `metricas/<slug>_<tri>_indicadores.json` | Indicadores calculados | CASE-04 |
 | `saida/comparativo/<a>_x_<b>_<tri>/` | `comparativo.json`, `tabela.csv`, `graficos/*.png` | CASE-05 |
 | `narrativa/<a>_x_<b>_<tri>.json` | Títulos-mensagem e bullets dos slides | CASE-06 |
@@ -227,7 +228,9 @@ Lista JSON no topo (compatível com o verificador atual). Campos novos são igno
  "documento": "apresentacao", "resumo": "<palavras nossas, até 30>", "pagina": 5,
  "trecho": "<cópia literal curta, para o verificador>"}
 ```
-Temas: `perfil`, `capacidade_footprint`, `mercados_produtos`, `estrategia`, `capex_investimentos`, `guidance_perspectivas`, `riscos`, `esg`, `destaques_trimestre`.
+Temas: `perfil`, `capacidade_footprint`, `mercados_produtos`, `estrategia`, `capex_investimentos`, `guidance_perspectivas`, `riscos`, `esg`, `destaques_trimestre`, `contexto_macro`.
+
+**Contexto macro (`*_<doc>_macro.json`)**: o que a empresa publica sobre o mercado. Número: `chave` = `contexto_macro`, com os campos de fato numérico; afirmação: `chave` = `qualitativo`, `tema` = `contexto_macro`. Os dois levam `id` estável (a narrativa cita `{a.macro.<id>}` ou `"cita": ["a.<id>"]`) e `resumo` sem dígitos. Os indicadores ignoram esses fatos.
 
 ### `metricas/<slug>_<tri>_indicadores.json` (sai do CASE-04)
 
@@ -280,6 +283,7 @@ Temas: `perfil`, `capacidade_footprint`, `mercados_produtos`, `estrategia`, `cap
 ]}
 ```
 Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_riscos`, `metodologia`.
+Placeholders além dos do comparativo: `{a.seg.<segmento>.<pct_receita|pct_ebitda|volume_vendas|receita_por_t|ebitda_por_t>[.var_aa]}` (segmento do `comparativo.json`) e `{a.macro.<id>}` (número do contexto macro). Campos opcionais: `a`/`b` (bullets por empresa em `perfil` e `destaques_riscos`, texto ou `{"texto", "cita", "sinal"}`), `nota` e `contexto` (cartões do slide `setor`), `cenarios` (`nome`, `gatilho`, `a`/`b` com `efeito` em `++ + 0 - --`, `vantagem` `a`/`b`/null, `nota`) e `monitorar` (slide `destaques_riscos`). Único nome com dígito aceito fora de placeholder: "Seção 232".
 
 ### Regras gerais (todos os cards)
 

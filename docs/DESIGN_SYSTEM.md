@@ -41,6 +41,9 @@ números em largura normal, algarismos tabulares. Escala: 12 / 15 / 18 / 22 / 36
 - **Tabela**: cabeçalho em blocos de cor; linhas alternadas; valor + "A/A · ITR p. N" embaixo; vencedor em negrito com barra de 6 px na cor da empresa (só onde há regra econômica clara).
 - **Item de destaque**: rótulo à esquerda (+, −, Observar, Atenção, Sem dado) e texto à direita.
 - **Gráficos**: PNG de fundo branco, sem moldura.
+- **Tabela por negócio** (setor): cabeçalho em tinta, faixa da empresa à esquerda, barra de EBITDA/t na cor dela.
+- **Cartões de contexto** (setor): régua de 4 px em tinta, título condensado; números do contexto macro com página.
+- **Tabela de cenários** (destaques): cabeçalhos em blocos de cor; vantagem com barra de 6 px na cor da empresa; efeito com símbolo (▲ ▼ ●), não só cor.
 
 ## Conteúdo por slide (o que entra e por quê)
 | Slide | Mensagem | Conteúdo |

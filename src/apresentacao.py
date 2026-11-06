@@ -8,9 +8,16 @@ apresentação institucional (CASE-03, opcional) e a narrativa com os títulos-m
 sem ela, usa os insights automáticos do comparativo).
 
 Regras:
-- nenhum número é digitado aqui nem na narrativa. A narrativa usa placeholders
-  ({a.margem_ebitda}, {b.receita_liquida.var_aa}, {a.nome}, {periodo}, {criterio_ebitda}) que o
-  código resolve a partir do comparativo.json;
+- nenhum número é digitado aqui nem na narrativa. A narrativa usa placeholders que o código
+  resolve a partir dos dados verificados:
+    {a.margem_ebitda} {b.receita_liquida.var_aa} {a.nome} {periodo} {criterio_ebitda}  comparativo
+    {a.seg.brasil.pct_ebitda} {a.seg.brasil.ebitda_por_t} {a.seg.brasil.volume_vendas.var_aa}
+                                                     segmento (comparativo.segmentos)
+    {a.macro.tarifa_aco_eua}                         número do contexto macro (pelo id do fato)
+  Afirmação sem número tirada de um documento entra com "cita": ["a.<id>"], que põe a página
+  do fato no rodapé;
+- a leitura de cenários (slide destaques_riscos) é do time e vem só da narrativa: o código
+  confere os números e as citações, não o julgamento;
 - todo slide tem rodapé com as fontes dos números que mostra (página = índice do PDF) e o aviso
   "Não constitui recomendação de investimento";
 - narrativa reprovada no verificador não vira apresentação (sai com código 1).
@@ -57,9 +64,20 @@ LINHAS_COM_PONTUAIS = ["ebitda_contabil", "margem_ebitda_contabil", "margem_ebit
 # uma linha financeira do trimestre: queda de receita é notícia, mesmo sem eleger vencedor.
 LINHAS_DESTAQUE_ABSOLUTO = ["receita_liquida", "ebitda_ajustado", "ebitda_contabil", "lucro_liquido"]
 
+# Alertas que não vão para o slide de destaques: o N/D já aparece na tabela e no slide do setor.
+ALERTAS_FORA_DOS_DESTAQUES = {"indisponivel"}
+# Efeito de um cenário sobre cada empresa: símbolo (forma, não só cor) e classe de cor.
+EFEITOS = {"++": ("▲▲", "pos"), "+": ("▲", "pos"), "0": ("●", "neutro"), "-": ("▼", "neg"), "--": ("▼▼", "neg")}
+# Campos do segmento que a narrativa pode citar: participação (comparativo.segmentos) e por tonelada
+CAMPOS_PCT_SEGMENTO = ("pct_receita", "pct_ebitda")
+CAMPOS_POR_T = ("volume_vendas", "receita_por_t", "ebitda_por_t")
+
 RE_FONTE = re.compile(r"^(?P<doc>.+?) p\. ?(?P<pag>\d+)$")
 RE_PLACEHOLDER = re.compile(r"\{([^{}]+)\}")
 RE_PERIODO = re.compile(r"\b\d[TM]\d{2}\b")
+# Nomes próprios com dígito que não são dado (lei, norma). Lista fechada: qualquer outro dígito
+# na narrativa continua reprovado.
+TERMOS_COM_DIGITO = ("Seção 232",)
 
 
 # ---------------------------------------------------------------- formatação
@@ -145,6 +163,7 @@ class Dados:
     comp: dict
     pasta: Path
     qualitativo: dict  # "a"/"b" -> lista de fatos
+    macro: dict = field(default_factory=dict)  # "a"/"b" -> {id: fato} do contexto macro
     fontes_total: Fontes = field(default_factory=Fontes)  # tudo o que os slides citaram
 
     @property
@@ -161,16 +180,25 @@ class Dados:
     def alertas(self, e: str) -> list[dict]:
         return [a for a in self.comp.get("alertas", []) if a.get("empresa") == e]
 
+    def segmento(self, e: str, nome: str) -> dict | None:
+        return next((s for s in self.comp.get("segmentos", {}).get(e, []) if s.get("segmento") == nome), None)
+
 
 def carregar(pasta_comparativo: Path, pasta_metricas: Path | None) -> Dados:
     comp = json.loads((pasta_comparativo / "comparativo.json").read_text(encoding="utf-8"))
-    qualitativo = {}
+    qualitativo, macro = {}, {}
     if pasta_metricas:
         for e in ("a", "b"):
-            arq = pasta_metricas / f"{comp['empresas'][e]['slug']}_{comp['periodo']}_apresentacao_qualitativo.json"
+            prefixo = f"{comp['empresas'][e]['slug']}_{comp['periodo']}"
+            arq = pasta_metricas / f"{prefixo}_apresentacao_qualitativo.json"
             if arq.exists():
                 qualitativo[e] = json.loads(arq.read_text(encoding="utf-8"))
-    return Dados(comp, pasta_comparativo, qualitativo)
+            # contexto macro: um arquivo por documento-fonte (itr, apresentacao); o id é a chave
+            for arq in sorted(pasta_metricas.glob(f"{prefixo}_*_macro.json")):
+                for fato in json.loads(arq.read_text(encoding="utf-8")):
+                    if isinstance(fato, dict) and fato.get("id"):
+                        macro.setdefault(e, {}).setdefault(fato["id"], fato)
+    return Dados(comp, pasta_comparativo, qualitativo, macro)
 
 
 # ---------------------------------------------------------------- narrativa: resolver e verificar
@@ -192,6 +220,10 @@ def resolver(texto: str, d: Dados, fontes: Fontes) -> str:
         e = partes[0]
         if partes[1:] == ["nome"]:
             return nomes[e]
+        if partes[1] == "macro":
+            return valor_macro(d, e, partes, nome, fontes)
+        if partes[1] == "seg":
+            return valor_segmento(d, e, partes, nome, fontes)
         linha = linhas.get(partes[1])
         if linha is None:
             raise ErroNarrativa(f"{{{nome}}}: chave '{partes[1]}' não existe no comparativo")
@@ -212,13 +244,114 @@ def resolver(texto: str, d: Dados, fontes: Fontes) -> str:
     return RE_PLACEHOLDER.sub(troca, texto)
 
 
-def textos_da_narrativa(narrativa: dict):
+def valor_macro(d: Dados, e: str, partes: list[str], nome: str, fontes: Fontes) -> str:
+    """{a.macro.<id>}: o número do fato de contexto macro, como aparece no documento."""
+    if len(partes) != 3:
+        raise ErroNarrativa(f"{{{nome}}}: formato inválido (use {{a.macro.<id>}})")
+    fato = d.macro.get(e, {}).get(partes[2])
+    if fato is None:
+        raise ErroNarrativa(f"{{{nome}}}: contexto macro '{partes[2]}' não existe em metricas/*_macro.json")
+    if not fato.get("valor_como_aparece"):
+        raise ErroNarrativa(f"{{{nome}}}: '{partes[2]}' não tem número; cite com \"cita\": [\"{e}.{partes[2]}\"]")
+    fontes.add_fato(e, fato)
+    return str(fato["valor_como_aparece"])
+
+
+def valor_segmento(d: Dados, e: str, partes: list[str], nome: str, fontes: Fontes) -> str:
+    """{a.seg.<segmento>.<campo>[.var_aa]}: participação ou métrica por tonelada do segmento."""
+    if len(partes) not in (4, 5):
+        raise ErroNarrativa(f"{{{nome}}}: formato inválido (use {{a.seg.<segmento>.<campo>}})")
+    seg = d.segmento(e, partes[2])
+    if seg is None:
+        raise ErroNarrativa(f"{{{nome}}}: segmento '{partes[2]}' não existe no comparativo")
+    campo = partes[3]
+    if campo in CAMPOS_PCT_SEGMENTO and len(partes) == 4:
+        if seg.get(campo) is None:
+            raise ErroNarrativa(f"{{{nome}}}: valor indisponível")
+        fontes.add(e, seg.get("fontes"))
+        return f"{fmt_br(seg[campo], 0)}%"
+    if campo not in CAMPOS_POR_T:
+        raise ErroNarrativa(f"{{{nome}}}: campo '{campo}' inválido "
+                            f"(válidos: {', '.join(CAMPOS_PCT_SEGMENTO + CAMPOS_POR_T)})")
+    item = (seg.get("por_t") or {}).get(campo)
+    if item is None:
+        raise ErroNarrativa(f"{{{nome}}}: valor indisponível (o segmento não tem {campo})")
+    if len(partes) == 4:
+        valor = item["texto"]
+    elif partes[4] == "var_aa":
+        valor = fmt_var(item.get("var_aa"), item.get("unidade_var"))
+        if valor is None:
+            raise ErroNarrativa(f"{{{nome}}}: variação indisponível")
+    else:
+        raise ErroNarrativa(f"{{{nome}}}: formato inválido (só .var_aa depois do campo)")
+    fontes.add(e, item.get("fontes"))
+    return valor
+
+
+def item_texto(item) -> tuple[str, list]:
+    """Item da narrativa: texto puro ou {"texto": ..., "cita": ["a.<id>"]}."""
+    if isinstance(item, dict):
+        return str(item.get("texto") or ""), list(item.get("cita") or [])
+    return str(item), []
+
+
+def citar(cita: list, d: Dados, fontes: Fontes) -> None:
+    """Põe no rodapé a página dos fatos de contexto citados ('a.<id>')."""
+    for ref in cita:
+        e, _, mid = str(ref).partition(".")
+        fato = d.macro.get(e, {}).get(mid) if e in ("a", "b") else None
+        if fato is None:
+            raise ErroNarrativa(f"cita {ref!r}: não existe em metricas/*_macro.json (use 'a.<id>' ou 'b.<id>')")
+        fontes.add_fato(e, fato)
+
+
+def render_item(item, d: Dados, fontes: Fontes) -> str:
+    """Texto do item resolvido, citações registradas e HTML escapado."""
+    texto, cita = item_texto(item)
+    citar(cita, d, fontes)
+    return esc(resolver(texto, d, fontes))
+
+
+def itens_da_narrativa(narrativa: dict):
+    """(id do slide, item) de todo texto da narrativa, em qualquer campo que vira slide."""
     for slide in narrativa.get("slides", []):
-        for campo in ("titulo", "subtitulo"):
+        sid = slide.get("id")
+        for campo in ("titulo", "subtitulo", "nota", "monitorar"):
             if slide.get(campo):
-                yield slide.get("id"), slide[campo]
-        for bullet in slide.get("bullets", []):
-            yield slide.get("id"), bullet
+                yield sid, slide[campo]
+        for campo in ("bullets", "a", "b"):
+            for item in slide.get(campo) or []:
+                yield sid, item
+        for card in slide.get("contexto") or []:
+            yield sid, card.get("titulo") or ""
+            yield sid, card
+        for c in slide.get("cenarios") or []:
+            for campo in ("nome", "gatilho", "nota"):
+                if c.get(campo):
+                    yield sid, c[campo]
+            for lado in ("a", "b"):
+                if isinstance(c.get(lado), dict):
+                    yield sid, c[lado]
+
+
+def textos_da_narrativa(narrativa: dict):
+    for sid, item in itens_da_narrativa(narrativa):
+        yield sid, item_texto(item)[0]
+
+
+def verificar_cenarios(slide: dict) -> list[str]:
+    problemas = []
+    for i, c in enumerate(slide.get("cenarios") or [], 1):
+        rot = f"[{slide.get('id')}] cenário {i}"
+        if not c.get("nome"):
+            problemas.append(f"{rot}: sem nome")
+        for lado in ("a", "b"):
+            efeito = (c.get(lado) or {}).get("efeito") if isinstance(c.get(lado), dict) else None
+            if efeito not in EFEITOS:
+                problemas.append(f"{rot}: efeito de '{lado}' deve ser um de {', '.join(EFEITOS)}")
+        if c.get("vantagem") not in (None, "a", "b"):
+            problemas.append(f"{rot}: vantagem deve ser 'a', 'b' ou null")
+    return problemas
 
 
 def verificar_narrativa(narrativa: dict, d: Dados) -> list[str]:
@@ -231,20 +364,28 @@ def verificar_narrativa(narrativa: dict, d: Dados) -> list[str]:
     for sid in {i for i in ids if ids.count(i) > 1}:
         problemas.append(f"slide repetido: {sid!r}")
     validos = periodos_validos(d.comp["periodo"]) | {l.get("periodo") for l in d.comp["linhas"] if l.get("periodo")}
-    for sid, texto in textos_da_narrativa(narrativa):
+    for sid, item in itens_da_narrativa(narrativa):
+        texto, cita = item_texto(item)
         fora = RE_PLACEHOLDER.sub(" ", texto)
+        for termo in TERMOS_COM_DIGITO:
+            fora = fora.replace(termo, " ")
         for p in RE_PERIODO.findall(fora):
             if p not in validos:
                 problemas.append(f"[{sid}] período {p} não pertence a esta comparação ({d.comp['periodo']})")
         if re.search(r"\d", RE_PERIODO.sub("", fora)):
             problemas.append(f"[{sid}] número escrito à mão (use placeholder): {texto!r}")
         try:
+            citar(cita, d, Fontes())
             resolver(texto, d, Fontes())
         except ErroNarrativa as erro:
             problemas.append(f"[{sid}] {erro}")
+    for slide in narrativa.get("slides", []):
+        problemas += verificar_cenarios(slide)
     for slide in narrativa.get("slides", []):  # "destaques": par de números de cada bullet do resumo
         for ref in slide.get("destaques") or []:
-            chave, _, var = (ref or "").partition(".")
+            if ref is None:  # bloco sem par de números
+                continue
+            chave, _, var = ref.partition(".")
             if chave not in d.linhas or var not in ("", "var_aa", "var_tt"):
                 problemas.append(f"[{slide.get('id')}] destaque inválido: {ref!r} (use 'chave' ou 'chave.var_aa')")
     return problemas
@@ -385,6 +526,86 @@ def par_de_numeros(d: Dados, ref: str | None, fontes: Fontes) -> str:
     return f'<div class="par">{"".join(valores)}</div><p class="par-rot">{esc(rot)}</p>'
 
 
+def celula_por_t(item: dict | None) -> str:
+    if not item:
+        return '<span class="nd">—</span>'
+    var = fmt_var(item.get("var_aa"), item.get("unidade_var"))
+    return f'{esc(item["texto"])}<span class="var">{esc("A/A " + var) if var else "sem base A/A"}</span>'
+
+
+def tabela_segmentos(d: Dados, fontes: Fontes) -> str | None:
+    """Por negócio: volume, receita/t e EBITDA/t de cada segmento (numerador e denominador do
+    mesmo negócio). Barra = EBITDA/t, na mesma escala para todas as linhas. None sem dados."""
+    linhas = [(e, s, s["por_t"]) for e in ("a", "b") for s in d.comp.get("segmentos", {}).get(e, [])
+              if (s.get("por_t") or {}).get("ebitda_por_t")]
+    if not linhas:
+        return None
+    maximo = max(max(pt["ebitda_por_t"]["valor"], 0) for _, _, pt in linhas) or 1
+    corpo = ['<table class="tabela segs"><thead><tr><th>Negócio</th><th>Volume vendido</th>'
+             '<th>Receita por t</th><th>EBITDA ' + esc(d.comp.get("criterio_ebitda") or "") +
+             ' por t</th><th>Fatia do EBITDA</th></tr></thead><tbody>']
+    for e, s, pt in linhas:
+        cor = esc(d.comp["empresas"][e]["cor"])
+        eb = pt["ebitda_por_t"]
+        largura = max(eb["valor"], 0) / maximo * 100
+        barra = (f'<div class="barra" title="{esc(d.nomes[e])} · {esc(s.get("rotulo") or s["segmento"])}: '
+                 f'{esc(eb["texto"])}"><i style="width:{largura:.1f}%;background:{cor}"></i>'
+                 f'<span>{celula_por_t(eb)}</span></div>')
+        pct = f'{fmt_br(s["pct_ebitda"], 0)}%' if s.get("pct_ebitda") is not None else "—"
+        corpo.append(f'<tr><td class="negocio" style="--cor:{cor}">{esc(d.nomes[e])}'
+                     f'<span class="obs">{esc(s.get("rotulo") or s["segmento"])}</span></td>'
+                     f'<td>{celula_por_t(pt.get("volume_vendas"))}</td>'
+                     f'<td>{celula_por_t(pt.get("receita_por_t"))}</td><td class="col-barra">{barra}</td>'
+                     f'<td>{esc(pct)}</td></tr>')
+        for item in pt.values():
+            fontes.add(e, item.get("fontes"))
+        fontes.add(e, s.get("fontes"))
+    corpo.append("</tbody></table>")
+    return "".join(corpo)
+
+
+def painel_contexto(cards: list, d: Dados, fontes: Fontes) -> str:
+    """Cartões 'o que move o setor agora': texto da narrativa com números do contexto macro."""
+    html_cards = [f'<div class="card"><h3>{esc(resolver(c.get("titulo") or "", d, fontes))}</h3>'
+                  f'<p>{render_item(c, d, fontes)}</p></div>' for c in cards]
+    return f'<div class="contexto" style="--n:{len(html_cards)}">{"".join(html_cards)}</div>'
+
+
+SINAIS = {"+": '<b class="pos">+</b> ', "-": '<b class="neg">−</b> '}
+
+
+def item_empresa(item, d: Dados, fontes: Fontes) -> str:
+    """Bullet da narrativa numa coluna de empresa; {"sinal": "+"|"-"} marca positivo/negativo."""
+    sinal = item.get("sinal") if isinstance(item, dict) else None
+    return SINAIS.get(sinal, "") + render_item(item, d, fontes)
+
+
+def tabela_cenarios(cenarios: list, d: Dados, fontes: Fontes) -> str:
+    """Cenário macro × efeito em cada empresa × quem leva vantagem (leitura do time)."""
+    a, b = d.comp["empresas"]["a"], d.comp["empresas"]["b"]
+    corpo = [f'<table class="cenarios"><thead><tr><th>Se o cenário for…</th>'
+             f'<th style="--cor:{esc(a["cor"])}">{esc(a["nome"])}</th>'
+             f'<th style="--cor:{esc(b["cor"])}">{esc(b["nome"])}</th><th>Vantagem</th></tr></thead><tbody>']
+    for c in cenarios:
+        celulas = [f'<td><b>{render_item(c["nome"], d, fontes)}</b>'
+                   + (f'<span class="obs">{render_item(c["gatilho"], d, fontes)}</span>' if c.get("gatilho") else "")
+                   + "</td>"]
+        for lado in ("a", "b"):
+            simbolo, classe = EFEITOS[c[lado]["efeito"]]
+            celulas.append(f'<td><span class="efeito {classe}">{simbolo}</span> {render_item(c[lado], d, fontes)}</td>')
+        v = c.get("vantagem")
+        nota = f'<span class="obs">{render_item(c["nota"], d, fontes)}</span>' if c.get("nota") else ""
+        if v in ("a", "b"):
+            celulas.append(f'<td class="venc" style="--cor:{esc(d.comp["empresas"][v]["cor"])}">'
+                           f'{esc(d.nomes[v])}{nota}</td>')
+        else:
+            celulas.append(f"<td>—{nota}</td>")
+        corpo.append(f"<tr>{''.join(celulas)}</tr>")
+    corpo.append("</tbody></table>")
+    return "".join(corpo)
+
+
+
 # ---------------------------------------------------------------- slides
 # Cada função recebe (dados, narrativa do slide, fontes) e devolve (título, subtítulo, corpo).
 def slide_capa(d, n, fontes):
@@ -420,7 +641,9 @@ def slide_resumo(d, n, fontes):
     if n.get("bullets"):
         refs = n.get("destaques") or []
         for i, b in enumerate(n["bullets"]):
-            blocos.append((resolver(b, d, fontes), refs[i] if i < len(refs) else None))
+            texto, cita = item_texto(b)
+            citar(cita, d, fontes)
+            blocos.append((resolver(texto, d, fontes), refs[i] if i < len(refs) else None))
     else:
         for ins in d.comp.get("insights", [])[:3]:
             fontes_de_insight(ins, d, fontes)
@@ -453,6 +676,7 @@ def slide_perfil(d, n, fontes):
             itens.append(f'<p class="segs">Segmentos: {esc(mix)}</p>')
             for s in segs:
                 fontes.add(e, s.get("fontes"))
+        itens += [f"<p><b>{render_item(i, d, fontes)}</b></p>" for i in n.get(e) or []]  # exposição (narrativa)
         if not itens:
             itens = ['<p class="nd">Sem dados da apresentação institucional.</p>']
         colunas.append(f'<div class="empresa">{tarja(emp)}{"".join(itens)}</div>')
@@ -484,22 +708,32 @@ def slide_graficos(d, n, fontes):
 
 
 def slide_setor(d, n, fontes):
-    """Caixa e balanço (comparáveis) + métricas por tonelada (com o motivo quando não comparáveis)."""
+    """Por negócio (segmentos com métrica por tonelada) + contexto macro, quando há; senão,
+    caixa e balanço + métricas por tonelada do consolidado (com o motivo do N/D)."""
     titulo = resolver(n.get("titulo") or "Caixa, balanço e métricas por tonelada", d, fontes)
     notas = Notas()
-    caixa = [d.linhas[c] for c in LINHAS_CAIXA if c in d.linhas]
-    por_t = [l for l in d.comp["linhas"] if l.get("grupo") in GRUPOS_SETOR]
-    partes = []
-    if caixa:
-        partes.append(tabela(d, caixa, fontes, notas, "compacta"))
-    if por_t:
-        partes.append('<h2 class="secao">Por tonelada</h2>' + tabela(d, por_t, fontes, notas, "compacta sem-cab"))
-    if not partes:
-        partes.append('<p class="nd">Sem métricas de caixa ou por tonelada no comparativo.</p>')
-    grafico = next((g for g in (img_grafico(d, gid, fontes) for gid in GRAFICOS_SETOR) if g), None)
-    lado = f'<div class="graf">{grafico}</div>' if grafico else ""
-    return titulo, None, (f'<div class="setor"><div class="pilha">{"".join(partes)}</div>{lado}</div>'
-                          + notas.html())
+    segs = tabela_segmentos(d, fontes)
+    if segs:
+        corpo = segs
+    else:
+        caixa = [d.linhas[c] for c in LINHAS_CAIXA if c in d.linhas]
+        por_t = [l for l in d.comp["linhas"] if l.get("grupo") in GRUPOS_SETOR]
+        partes = []
+        if caixa:
+            partes.append(tabela(d, caixa, fontes, notas, "compacta"))
+        if por_t:
+            partes.append('<h2 class="secao">Por tonelada</h2>' + tabela(d, por_t, fontes, notas, "compacta sem-cab"))
+        if not partes:
+            partes.append('<p class="nd">Sem métricas de caixa ou por tonelada no comparativo.</p>')
+        grafico = None if n.get("contexto") else next(
+            (g for g in (img_grafico(d, gid, fontes) for gid in GRAFICOS_SETOR) if g), None)
+        lado = f'<div class="graf">{grafico}</div>' if grafico else ""
+        corpo = f'<div class="setor">{"<div class=pilha>" + "".join(partes) + "</div>"}{lado}</div>'
+    if n.get("nota"):
+        corpo += f'<p class="nota-setor">{render_item(n["nota"], d, fontes)}</p>'
+    if n.get("contexto"):
+        corpo += painel_contexto(n["contexto"], d, fontes)
+    return titulo, None, corpo + notas.html()
 
 
 def destaques_numericos(d: Dados, e: str) -> tuple[str | None, str | None, Fontes]:
@@ -548,31 +782,41 @@ def destaques_numericos(d: Dados, e: str) -> tuple[str | None, str | None, Fonte
 
 def slide_destaques_riscos(d, n, fontes):
     titulo = resolver(n.get("titulo") or "Destaques do trimestre e o que observar", d, fontes)
+    cenarios = n.get("cenarios") or []
     colunas = []
     for e in ("a", "b"):
         emp = d.comp["empresas"][e]
         pos, neg, f_num = destaques_numericos(d, e)
         fontes.juntar(f_num)
-        linhas = [("pos", "+", esc(pos or "Nenhum indicador comparável melhorou A/A")),
-                  ("neg", "−", esc(neg or "Nenhum indicador comparável piorou A/A"))]
-        for tema in TEMAS_OBSERVAR:  # o primeiro tema que a empresa tiver
-            fato = next(iter(d.qual(e, tema)), None)
-            if fato:
-                linhas.append(("obs", "Observar", esc(fato["resumo"])))
-                fontes.add_fato(e, fato)
-                break
-        sem_dado = []
-        for alerta in d.alertas(e):
-            if alerta.get("tipo") == "indisponivel":  # vários N/D viram uma linha só
-                sem_dado += [d.linhas[c]["nome"] for c in alerta.get("chaves", []) if c in d.linhas]
-            else:
-                linhas.append(("alerta", "Atenção", esc(maiuscula(alerta["texto"]))))
+        extras = n.get(e) or []
+        linhas = [("pos", "+", esc(pos or "Nenhum indicador comparável melhorou A/A"))]
+        if neg or not extras:  # sem piora consolidada, a narrativa traz o ponto negativo
+            linhas.append(("neg", "−", esc(neg or "Nenhum indicador comparável piorou A/A")))
+        for item in extras:  # pontos da narrativa ({"sinal": "+"|"-"})
+            sinal = item.get("sinal") if isinstance(item, dict) else None
+            classe, rot = {"+": ("pos", "+"), "-": ("neg", "−")}.get(sinal, ("obs", "Nota"))
+            linhas.append((classe, rot, render_item(item, d, fontes)))
+        if not cenarios:  # com a tabela de cenários, o "o que observar" genérico sai
+            for tema in TEMAS_OBSERVAR:
+                fato = next(iter(d.qual(e, tema)), None)
+                if fato:
+                    linhas.append(("obs", "Observar", esc(fato["resumo"])))
+                    fontes.add_fato(e, fato)
+                    break
+        # efeito pontual primeiro (é o que distorce o A/A); com cenários, só cabe um
+        alertas = sorted((a for a in d.alertas(e) if a.get("tipo") not in ALERTAS_FORA_DOS_DESTAQUES),
+                         key=lambda a: a.get("tipo") != "efeito_pontual")
+        for alerta in alertas[:1 if cenarios else 2]:
+            linhas.append(("alerta", "Atenção", esc(maiuscula(alerta["texto"]))))
             fontes.add(e, alerta.get("fontes"))
-        if sem_dado:
-            linhas.append(("alerta", "Sem dado", esc(", ".join(dict.fromkeys(sem_dado)))))
         itens = "".join(f'<div class="item {c}"><b>{r}</b><span>{t}</span></div>' for c, r, t in linhas)
         colunas.append(f'<div class="empresa">{tarja(emp)}{itens}</div>')
-    return titulo, None, f'<div class="duas">{"".join(colunas)}</div>'
+    corpo = f'<div class="duas{" com-cenarios" if cenarios else ""}">{"".join(colunas)}</div>'
+    if cenarios:
+        corpo += tabela_cenarios(cenarios, d, fontes)
+    if n.get("monitorar"):
+        corpo += f'<p class="monitorar"><b>O que acompanhar:</b> {render_item(n["monitorar"], d, fontes)}</p>'
+    return titulo, None, corpo
 
 
 def slide_metodologia(d, n, fontes):
@@ -591,8 +835,10 @@ def slide_metodologia(d, n, fontes):
     ver = d.comp.get("verificacao")
     if ver:
         num_ver = f'<p class="grande">{esc(ver["ok"])} de {esc(ver["total"])}</p>'
-        txt_ver = ("números conferidos automaticamente no PDF (trecho, valor e página); "
-                   f"{ver.get('erro', 0)} com erro.")
+        txt_ver = "números conferidos automaticamente no PDF (trecho, valor e página)."
+        if ver.get("revisar"):
+            txt_ver += (f" Outros {ver['revisar']} estão no PDF, mas a coluna ou o período ainda não foi "
+                        f"comprovado por código; {ver.get('erro', 0)} com erro.")
     else:
         num_ver = ""
         txt_ver = "Verificação automática ainda não rodou para este comparativo: números não conferidos."
@@ -600,9 +846,18 @@ def slide_metodologia(d, n, fontes):
                 f"percentuais variam em p.p."]
     periodos += [f"{', '.join(nomes)}: {rot}" + (", sobre saldos médios" if "anualizado" in rot else "") + "."
                  for rot, nomes in acumulados.items()]
+    criterio = [f"EBITDA {d.comp['criterio_ebitda']}, o mesmo para as duas empresas.",
+                "Números consolidados, nunca os da controladora."]
+    if d.macro:
+        criterio.append("Contexto macro: só o que as próprias empresas publicaram (ITR e apresentação), "
+                        "com página e verificado como os demais números. Os cenários são leitura do time.")
+    for alerta in d.comp.get("alertas", []):  # divergência de definição é ressalva de método
+        if str(alerta.get("tipo", "")).startswith("divergencia"):
+            quem = d.nomes.get(alerta.get("empresa"), "")
+            txt_ver += f" Ressalva — {quem + ': ' if quem else ''}{alerta['texto']}."
+            todas.add(alerta.get("empresa"), alerta.get("fontes"))
     blocos = [
-        ("Critério", [f"EBITDA {d.comp['criterio_ebitda']}, o mesmo para as duas empresas.",
-                      "Números consolidados, nunca os da controladora."]),
+        ("Critério", criterio),
         ("Períodos", periodos),
         ("Verificação", [txt_ver]),
         ("Fontes", [f"{todas.texto(d.nomes)}.",
@@ -639,7 +894,7 @@ CSS = """
 html,body{margin:0;height:100%;background:var(--palco);color:var(--tinta);
   font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums lining-nums;
   -webkit-font-smoothing:antialiased}
-#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#deck{position:fixed;inset:0 0 46px 0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .slide{width:1280px;height:720px;flex:none;background:var(--superficie);display:none;flex-direction:column;
   padding:48px 64px 0;position:absolute;overflow:hidden}
 .slide.ativo{display:flex}
@@ -740,7 +995,41 @@ h2{margin:0;font-weight:700;font-stretch:75%}
 .quatro .bloco p{font-size:17px;line-height:1.45;margin-bottom:6px}
 .quatro .bloco p.grande{font-size:52px;font-weight:700;font-stretch:75%;line-height:1;margin-bottom:4px}
 
-#nav{position:fixed;right:16px;bottom:10px;color:var(--sec);font:12px Archivo,system-ui,sans-serif}
+/* por negócio, contexto macro e cenários (Patrício), no estilo Tarja */
+.segs{font-size:var(--t-s)}
+.segs thead th{font-size:var(--t-s);background:var(--tinta);color:#fff;padding:7px 12px}
+.segs td{padding:6px 12px;vertical-align:top}
+.segs td .var{display:block;font-size:var(--t-xs);color:var(--sec)}
+.segs td.negocio{box-shadow:inset 6px 0 0 var(--cor);font-weight:700;padding-left:16px}
+.segs td.negocio .obs{font-weight:400;color:var(--tinta)}
+.segs .col-barra{width:34%}
+.barra{display:flex;align-items:center;gap:10px}
+.barra i{display:block;height:16px;min-width:3px;flex:none;max-width:62%}
+.barra span{flex:none}
+.nota-setor{font-size:var(--t-xs);color:var(--sec)}
+.contexto{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:12px;margin-top:auto}
+.contexto .card{border-top:4px solid var(--tinta);padding:8px 0 0;font-size:13px;line-height:1.4}
+.contexto h3{font-size:var(--t-s);font-stretch:75%;font-weight:700;margin:0 0 4px}
+.cenarios{width:100%;border-collapse:collapse;font-size:13px;line-height:1.3}
+.cenarios th{text-align:left;font-size:var(--t-s);font-weight:700;font-stretch:75%;padding:5px 10px;
+  background:var(--tinta);color:#fff}
+.cenarios th[style]{background:var(--cor)}
+.cenarios tbody tr:nth-child(odd) td{background:var(--faixa)}
+.cenarios td{padding:5px 10px;vertical-align:top}
+.cenarios td:first-child{width:27%}
+.cenarios td:last-child{width:13%}
+.cenarios td.venc{box-shadow:inset 6px 0 0 var(--cor);font-weight:700}
+.cenarios .obs{font-size:12px}
+.efeito{font-size:12px;letter-spacing:-.08em;margin-right:2px}
+.neutro{color:var(--sec)}
+.monitorar{font-size:13px;margin:0}
+.duas.com-cenarios .item{padding:5px 0;font-size:13.5px}
+.duas.com-cenarios .item.pos span,.duas.com-cenarios .item.neg span{font-size:var(--t-s)}
+.duas.com-cenarios .tarja{padding:6px 14px}
+#nav{position:fixed;right:14px;bottom:8px;display:flex;gap:8px;align-items:center;z-index:5;
+  color:var(--sec);font:13px Archivo,system-ui,sans-serif}
+#nav button{background:var(--tinta);color:#fff;border:0;width:38px;height:32px;font-size:20px;line-height:1;cursor:pointer}
+#nav button:disabled{opacity:.35;cursor:default}
 @media print{
   @page{size:1280px 720px;margin:0}
   html,body{background:#fff;height:auto}
@@ -752,13 +1041,24 @@ h2{margin:0;font-weight:700;font-stretch:75%}
 
 JS = """
 const s=[...document.querySelectorAll('.slide')];let i=0;
-function escala(){const k=Math.min(innerWidth/1280,innerHeight/720)*0.97;s.forEach(x=>x.style.transform='scale('+k+')')}
+// a faixa de 46px embaixo é dos botões: o slide nunca fica sob eles
+function escala(){const k=Math.min(innerWidth/1280,(innerHeight-46)/720)*0.97;s.forEach(x=>x.style.transform='scale('+k+')')}
+const ant=document.getElementById('ant'),prox=document.getElementById('prox');
 function ir(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach((x,j)=>x.classList.toggle('ativo',j===i));
-  document.getElementById('pos').textContent=(i+1)+' / '+s.length;history.replaceState(null,'','#'+(i+1))}
+  document.getElementById('pos').textContent=(i+1)+' / '+s.length;ant.disabled=i===0;prox.disabled=i===s.length-1;
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
 addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))ir(i+1);
   else if(['ArrowLeft','PageUp'].includes(e.key))ir(i-1);else if(e.key==='Home')ir(0);
   else if(e.key==='End')ir(s.length-1)});
-addEventListener('resize',escala);escala();ir((parseInt(location.hash.slice(1))||1)-1);
+ant.onclick=()=>ir(i-1);prox.onclick=()=>ir(i+1);
+// clique no slide: terço esquerdo volta, o resto avança (sem atrapalhar seleção de texto)
+document.getElementById('deck').addEventListener('click',e=>{if(String(getSelection()))return;
+  ir(e.clientX<innerWidth/3?i-1:i+1)});
+let x0=null;addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;
+  if(Math.abs(dx)>40)ir(dx<0?i+1:i-1)},{passive:true});
+addEventListener('resize',escala);escala();
+let h=1;try{h=parseInt(location.hash.slice(1))||1}catch(e){}ir(h-1);
 """
 
 
@@ -780,7 +1080,9 @@ def gerar_html(d: Dados, narrativa: dict | None = None) -> str:
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(a)} × {esc(b)} · {esc(d.comp["periodo"])}</title><style>{FONTE_CSS}{CSS}</style></head>'
             f'<body><main id="deck">{"".join(secoes)}</main>'
-            f'<div id="nav">← → navegar · <span id="pos"></span></div><script>{JS}</script></body></html>\n')
+            f'<div id="nav"><button id="ant" type="button" aria-label="Slide anterior">‹</button>'
+            f'<span id="pos"></span><button id="prox" type="button" aria-label="Próximo slide">›</button></div>'
+            f'<script>{JS}</script></body></html>\n')
 
 
 def main(argv: list[str] | None = None) -> int:
