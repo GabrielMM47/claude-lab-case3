@@ -142,17 +142,17 @@ pre.mermaid { background: transparent; margin: 0; text-align: center; }
     <section class="lane lane-gp" aria-label="Gabriel Patrício">
       <header class="lane-head">
         <span class="avatar">GP</span>
-        <span><span class="lane-name">Gabriel Patrício</span><span class="lane-focus">Contrato e apresentação</span></span>
+        <span><span class="lane-name">Gabriel Patrício</span><span class="lane-focus">Indicadores e apresentação</span></span>
       </header>
       <code class="branch">feat/gabriel-patricio</code>
       
-      <a class="tile" href="#case-01">
-        <span class="tile-top"><span class="cid">CASE-01</span><span class="prio prio-p0">P0</span><span class="est">45 min</span></span>
-        <span class="tile-title">Contrato de dados, catálogo e fixtures</span>
+      <a class="tile" href="#case-04">
+        <span class="tile-top"><span class="cid">CASE-04</span><span class="prio prio-p0">P0</span><span class="est">2 h</span></span>
+        <span class="tile-title">Motor de indicadores (ROE, ROIC, margens, R$/t)</span>
         <span class="deps">
-          <span><b>Começa com</b> —</span>
-          <span><b>Fecha com</b> —</span>
-          <span><b>Bloqueia</b> todos (merge cedo)</span>
+          <span><b>Começa com</b> 01 (contrato + fixtures)</span>
+          <span><b>Fecha com</b> 02 e 03</span>
+          <span><b>Bloqueia</b> 05</span>
         </span>
       </a>
       <a class="tile" href="#case-06">
@@ -220,17 +220,17 @@ pre.mermaid { background: transparent; margin: 0; text-align: center; }
     <section class="lane lane-jv" aria-label="João Vitor">
       <header class="lane-head">
         <span class="avatar">JV</span>
-        <span><span class="lane-name">João Vitor</span><span class="lane-focus">Indicadores e comparativo</span></span>
+        <span><span class="lane-name">João Vitor</span><span class="lane-focus">Contrato e comparativo</span></span>
       </header>
-      <code class="branch">feat/joao-vitor</code>
+      <code class="branch">Joao-Maia</code>
       
-      <a class="tile" href="#case-04">
-        <span class="tile-top"><span class="cid">CASE-04</span><span class="prio prio-p0">P0</span><span class="est">2 h</span></span>
-        <span class="tile-title">Motor de indicadores (ROE, ROIC, margens, R$/t)</span>
+      <a class="tile" href="#case-01">
+        <span class="tile-top"><span class="cid">CASE-01</span><span class="prio prio-p0">P0</span><span class="est">45 min</span></span>
+        <span class="tile-title">Contrato de dados, catálogo e fixtures</span>
         <span class="deps">
-          <span><b>Começa com</b> 01 (contrato + fixtures)</span>
-          <span><b>Fecha com</b> 02 e 03</span>
-          <span><b>Bloqueia</b> 05</span>
+          <span><b>Começa com</b> —</span>
+          <span><b>Fecha com</b> —</span>
+          <span><b>Bloqueia</b> todos (merge cedo)</span>
         </span>
       </a>
       <a class="tile" href="#case-05">
@@ -251,10 +251,10 @@ pre.mermaid { background: transparent; margin: 0; text-align: center; }
       <div class="section-head"><h2>Quem depende de quem</h2></div>
       <div class="diagram"><pre class="mermaid">
 flowchart LR
-  C01["CASE-01 · Contrato<br/>Gabriel Patrício"]
+  C01["CASE-01 · Contrato<br/>João Vitor"]
   C02["CASE-02 · ITR financeiro<br/>Gabriel Martins"]
   C03["CASE-03 · Institucional<br/>Geronimo"]
-  C04["CASE-04 · Indicadores<br/>João Vitor"]
+  C04["CASE-04 · Indicadores<br/>Gabriel Patrício"]
   C05["CASE-05 · Comparativo<br/>João Vitor"]
   C06["CASE-06 · Slides<br/>Gabriel Patrício"]
   C07["CASE-07 · Pipeline<br/>Gabriel Martins"]
@@ -289,7 +289,7 @@ Todo mundo começa **já**: o contrato está escrito abaixo, e quem consome dado
 
 
 **Onde pode dar conflito (e como evitar):**
-- `requirements.txt`, `pyproject.toml`, `CLAUDE.md`: só o CASE-01 mexe. Precisa de biblioteca nova? Pede ao Gabriel Patrício.
+- `requirements.txt`, `pyproject.toml`, `CLAUDE.md`: só o CASE-01 mexe. Precisa de biblioteca nova? Pede ao João Vitor.
 - `src/contrato.py`: chave nova no catálogo pode entrar no seu PR; o conflito, se houver, é numa lista e se resolve rápido.
 - `docs/ERROS_ENCONTRADOS.md` e `docs/PROMPTS.md`: ninguém edita direto. Cada um registra em `docs/registro/<seu-nome>.md`; o CASE-08 consolida.
 - `metricas/`: cada arquivo tem um dono só (o nome diz de qual card ele vem).
@@ -346,13 +346,13 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
   <section>
     <div class="section-head"><h2>Cards</h2></div>
     <div class="cards">
-  <article class="card card-gp" id="case-01">
-    <div class="card-owner">Gabriel Patrício</div>
+  <article class="card card-jv" id="case-01">
+    <div class="card-owner">João Vitor</div>
     <div class="md" id="case-01-md"></div>
 <script type="text/markdown" data-alvo="case-01-md">
 ### CASE-01 · Contrato de dados, catálogo e fixtures
 
-**Responsável:** Gabriel Patrício · **Branch:** `feat/gabriel-patricio` · **Prioridade:** P0, primeira coisa do dia · **Estimativa:** 45 min
+**Responsável:** João Vitor · **Branch:** `Joao-Maia` · **Prioridade:** P0, primeira coisa do dia · **Estimativa:** 45 min
 **Depende de:** — · **Bloqueia:** todos (merge cedo; ninguém precisa esperar para começar)
 
 **Contexto.** Quatro branches em paralelo só funcionam se todos escreverem e lerem o mesmo formato. O contrato está acima; este card transforma ele em código e dados de teste.
@@ -454,13 +454,13 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 **Arquivos:** `data/apresentacoes/*`, `src/localizar_paginas.py`, `tests/test_localizar_paginas.py`, `prompts/extracao_operacional.md`, `prompts/extracao_qualitativa.md`, `metricas/*_operacional.json`, `metricas/*_qualitativo.json`, `docs/registro/geronimo.md`.
 </script>
   </article>
-  <article class="card card-jv" id="case-04">
-    <div class="card-owner">João Vitor</div>
+  <article class="card card-gp" id="case-04">
+    <div class="card-owner">Gabriel Patrício</div>
     <div class="md" id="case-04-md"></div>
 <script type="text/markdown" data-alvo="case-04-md">
 ### CASE-04 · Motor de indicadores
 
-**Responsável:** João Vitor · **Branch:** `feat/joao-vitor` · **Prioridade:** P0 · **Estimativa:** 2 h
+**Responsável:** Gabriel Patrício · **Branch:** `feat/gabriel-patricio` · **Prioridade:** P0 · **Estimativa:** 2 h
 **Depende de:** CASE-01 para começar (`contrato.py` + fixtures); 02 e 03 para rodar com dados reais · **Bloqueia:** CASE-05
 
 **Contexto.** Margens, rentabilidade e alavancagem não aparecem prontas no ITR (ou aparecem com critérios diferentes entre empresas). Calcular tudo em código, a partir dos fatos verificados, é o que garante a mesma régua para as duas.
@@ -498,7 +498,7 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 - [ ] Todo indicador com `insumos` rastreáveis até página.
 - [ ] Testes cobrem conversão de unidade, p.p. × %, duplicata divergente e dado faltante.
 
-**Arquivos:** `src/indicadores.py`, `tests/test_indicadores.py`, `docs/METODOLOGIA_INDICADORES.md`, `metricas/*_indicadores.json`, `docs/registro/joao-vitor.md`.
+**Arquivos:** `src/indicadores.py`, `tests/test_indicadores.py`, `docs/METODOLOGIA_INDICADORES.md`, `metricas/*_indicadores.json`, `docs/registro/gabriel-patricio.md`.
 </script>
   </article>
   <article class="card card-jv" id="case-05">
@@ -507,7 +507,7 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 <script type="text/markdown" data-alvo="case-05-md">
 ### CASE-05 · Comparativo, insights e gráficos
 
-**Responsável:** João Vitor · **Branch:** `feat/joao-vitor` · **Prioridade:** P1 · **Estimativa:** 1,5 h
+**Responsável:** João Vitor · **Branch:** `Joao-Maia` · **Prioridade:** P1 · **Estimativa:** 1,5 h
 **Depende de:** CASE-04 · **Bloqueia:** CASE-06 (dados reais), CASE-07
 
 **Contexto.** A Gerdau é bem maior que a Usiminas: a história está em margens, variações e mix, não em valor absoluto. Este card transforma dois `indicadores.json` no material que a apresentação consome.

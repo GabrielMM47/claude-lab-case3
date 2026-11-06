@@ -35,11 +35,11 @@ data/apresentacoes/*.pdf ─┴► extrair_release.py ► saida/<pdf>/pagina_NN.
 
 | Card | Título | Responsável | Branch | Prioridade | Estimativa |
 |---|---|---|---|---|---|
-| CASE-01 | Contrato de dados, catálogo e fixtures | Gabriel Patrício | `feat/gabriel-patricio` | P0 (primeiro) | 45 min |
+| CASE-01 | Contrato de dados, catálogo e fixtures | João Vitor | `Joao-Maia` | P0 (primeiro) | 45 min |
 | CASE-02 | Extração financeira do ITR (parser CVM + EBITDA) | Gabriel Martins | `feat/gabriel-martins` | P0 | 3 h |
 | CASE-03 | Apresentação institucional + dados operacionais e qualitativos | Geronimo | `feat/geronimo` | P0 | 3 h |
-| CASE-04 | Motor de indicadores (ROE, ROIC, margens, R$/t...) | João Vitor | `feat/joao-vitor` | P0 | 2 h |
-| CASE-05 | Comparativo, insights e gráficos | João Vitor | `feat/joao-vitor` | P1 | 1,5 h |
+| CASE-04 | Motor de indicadores (ROE, ROIC, margens, R$/t...) | Gabriel Patrício | `feat/gabriel-patricio` | P0 | 2 h |
+| CASE-05 | Comparativo, insights e gráficos | João Vitor | `Joao-Maia` | P1 | 1,5 h |
 | CASE-06 | Gerador da apresentação executiva | Gabriel Patrício | `feat/gabriel-patricio` | P1 | 2,5 h |
 | CASE-07 | Pipeline "um comando" + relatório de verificação | Gabriel Martins | `feat/gabriel-martins` | P1 | 1,5 h |
 | CASE-08 | Entrega: Skill, README, registros, publicação e vídeo | Geronimo | `feat/geronimo` | P1 | 1,5 h |
@@ -68,7 +68,7 @@ CASE-03 ─┘                            ▲
 ```
 
 **Onde pode dar conflito (e como evitar):**
-- `requirements.txt`, `pyproject.toml`, `CLAUDE.md`: só o CASE-01 mexe. Precisa de biblioteca nova? Pede ao Gabriel Patrício.
+- `requirements.txt`, `pyproject.toml`, `CLAUDE.md`: só o CASE-01 mexe. Precisa de biblioteca nova? Pede ao João Vitor.
 - `src/contrato.py`: chave nova no catálogo pode entrar no seu PR; o conflito, se houver, é numa lista e se resolve rápido.
 - `docs/ERROS_ENCONTRADOS.md` e `docs/PROMPTS.md`: ninguém edita direto. Cada um registra em `docs/registro/<seu-nome>.md`; o CASE-08 consolida.
 - `metricas/`: cada arquivo tem um dono só (o nome diz de qual card ele vem).
@@ -272,7 +272,7 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 
 ### CASE-01 · Contrato de dados, catálogo e fixtures
 
-**Responsável:** Gabriel Patrício · **Branch:** `feat/gabriel-patricio` · **Prioridade:** P0, primeira coisa do dia · **Estimativa:** 45 min
+**Responsável:** João Vitor · **Branch:** `Joao-Maia` · **Prioridade:** P0, primeira coisa do dia · **Estimativa:** 45 min
 **Depende de:** — · **Bloqueia:** todos (merge cedo; ninguém precisa esperar para começar)
 
 **Contexto.** Quatro branches em paralelo só funcionam se todos escreverem e lerem o mesmo formato. O contrato está acima; este card transforma ele em código e dados de teste.
@@ -371,7 +371,7 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 
 ### CASE-04 · Motor de indicadores
 
-**Responsável:** João Vitor · **Branch:** `feat/joao-vitor` · **Prioridade:** P0 · **Estimativa:** 2 h
+**Responsável:** Gabriel Patrício · **Branch:** `feat/gabriel-patricio` · **Prioridade:** P0 · **Estimativa:** 2 h
 **Depende de:** CASE-01 para começar (`contrato.py` + fixtures); 02 e 03 para rodar com dados reais · **Bloqueia:** CASE-05
 
 **Contexto.** Margens, rentabilidade e alavancagem não aparecem prontas no ITR (ou aparecem com critérios diferentes entre empresas). Calcular tudo em código, a partir dos fatos verificados, é o que garante a mesma régua para as duas.
@@ -409,13 +409,13 @@ Ids: `capa`, `resumo`, `perfil`, `comparativo`, `graficos`, `setor`, `destaques_
 - [ ] Todo indicador com `insumos` rastreáveis até página.
 - [ ] Testes cobrem conversão de unidade, p.p. × %, duplicata divergente e dado faltante.
 
-**Arquivos:** `src/indicadores.py`, `tests/test_indicadores.py`, `docs/METODOLOGIA_INDICADORES.md`, `metricas/*_indicadores.json`, `docs/registro/joao-vitor.md`.
+**Arquivos:** `src/indicadores.py`, `tests/test_indicadores.py`, `docs/METODOLOGIA_INDICADORES.md`, `metricas/*_indicadores.json`, `docs/registro/gabriel-patricio.md`.
 
 ---
 
 ### CASE-05 · Comparativo, insights e gráficos
 
-**Responsável:** João Vitor · **Branch:** `feat/joao-vitor` · **Prioridade:** P1 · **Estimativa:** 1,5 h
+**Responsável:** João Vitor · **Branch:** `Joao-Maia` · **Prioridade:** P1 · **Estimativa:** 1,5 h
 **Depende de:** CASE-04 · **Bloqueia:** CASE-06 (dados reais), CASE-07
 
 **Contexto.** A Gerdau é bem maior que a Usiminas: a história está em margens, variações e mix, não em valor absoluto. Este card transforma dois `indicadores.json` no material que a apresentação consome.

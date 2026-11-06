@@ -40,14 +40,14 @@ for m in re.finditer(r"^### (CASE-0\d) .*?(?=^### CASE-0\d |\Z)", md, flags=re.S
     cards_md[m.group(1)] = m.group(0).strip().rstrip("-").strip()
 
 PESSOAS = [
-    ("gp", "Gabriel Patrício", "feat/gabriel-patricio", "Contrato e apresentação"),
+    ("gp", "Gabriel Patrício", "feat/gabriel-patricio", "Indicadores e apresentação"),
     ("gm", "Gabriel Martins", "feat/gabriel-martins", "ITR financeiro e pipeline"),
     ("ge", "Geronimo", "feat/geronimo", "Institucional e entrega"),
-    ("jv", "João Vitor", "feat/joao-vitor", "Indicadores e comparativo"),
+    ("jv", "João Vitor", "Joao-Maia", "Contrato e comparativo"),
 ]
 CARDS = {
     "gp": [
-        ("CASE-01", "Contrato de dados, catálogo e fixtures", "P0", "45 min", "—", "—", "todos (merge cedo)"),
+        ("CASE-04", "Motor de indicadores (ROE, ROIC, margens, R$/t)", "P0", "2 h", "01 (contrato + fixtures)", "02 e 03", "05"),
         ("CASE-06", "Gerador da apresentação executiva", "P1", "2,5 h", "fixture do 01", "05 + qualitativo do 03", "07, 08"),
     ],
     "gm": [
@@ -59,17 +59,17 @@ CARDS = {
         ("CASE-08", "Entrega: Skill, README, registros, publicação e vídeo", "P1", "1,5 h", "—", "todos", "—"),
     ],
     "jv": [
-        ("CASE-04", "Motor de indicadores (ROE, ROIC, margens, R$/t)", "P0", "2 h", "01 (contrato + fixtures)", "02 e 03", "05"),
+        ("CASE-01", "Contrato de dados, catálogo e fixtures", "P0", "45 min", "—", "—", "todos (merge cedo)"),
         ("CASE-05", "Comparativo, insights e gráficos", "P1", "1,5 h", "fixture do 01", "04", "06, 07"),
     ],
 }
 DONO = {cid: p for p, cs in CARDS.items() for cid, *_ in cs}
 
 MERMAID = """flowchart LR
-  C01["CASE-01 · Contrato<br/>Gabriel Patrício"]
+  C01["CASE-01 · Contrato<br/>João Vitor"]
   C02["CASE-02 · ITR financeiro<br/>Gabriel Martins"]
   C03["CASE-03 · Institucional<br/>Geronimo"]
-  C04["CASE-04 · Indicadores<br/>João Vitor"]
+  C04["CASE-04 · Indicadores<br/>Gabriel Patrício"]
   C05["CASE-05 · Comparativo<br/>João Vitor"]
   C06["CASE-06 · Slides<br/>Gabriel Patrício"]
   C07["CASE-07 · Pipeline<br/>Gabriel Martins"]
