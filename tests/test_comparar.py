@@ -434,3 +434,17 @@ def test_rotulo_segmento_da_config_e_fallback(tmp_path):
     assert comparar.rotulo_segmento("exterior", rot) == "Exterior (config)"
     assert comparar.rotulo_segmento("america_do_norte", rot) == "America do norte"
     assert comparar.carregar_rotulos_segmentos(tmp_path / "nao_existe.toml") == {}
+
+
+def test_usiminas_por_tonelada_usa_indicador_de_siderurgia_com_observacao():
+    usiminas = json.loads((RAIZ / "metricas" / "usiminas_3T26_indicadores.json").read_text(encoding="utf-8"))
+    gerdau = json.loads((RAIZ / "metricas" / "gerdau_3T26_indicadores.json").read_text(encoding="utf-8"))
+    comp = comparar.montar_comparativo(gerdau, usiminas, comparar.carregar_config(CONFIG), TRI)
+
+    rpt = _linha(comp, "receita_por_t")["b"]
+    ebt = _linha(comp, "ebitda_por_t")["b"]
+    assert rpt["status"] == ebt["status"] == "ok"
+    assert rpt["valor"] == pytest.approx(5425.5319)
+    assert ebt["valor"] == pytest.approx(520.3095)
+    assert "consolidado inclui mineração" in rpt["obs"]
+    assert "volume é de aço" in rpt["obs"]

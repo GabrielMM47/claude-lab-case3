@@ -84,6 +84,10 @@ TIPOS_REPASSADOS = ("efeito_pontual", "divergencia", "divergencia_definicao")
 
 OBS_INEXISTENTE = "indicador não calculado pelo CASE-04"
 OBS_SEM_CRITERIO = "sem EBITDA de mesmo critério nas duas empresas"
+OBS_POR_T_SEGMENTO = (
+    "consolidado inclui mineração e o volume é de aço; "
+    "indicador do segmento siderúrgico utilizado"
+)
 MOTIVO_NEUTRO = "indicador de escala/neutro: maior não é melhor"
 MOTIVO_INDISPONIVEL = "valor indisponível ou não comparável em um dos lados"
 MOTIVO_UNIDADE = "unidades diferentes entre as empresas"
@@ -171,6 +175,23 @@ def _indice(ind: dict) -> dict[tuple[str, str], dict]:
 
 def _consolidado(ind: dict, chave: str) -> dict | None:
     return _indice(ind).get((chave, ESCOPO_CONSOLIDADO))
+
+
+def _indicador_setor(ind: dict, chave: str) -> tuple[dict | None, str | None]:
+    """Usa o indicador siderúrgico quando o consolidado não é comparável por mix."""
+    consolidado = _consolidado(ind, chave)
+    if not consolidado:
+        return None, None
+    obs = str(consolidado.get("obs") or "").lower()
+    if (chave not in {"receita_por_t", "ebitda_por_t_ajustado", "ebitda_por_t_contabil"}
+            or consolidado.get("status") != "nao_comparavel"
+            or "consolidado inclui mineração" not in obs
+            or "volume é de aço" not in obs):
+        return consolidado, None
+    segmento = _indice(ind).get((chave, "segmento:siderurgia"))
+    if segmento and segmento.get("status") == "ok":
+        return segmento, OBS_POR_T_SEGMENTO
+    return consolidado, None
 
 
 # --------------------------------------------------------------------------- configuração
@@ -415,6 +436,7 @@ def _montar_linha(entrada: tuple, ind: dict[str, dict], criterio: str | None,
     tem_c = "{c}" in origem_mod
     base = origem_mod.replace("_{c}", "")
     chave = chave_mod.replace("_{c}", "") if (tem_c and criterio is None) else chave_mod.format(c=criterio)
+    observacoes = {lado: None for lado in LADOS}
 
     if tem_c and criterio is None:
         # Sem critério comum: nome/unidade de qualquer versão existente, só para rotular.
@@ -428,7 +450,12 @@ def _montar_linha(entrada: tuple, ind: dict[str, dict], criterio: str | None,
         periodo = (alguma or {}).get("periodo") or tri
     else:
         origem = origem_mod.format(c=criterio)
-        ind_lados = {lado: _consolidado(ind[lado], origem) for lado in LADOS}
+        if origem in {"receita_por_t", "ebitda_por_t_ajustado", "ebitda_por_t_contabil"}:
+            ind_lados = {}
+            for lado in LADOS:
+                ind_lados[lado], observacoes[lado] = _indicador_setor(ind[lado], origem)
+        else:
+            ind_lados = {lado: _consolidado(ind[lado], origem) for lado in LADOS}
         forcar = None
         ref = ind_lados["a"] or ind_lados["b"]
         nome = (ref or {}).get("nome") or NOME_PADRAO.get(base, origem)
@@ -449,6 +476,8 @@ def _montar_linha(entrada: tuple, ind: dict[str, dict], criterio: str | None,
             lados[lado] = _lado(None, periodo, unidade, forcar)
         else:
             lados[lado] = _lado(i, i.get("periodo") or periodo, i.get("unidade") or unidade, forcar)
+        if observacoes.get(lado) and lados[lado]["status"] == "ok":
+            lados[lado]["obs"] = observacoes[lado]
 
     melhor = None
     if regra == "indicador" and melhor_ind in ("maior", "menor"):
