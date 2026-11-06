@@ -1,0 +1,82 @@
+codigo_conta,descricao,nivel,demonstracao,valor,anterior,pagina,visao,data_atual,data_anterior
+1,Ativo Total,1,BPA,34836026,35684766,12,consolidado,2026-09-30,2025-12-31
+1.01,Ativo Circulante,2,BPA,16594884,16801273,12,consolidado,2026-09-30,2025-12-31
+1.01.01,Caixa e Equivalentes de Caixa,3,BPA,4071514,5141617,12,consolidado,2026-09-30,2025-12-31
+1.01.02,Aplicações Financeiras,3,BPA,2675655,1801978,12,consolidado,2026-09-30,2025-12-31
+1.01.03,Contas a Receber,3,BPA,2907498,3002668,12,consolidado,2026-09-30,2025-12-31
+1.01.04,Estoques,3,BPA,6016979,5928828,12,consolidado,2026-09-30,2025-12-31
+1.01.08,Outros Ativos Circulantes,3,BPA,923238,926182,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03,Outros,4,BPA,923238,926182,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.01,Impostos a Recuperar,5,BPA,613730,676762,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.02,Imposto de Renda e Contribuição Social Antecipados,5,BPA,38267,85192,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.03,Dividendos a Receber,5,BPA,74087,39637,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.04,Adiantamentos a Fornecedores,5,BPA,39903,3405,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.05,Instrumentos financeiros,5,BPA,8331,0,12,consolidado,2026-09-30,2025-12-31
+1.01.08.03.07,Outros,5,BPA,148920,121186,12,consolidado,2026-09-30,2025-12-31
+1.02,Ativo Não Circulante,2,BPA,18241142,18883493,12,consolidado,2026-09-30,2025-12-31
+1.02.01,Ativo Realizável a Longo Prazo,3,BPA,4521854,4726854,12,consolidado,2026-09-30,2025-12-31
+1.02.01.04,Contas a Receber,4,BPA,218868,251715,12,consolidado,2026-09-30,2025-12-31
+1.02.01.04.01,Clientes,5,BPA,17579,23975,12,consolidado,2026-09-30,2025-12-31
+1.02.01.04.02,Outras Contas a Receber,5,BPA,201289,227740,12,consolidado,2026-09-30,2025-12-31
+1.02.01.07,Tributos Diferidos,4,BPA,2143970,1973727,12,consolidado,2026-09-30,2025-12-31
+1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,5,BPA,2143970,1973727,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10,Outros Ativos Não Circulantes,4,BPA,2159016,2501412,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10.03,Depósitos Judiciais,5,BPA,658747,602020,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10.05,Impostos a Recuperar,5,BPA,591559,828504,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10.06,Imposto de Renda e Contribuição Social a Recuperar,5,BPA,234763,415032,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10.09,Adiantamentos Contratuais,5,BPA,383516,403979,12,consolidado,2026-09-30,2025-12-31
+1.02.01.10.10,Outros,5,BPA,290431,251877,12,consolidado,2026-09-30,2025-12-31
+1.02.02,Investimentos,3,BPA,1826122,1718546,12,consolidado,2026-09-30,2025-12-31
+1.02.02.01,Participações Societárias,4,BPA,1676700,1559254,12,consolidado,2026-09-30,2025-12-31
+1.02.02.01.01,Participações em Coligadas,5,BPA,1152683,1061586,12,consolidado,2026-09-30,2025-12-31
+1.02.02.01.04,Participações em Controladas em Conjunto,5,BPA,524017,497668,12,consolidado,2026-09-30,2025-12-31
+1.02.02.02,Propriedades para Investimento,4,BPA,149422,159292,12,consolidado,2026-09-30,2025-12-31
+1.02.03,Imobilizado,3,BPA,9968187,10424479,12,consolidado,2026-09-30,2025-12-31
+1.02.03.01,Imobilizado em Operação,4,BPA,8321469,7671489,12,consolidado,2026-09-30,2025-12-31
+1.02.03.03,Imobilizado em Andamento,4,BPA,1646718,2752990,12,consolidado,2026-09-30,2025-12-31
+1.02.04,Intangível,3,BPA,1924979,2013614,12,consolidado,2026-09-30,2025-12-31
+2,Passivo Total,1,BPP,34836026,35684766,13,consolidado,2026-09-30,2025-12-31
+2.01,Passivo Circulante,2,BPP,3212685,4078513,13,consolidado,2026-09-30,2025-12-31
+2.01.01,Obrigações Sociais e Trabalhistas,3,BPP,388009,385807,13,consolidado,2026-09-30,2025-12-31
+2.01.02,Fornecedores,3,BPP,2370116,2543572,13,consolidado,2026-09-30,2025-12-31
+2.01.03,Obrigações Fiscais,3,BPP,131994,137775,13,consolidado,2026-09-30,2025-12-31
+2.01.03.01,Obrigações Fiscais Federais,4,BPP,131994,137775,13,consolidado,2026-09-30,2025-12-31
+2.01.03.01.01,Imposto de Renda e Contribuição Social a Pagar,5,BPP,2305,203,13,consolidado,2026-09-30,2025-12-31
+2.01.03.01.02,Tributos a recolher,5,BPP,129689,137572,13,consolidado,2026-09-30,2025-12-31
+2.01.04,Empréstimos e Financiamentos,3,BPP,127408,184291,13,consolidado,2026-09-30,2025-12-31
+2.01.04.01,Empréstimos e Financiamentos,4,BPP,34002,87121,13,consolidado,2026-09-30,2025-12-31
+2.01.04.02,Debêntures,4,BPP,93406,97170,13,consolidado,2026-09-30,2025-12-31
+2.01.05,Outras Obrigações,3,BPP,195158,827068,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02,Outros,4,BPP,195158,827068,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.01,Dividendos e JCP a Pagar,5,BPP,616,47742,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.04,Tributos Parcelados,5,BPP,34665,31073,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.05,Instrumentos Financeiros,5,BPP,0,5680,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.06,Adiantamentos de Clientes,5,BPP,67449,64897,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.08,Contas a Pagar,5,BPP,74984,84769,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.09,Títulos a pagar - Forfaiting,5,BPP,0,570111,13,consolidado,2026-09-30,2025-12-31
+2.01.05.02.10,Passivos de Arrendamento,5,BPP,17444,22796,13,consolidado,2026-09-30,2025-12-31
+2.02,Passivo Não Circulante,2,BPP,7652715,7904872,13,consolidado,2026-09-30,2025-12-31
+2.02.01,Empréstimos e Financiamentos,3,BPP,6053758,6205848,13,consolidado,2026-09-30,2025-12-31
+2.02.01.01,Empréstimos e Financiamentos,4,BPP,2542527,2696584,13,consolidado,2026-09-30,2025-12-31
+2.02.01.02,Debêntures,4,BPP,3511231,3509264,13,consolidado,2026-09-30,2025-12-31
+2.02.02,Outras Obrigações,3,BPP,310445,335344,13,consolidado,2026-09-30,2025-12-31
+2.02.02.02,Outros,4,BPP,310445,335344,13,consolidado,2026-09-30,2025-12-31
+2.02.02.02.03,Tributos Parcelados,5,BPP,60668,78043,13,consolidado,2026-09-30,2025-12-31
+2.02.02.02.06,Passivos de Arrendamento,5,BPP,73579,81660,13,consolidado,2026-09-30,2025-12-31
+2.02.02.02.07,Outros,5,BPP,176198,175641,13,consolidado,2026-09-30,2025-12-31
+2.02.04,Provisões,3,BPP,1288512,1363680,13,consolidado,2026-09-30,2025-12-31
+2.02.04.01,Provisões Fiscais Previdenciárias Trabalhistas e Cíveis,4,BPP,1011717,1103493,13,consolidado,2026-09-30,2025-12-31
+2.02.04.01.02,Provisões Previdenciárias e Trabalhistas,5,BPP,504190,552297,13,consolidado,2026-09-30,2025-12-31
+2.02.04.01.05,Passivos Contingentes,5,BPP,507527,551196,13,consolidado,2026-09-30,2025-12-31
+2.02.04.02,Outras Provisões,4,BPP,276795,260187,13,consolidado,2026-09-30,2025-12-31
+2.02.04.02.03,Provisões para Passivos Ambientais e de Desativação,5,BPP,270490,250452,13,consolidado,2026-09-30,2025-12-31
+2.02.04.02.04,Outras Provisões,5,BPP,6305,9735,13,consolidado,2026-09-30,2025-12-31
+2.03,Patrimônio Líquido Consolidado,2,BPP,23970626,23701381,13,consolidado,2026-09-30,2025-12-31
+2.03.01,Capital Social Realizado,3,BPP,13200295,13200295,13,consolidado,2026-09-30,2025-12-31
+2.03.02,Reservas de Capital,3,BPP,312665,312665,13,consolidado,2026-09-30,2025-12-31
+2.03.04,Reservas de Lucros,3,BPP,7414547,7414547,13,consolidado,2026-09-30,2025-12-31
+2.03.04.01,Reserva Legal,4,BPP,696136,696136,13,consolidado,2026-09-30,2025-12-31
+2.03.04.10,Para Investimentos e Capital de Giro,4,BPP,6718411,6718411,13,consolidado,2026-09-30,2025-12-31
+2.03.05,Lucros/Prejuízos Acumulados,3,BPP,1388340,0,13,consolidado,2026-09-30,2025-12-31
+2.03.06,Ajustes de Avaliação Patrimonial,3,BPP,-1261596,-113628,13,consolidado,2026-09-30,2025-12-31
+2.03.09,Participação dos Acionistas Não Controladores,3,BPP,2916375,2887502,13,consolidado,2026-09-30,2025-12-31
