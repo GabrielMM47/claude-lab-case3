@@ -3,20 +3,42 @@
     {
       "id": "capa",
       "titulo": "{a.nome} teve o trimestre mais rentável: margem EBITDA de {a.margem_ebitda} contra {b.margem_ebitda} da {b.nome}",
-      "subtitulo": "{b.nome} tem o balanço mais leve, com caixa líquido, mas receita em queda ({b.receita_liquida.var_aa} A/A)"
+      "subtitulo": "A diferença está nos EUA, protegidos por tarifa de {a.macro.tarifa_aco_eua}: no Brasil, as duas geram quase o mesmo EBITDA por tonelada ({a.seg.brasil.ebitda_por_t} × {b.seg.siderurgia.ebitda_por_t})"
     },
     {
       "id": "resumo",
       "titulo": "Três coisas que o comitê precisa saber",
       "bullets": [
-        "Rentabilidade (EBITDA {criterio_ebitda}): margem de {a.margem_ebitda} na {a.nome} ({a.margem_ebitda.var_aa} A/A) contra {b.margem_ebitda} na {b.nome}; ROIC 9M26 anualizado de {a.roic} contra {b.roic}",
-        "Crescimento: a {a.nome} aumenta receita ({a.receita_liquida.var_aa} A/A) e EBITDA ajustado ({a.ebitda_ajustado.var_aa} A/A); a {b.nome} perde receita ({b.receita_liquida.var_aa} A/A) e EBITDA ajustado no T/T ({b.ebitda_ajustado.var_tt})",
-        "Balanço: a {b.nome} tem caixa líquido (DL/EBITDA de {b.dl_ebitda}); a {a.nome} segue pouco alavancada, com {a.dl_ebitda}"
+        "Rentabilidade (EBITDA {criterio_ebitda}): margem de {a.margem_ebitda} na {a.nome} ({a.margem_ebitda.var_aa} A/A) contra {b.margem_ebitda} na {b.nome}, que perde receita ({b.receita_liquida.var_aa} A/A) e EBITDA no T/T ({b.ebitda_ajustado.var_tt})",
+        "A vantagem é geográfica: a América do Norte, protegida por tarifa de {a.macro.tarifa_aco_eua}, gera {a.seg.america_do_norte.pct_ebitda} do EBITDA da {a.nome}; no Brasil, as duas sofrem com importações em alta (+{a.macro.importacoes_brasil_tt} no trimestre) e ganham quase o mesmo por tonelada",
+        "Cenário: o macro atual favorece a {a.nome}; a {b.nome}, com caixa líquido (DL/EBITDA de {b.dl_ebitda}), é quem mais ganha se o Brasil virar, com defesa comercial efetiva, juros menores e montadoras reagindo"
+      ],
+      "destaques": [
+        "margem_ebitda",
+        null,
+        "dl_ebitda"
       ]
     },
     {
       "id": "perfil",
-      "titulo": "{a.nome} é global, com a maior parte do EBITDA na América do Norte; {b.nome} é aço plano no Brasil, com mineração"
+      "titulo": "{a.nome} é sobretudo aço longo, com {a.seg.america_do_norte.pct_ebitda} do EBITDA na América do Norte; {b.nome} é aço plano no Brasil, dependente de montadoras",
+      "a": [
+        {
+          "texto": "Exposição: sucata nos EUA e Canadá; no Brasil, metade alto-forno e metade mini mill",
+          "cita": [
+            "a.rota_an",
+            "a.rota_brasil"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "texto": "Exposição: alto-forno a coque; montadoras são {b.macro.automotivo_mercado_interno} do volume no mercado interno",
+          "cita": [
+            "b.rota_integrada"
+          ]
+        }
+      ]
     },
     {
       "id": "comparativo",
@@ -28,11 +50,158 @@
     },
     {
       "id": "setor",
-      "titulo": "Por tonelada não há comparação: falta volume consolidado da {a.nome}; a {b.nome} mostra só a siderurgia ({b.receita_por_t})"
+      "titulo": "Por tonelada, Brasil quase empata; a {a.nome} se distancia na América do Norte ({a.seg.america_do_norte.ebitda_por_t}, {a.seg.america_do_norte.ebitda_por_t.var_aa} A/A)",
+      "nota": {
+        "texto": "Toneladas de aço, exceto Mineração (minério de ferro). A receita do Brasil da {a.nome} inclui minério e coprodutos vendidos pela divisão. Abaixo, o que as próprias empresas reportam sobre o mercado.",
+        "cita": [
+          "a.brasil_inclui_minerio"
+        ]
+      },
+      "contexto": [
+        {
+          "titulo": "Importações no Brasil",
+          "texto": "Subiram {a.macro.importacoes_brasil_tt} sobre o 2T26, com planos +{a.macro.importacoes_planos_tt}, bem acima do consumo aparente (+{a.macro.consumo_aparente_tt}). A pressão já vem de novas origens (Vietnã, Coreia do Sul, Egito) e de aço embutido em carros importados.",
+          "cita": [
+            "a.importacoes_desaceleram",
+            "b.novas_origens",
+            "b.carros_importados"
+          ]
+        },
+        {
+          "titulo": "Defesa comercial",
+          "texto": "Cotas com tarifa de {a.macro.defesa_cota_tarifa} acima do volume; antidumping de chapa grossa em vigor; bobinas a quente (plano) com decisão preliminar positiva e fio-máquina (longo) com decisão final pendente.",
+          "cita": [
+            "a.defesa_chapa_grossa",
+            "a.defesa_bobinas_quente",
+            "a.defesa_fio_maquina"
+          ]
+        },
+        {
+          "titulo": "Demanda no Brasil no ano",
+          "texto": "Macro adverso nas projeções citadas pela {a.nome}: construção {a.macro.demanda_construcao_2026}, indústria e agro {a.macro.demanda_industria_2026}, automotivo {a.macro.demanda_automotivo_2026}.",
+          "cita": [
+            "a.cenario_macro_adverso"
+          ]
+        },
+        {
+          "titulo": "EUA: a tarifa protege",
+          "texto": "Seção 232 com tarifa de {a.macro.tarifa_aco_eua}, sem cotas; importação de longos {a.macro.importacoes_longos_eua} no ano passado contra o triênio anterior; preço em dólar por tonelada +{a.macro.receita_t_usd_an_tt} no trimestre e carteira acima da média.",
+          "cita": [
+            "a.carteira_an"
+          ]
+        },
+        {
+          "titulo": "Minério e custos",
+          "texto": "Minério de referência com queda de {b.macro.minerio_preco_ref_queda} e frete caro: a mineração da {b.nome} parou uma planta. Carvão mais caro pesa nas usinas a alto-forno.",
+          "cita": [
+            "b.paralisacao_mineracao",
+            "a.custo_carvao"
+          ]
+        }
+      ]
     },
     {
       "id": "destaques_riscos",
-      "titulo": "O lucro da {b.nome} ({b.lucro_liquido}) volta ao positivo sobre um 3T25 com impairment: a melhora A/A não é tendência"
+      "titulo": "O macro atual favorece a {a.nome}; a {b.nome} só encosta se o Brasil virar: defesa comercial efetiva, juros menores e montadoras reagindo",
+      "a": [
+        {
+          "sinal": "-",
+          "texto": "Brasil: volume de {a.seg.brasil.volume_vendas} ({a.seg.brasil.volume_vendas.var_aa} A/A), com importações em alta"
+        }
+      ],
+      "cenarios": [
+        {
+          "nome": "Base: o quadro de hoje",
+          "gatilho": "Seção 232 mantida; Brasil fraco e importando muito",
+          "a": {
+            "efeito": "+",
+            "texto": "a América do Norte sustenta o resultado ({a.seg.america_do_norte.pct_ebitda} do EBITDA)"
+          },
+          "b": {
+            "efeito": "-",
+            "texto": "preço e volume pressionados; a própria empresa espera resultado menor",
+            "cita": [
+              "b.perspectiva_siderurgia"
+            ]
+          },
+          "vantagem": "a"
+        },
+        {
+          "nome": "Virada no Brasil",
+          "gatilho": "antidumping em bobinas, juros em queda, montadoras reagindo",
+          "a": {
+            "efeito": "+",
+            "texto": "ganha menos: o Brasil é {a.seg.brasil.pct_ebitda} do EBITDA"
+          },
+          "b": {
+            "efeito": "++",
+            "texto": "mais alavancagem: margem de {b.margem_ebitda}, alto-forno com custo fixo e montadoras com {b.macro.automotivo_mercado_interno} do volume interno",
+            "cita": [
+              "a.defesa_bobinas_quente"
+            ]
+          },
+          "vantagem": "b",
+          "nota": "na variação; a margem segue menor"
+        },
+        {
+          "nome": "Tarifa cai nos EUA",
+          "gatilho": "USMCA afrouxa a Seção 232; capacidade nova no México",
+          "a": {
+            "efeito": "--",
+            "texto": "perde o motor do lucro ({a.seg.america_do_norte.ebitda_por_t} de EBITDA nos EUA e Canadá)",
+            "cita": [
+              "a.usmca_secao_232",
+              "a.capacidade_mexico"
+            ]
+          },
+          "b": {
+            "efeito": "0",
+            "texto": "sem exposição direta"
+          },
+          "vantagem": "b",
+          "nota": "a distância diminui"
+        },
+        {
+          "nome": "Pressão dupla",
+          "gatilho": "importação de novas origens e via carros; minério ruim",
+          "a": {
+            "efeito": "-",
+            "texto": "atinge só o Brasil; nos EUA a base é sucata",
+            "cita": [
+              "a.rota_an"
+            ]
+          },
+          "b": {
+            "efeito": "--",
+            "texto": "atinge siderurgia e mineração; empresa espera vender menos minério",
+            "cita": [
+              "b.carros_importados",
+              "b.perspectiva_minerio"
+            ]
+          },
+          "vantagem": "a"
+        },
+        {
+          "nome": "Real mais fraco",
+          "gatilho": "dólar sobe frente ao real",
+          "a": {
+            "efeito": "+",
+            "texto": "o EBITDA em dólar da América do Norte vale mais em reais"
+          },
+          "b": {
+            "efeito": "0",
+            "texto": "importado encarece (protege), mas carvão e insumos em dólar sobem"
+          },
+          "vantagem": "a"
+        }
+      ],
+      "monitorar": {
+        "texto": "importações e origens (Aço Brasil, Comexstat); decisão final do antidumping de bobinas a quente e de fio-máquina; revisão do USMCA e da Seção 232; juros e produção de veículos no Brasil; minério e carvão.",
+        "cita": [
+          "a.defesa_fio_maquina",
+          "a.usmca_secao_232"
+        ]
+      }
     },
     {
       "id": "metodologia",

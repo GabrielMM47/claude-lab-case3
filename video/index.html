@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Gerdau × Usiminas 3T26 — como usar</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* Mesmo design system da apresentação ("Tarja", docs/DESIGN_SYSTEM.md):
+         cinza-concreto, tinta, e a cor de cada empresa só em blocos. */
+      @font-face {
+        font-family: "Archivo";
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        src: url("assets/archivo-latin.woff2") format("woff2");
+      }
+      :root {
+        --ground: #e7eaec;
+        --ink: #161b21;
+        --sec: #56616c;
+        --line: #c9d0d6;
+        --faixa: #dde1e4;
+        --gerdau: #14529c;
+        --usiminas: #e07818;
+        --ok: #1a7f37;
+        --erro: #c4262e;
+        --nd: #8a5a00;
+        --term: #161b21;
+        --mono: "SF Mono", Menlo, Consolas, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root {
+        position: relative; width: 100%; height: 100%;
+        font-family: Archivo, "Helvetica Neue", Arial, sans-serif; color: var(--ink);
+        font-variant-numeric: tabular-nums;
+      }
+      .clip { position: absolute; inset: 0; }
+      .scene { padding: 120px 140px 0; }
+      h1, h2 { font-stretch: 75%; font-weight: 700; line-height: 1.02; letter-spacing: -0.005em; }
+      h2 { font-size: 84px; max-width: 1500px; }
+      .lead { font-size: 40px; line-height: 1.35; color: var(--sec); margin-top: 28px; max-width: 1400px; }
+      .passo { font-size: 30px; font-weight: 600; color: var(--sec); margin-bottom: 18px; }
+
+      /* abertura */
+      #s1 .campos { display: grid; grid-template-columns: 1fr 1fr; height: 560px; }
+      #s1 .campo { color: #fff; padding: 90px 140px; display: flex; flex-direction: column; justify-content: flex-end; }
+      #s1 .campo b { font-size: 170px; font-stretch: 75%; font-weight: 800; line-height: .9; }
+      #s1 .campo span { font-size: 34px; opacity: .9; margin-top: 18px; }
+      #s1 .texto { padding: 70px 140px 0; }
+      #s1 h1 { font-size: 88px; }
+
+      /* problema */
+      .pares { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 80px; }
+      .par { border-top: 8px solid var(--ink); padding-top: 22px; }
+      .par b { display: block; font-size: 46px; font-stretch: 75%; font-weight: 700; }
+      .par span { display: block; font-size: 30px; color: var(--sec); margin-top: 10px; line-height: 1.3; }
+
+      /* terminal */
+      .term {
+        background: var(--term); color: #e7eaec; font-family: var(--mono); font-size: 36px;
+        line-height: 1.6; padding: 44px 56px; margin-top: 56px; max-width: 1640px;
+      }
+      .term .l { white-space: pre; }
+      .term .p { color: #8b98a5; }
+      .term .ok { color: #7fd18b; }
+      .nota { font-size: 32px; color: var(--sec); margin-top: 34px; line-height: 1.4; max-width: 1500px; }
+      .nota code { font-family: var(--mono); font-size: 29px; color: var(--ink); background: var(--faixa); padding: 2px 10px; }
+
+      /* etapas do pipeline */
+      .etapas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 44px; max-width: 1640px; }
+      .etapa { background: var(--faixa); padding: 22px 26px; font-size: 32px; display: flex; gap: 16px; align-items: baseline; }
+      .etapa i { font-style: normal; color: var(--sec); font-size: 28px; }
+      .etapa.v { box-shadow: inset 8px 0 0 var(--ok); }
+      .entregue { margin-top: 30px; font-size: 34px; font-family: var(--mono); color: var(--ok); }
+
+      /* fato JSON */
+      .fato { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 56px; max-width: 1640px; }
+      .json { background: var(--term); color: #e7eaec; font-family: var(--mono); font-size: 31px; line-height: 1.65; padding: 40px 48px; }
+      .json .k { color: #8fb8e8; }
+      .json .s { color: #f2b27a; }
+      .json .hl { background: rgba(224, 120, 24, .28); outline: 2px solid var(--usiminas); }
+      .explica p { font-size: 36px; line-height: 1.4; margin-bottom: 30px; }
+      .explica p b { font-stretch: 75%; font-size: 40px; display: block; }
+
+      /* verificação */
+      .placar { display: flex; gap: 0; margin-top: 50px; }
+      .placar div { padding: 30px 44px; color: #fff; }
+      .placar b { display: block; font-size: 110px; font-stretch: 75%; font-weight: 800; line-height: 1; }
+      .placar span { font-size: 30px; }
+      .caso { margin-top: 56px; max-width: 1640px; }
+      .caso .trecho { font-family: var(--mono); font-size: 38px; background: #fff; padding: 26px 34px; }
+      .caso .errado { color: var(--erro); text-decoration: line-through; text-decoration-thickness: 4px; }
+      .caso .certo { color: var(--ok); font-weight: 700; outline: 3px solid var(--ok); outline-offset: 4px; }
+      .caso p { font-size: 34px; line-height: 1.4; margin-top: 26px; }
+
+      /* slides */
+      #s7 { padding-top: 90px; }
+      .tela { position: absolute; left: 140px; top: 250px; width: 1280px; height: 720px; box-shadow: 0 30px 60px rgba(22, 27, 33, .25); }
+      .tela img { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .lado { position: absolute; left: 1480px; top: 250px; width: 320px; font-size: 32px; line-height: 1.4; }
+      .lado p { margin-bottom: 26px; padding-top: 14px; border-top: 6px solid var(--ink); }
+
+      /* final */
+      #s8 .fim { margin-top: 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1640px; }
+      .url { font-family: var(--mono); font-size: 44px; font-weight: 700; margin-top: 80px; padding: 22px 30px; background: var(--ink); color: #fff; display: inline-block; }
+      #s8 code { white-space: nowrap; }
+      .aviso { position: absolute; left: 140px; bottom: 80px; font-size: 30px; color: var(--sec); }
+
+      /* trilho dos passos */
+      #trilho { top: auto; height: 96px; bottom: 0; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); background: var(--ground); }
+      #trilho div { font-size: 28px; color: var(--sec); padding: 30px 0 0 140px; }
+      #trilho div:not(:first-child) { padding-left: 40px; }
+      #trilho div.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 6px 0 var(--ink); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="112" data-width="1920" data-height="1080">
+
+      <!-- 0–7 abertura -->
+      <section id="s1" class="clip" data-hold data-start="0" data-duration="7" data-track-index="0">
+        <div class="campos">
+          <div class="campo" style="background: var(--gerdau)"><b>Gerdau</b><span>GGBR4</span></div>
+          <div class="campo" style="background: var(--usiminas)"><b>Usiminas</b><span>USIM5</span></div>
+        </div>
+        <div class="texto">
+          <h1>Do ITR em PDF à apresentação do comitê, com um comando.</h1>
+          <p class="lead">Como usar o projeto, passo a passo. Resultados do 3T26.</p>
+        </div>
+      </section>
+
+      <!-- 7–18 problema -->
+      <section id="s2" class="clip scene" data-hold data-start="7" data-duration="11" data-track-index="0">
+        <h2>Comparar duas siderúrgicas não é copiar números.</h2>
+        <p class="lead">Um número no lugar errado muda a conclusão do slide. Os quatro riscos:</p>
+        <div class="pares">
+          <div class="par"><b>Período</b><span>3T26 contra 3T25 ou contra 2T26?</span></div>
+          <div class="par"><b>Unidade</b><span>R$ mil nas demonstrações, R$ milhões no release</span></div>
+          <div class="par"><b>Escopo</b><span>consolidado, nunca a controladora</span></div>
+          <div class="par"><b>Critério</b><span>o mesmo EBITDA para as duas empresas</span></div>
+        </div>
+      </section>
+
+      <!-- 18–30 passo 1 -->
+      <section id="s3" class="clip scene" data-hold data-start="18" data-duration="12" data-track-index="0">
+        <p class="passo">Passo 1 de 5</p>
+        <h2>Baixe o projeto e instale as dependências.</h2>
+        <div class="term">
+          <div class="l l1"><span class="p">$ </span>git clone https://github.com/GabrielMM47/claude-lab-case3</div>
+          <div class="l l2"><span class="p">$ </span>cd claude-lab-case3</div>
+          <div class="l l3"><span class="p">$ </span>python3 -m venv .venv &amp;&amp; source .venv/bin/activate</div>
+          <div class="l l4"><span class="p">$ </span>pip install -r requirements.txt</div>
+        </div>
+        <p class="nota">Os ITRs e as apresentações das duas empresas já vêm na pasta <code>data/</code>. Só precisa de Python 3.</p>
+      </section>
+
+      <!-- 30–47 passo 2 -->
+      <section id="s4" class="clip scene" data-hold data-start="30" data-duration="17" data-track-index="0">
+        <p class="passo">Passo 2 de 5</p>
+        <h2>Rode um comando. Em menos de um minuto, ele faz as oito etapas.</h2>
+        <div class="term">
+          <div class="l"><span class="p">$ </span>python src/pipeline.py --a gerdau --b usiminas --tri 3T26</div>
+        </div>
+        <div class="etapas">
+          <div class="etapa"><i>1</i>Insumos</div>
+          <div class="etapa"><i>2</i>Páginas do PDF</div>
+          <div class="etapa"><i>3</i>Demonstrações</div>
+          <div class="etapa"><i>4</i>Fatos extraídos</div>
+          <div class="etapa"><i>5</i>Verificação</div>
+          <div class="etapa"><i>6</i>Indicadores</div>
+          <div class="etapa"><i>7</i>Comparativo</div>
+          <div class="etapa"><i>8</i>Apresentação</div>
+        </div>
+        <p class="entregue">ENTREGUE: entrega/apresentacao_gerdau_x_usiminas_3T26.html</p>
+      </section>
+
+      <!-- 47–60 passo 3 -->
+      <section id="s5" class="clip scene" data-hold data-start="47" data-duration="13" data-track-index="0">
+        <p class="passo">Passo 3 de 5</p>
+        <h2>Cada número sabe de onde veio.</h2>
+        <div class="fato">
+          <div class="json">
+            <div>{</div>
+            <div>&nbsp;&nbsp;<span class="k">"empresa"</span>: <span class="s">"usiminas"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="k">"chave"</span>: <span class="s">"ebitda_contabil"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="k">"periodo"</span>: <span class="s">"3T26"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="k">"unidade"</span>: <span class="s">"R$ mil"</span>,</div>
+            <div class="j-pag">&nbsp;&nbsp;<span class="k">"pagina"</span>: <span class="hl">28</span>,</div>
+            <div class="j-val">&nbsp;&nbsp;<span class="k">"valor"</span>: <span class="s hl">"588.039"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="k">"trecho"</span>: <span class="s">"EBITDA Instrução</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">CVM 156 588.039 …"</span></div>
+            <div>}</div>
+          </div>
+          <div class="explica">
+            <p class="e1"><b>Página</b>a do leitor de PDF, não a impressa na folha.</p>
+            <p class="e2"><b>Trecho</b>copiado letra por letra da página.</p>
+            <p class="e3"><b>Arquivos</b>ficam em <code style="font-family:var(--mono);font-size:32px">metricas/</code>, um por documento.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 60–78 passo 4 -->
+      <section id="s6" class="clip scene" data-hold data-start="60" data-duration="18" data-track-index="0">
+        <p class="passo">Passo 4 de 5</p>
+        <h2>O verificador confere cada número no PDF.</h2>
+        <div class="placar">
+          <div style="background: var(--ok)"><b>233</b><span>conferidos</span></div>
+          <div style="background: var(--nd)"><b>39</b><span>para revisar</span></div>
+          <div style="background: var(--ink)"><b>0</b><span>com erro</span></div>
+        </div>
+        <div class="caso">
+          <div class="trecho">EBITDA Instrução CVM <span class="errado">156</span>&nbsp;&nbsp;<span class="certo">588.039</span>&nbsp;&nbsp;798.602&nbsp;&nbsp;(1.747.170)</div>
+          <p>Um erro real: o 156 do nome da norma foi lido como EBITDA. Agora o verificador exige a coluna do 3T26. Um erro trava o pipeline.</p>
+        </div>
+      </section>
+
+      <!-- 78–98 passo 5 -->
+      <section id="s7" class="clip scene" data-hold data-start="78" data-duration="20" data-track-index="0">
+        <p class="passo">Passo 5 de 5</p>
+        <h2>Abra a apresentação no navegador.</h2>
+        <div class="tela">
+          <img class="sl sl1" src="assets/slides/slide1.png" alt="Capa" />
+          <img class="sl sl2" src="assets/slides/slide2.png" alt="Resumo" />
+          <img class="sl sl4" src="assets/slides/slide4.png" alt="Tabela comparativa" />
+          <img class="sl sl7" src="assets/slides/slide7.png" alt="Destaques e riscos" />
+        </div>
+        <div class="lado">
+          <p>Oito slides, uma mensagem em cada.</p>
+          <p>A página do ITR embaixo de cada número.</p>
+          <p>Setas do teclado navegam; Ctrl+P gera o PDF.</p>
+        </div>
+      </section>
+
+      <!-- 98–112 final -->
+      <section id="s8" class="clip scene" data-hold data-start="98" data-duration="14" data-track-index="0">
+        <h2>Outro par de empresas? O mesmo comando.</h2>
+        <div class="fim">
+          <p class="lead" style="margin-top:0">Coloque os PDFs em <code style="font-family:var(--mono);font-size:36px;color:var(--ink)">data/itrs</code> e <code style="font-family:var(--mono);font-size:36px;color:var(--ink)">data/apresentacoes</code> e troque <code style="font-family:var(--mono);font-size:36px;color:var(--ink)">--a --b --tri</code>.</p>
+          <p class="lead" style="margin-top:0">Se faltar um arquivo de fatos, o pipeline para e imprime o prompt pronto para o Claude extrair.</p>
+        </div>
+        <p class="url">github.com/GabrielMM47/claude-lab-case3</p>
+        <p class="aviso">Trabalho acadêmico, Claude Lab PUC-Rio. Não constitui recomendação de investimento.</p>
+      </section>
+
+      <!-- trilho dos 5 passos (18–98) -->
+      <div id="trilho" class="clip" data-start="18" data-duration="80" data-track-index="1">
+        <div class="t1">1 Instalar</div>
+        <div class="t2">2 Rodar</div>
+        <div class="t3">3 Rastrear</div>
+        <div class="t4">4 Verificar</div>
+        <div class="t5">5 Abrir</div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const entra = (alvo, t, extra = {}) =>
+        tl.fromTo(alvo, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", ...extra }, t);
+
+      // 1 · abertura: as duas metades entram, depois o título
+      // as duas metades já estão na tela no quadro 0 (miniatura); o título entra logo depois
+      entra("#s1 h1", 0.4);
+      entra("#s1 .lead", 1.0);
+
+      // 2 · problema
+      entra("#s2 h2", 7.2);
+      entra("#s2 .lead", 8.0);
+      entra("#s2 .par", 9.0, { stagger: 0.5 });
+
+      // 3 · instalar: uma linha de comando por vez
+      entra("#s3 .passo, #s3 h2", 18.2);
+      entra("#s3 .l1", 19.4);
+      entra("#s3 .l2", 20.6);
+      entra("#s3 .l3", 21.8);
+      entra("#s3 .l4", 23.0);
+      entra("#s3 .nota", 25.0);
+
+      // 4 · rodar: as 8 etapas acendem em sequência
+      entra("#s4 .passo, #s4 h2", 30.2);
+      entra("#s4 .term", 31.4);
+      entra("#s4 .etapa", 33.0, { stagger: 0.25 });
+      tl.to("#s4 .etapa", { boxShadow: "inset 8px 0 0 #1a7f37", duration: 0.2, stagger: 0.7 }, 35.5);
+      entra("#s4 .entregue", 41.5);
+
+      // 5 · rastrear
+      entra("#s5 .passo, #s5 h2", 47.2);
+      entra("#s5 .json", 48.2);
+      entra("#s5 .e1", 50.0);
+      entra("#s5 .e2", 52.5);
+      entra("#s5 .e3", 55.0);
+
+      // 6 · verificar
+      entra("#s6 .passo, #s6 h2", 60.2);
+      entra("#s6 .placar div", 61.4, { stagger: 0.4 });
+      entra("#s6 .trecho", 65.5);
+      tl.fromTo("#s6 .errado", { color: "#161b21", textDecorationColor: "rgba(196,38,46,0)" }, { color: "#c4262e", textDecorationColor: "rgba(196,38,46,1)", duration: 0.4 }, 67.0);
+      tl.fromTo("#s6 .certo", { outlineColor: "rgba(26,127,55,0)" }, { outlineColor: "rgba(26,127,55,1)", duration: 0.4 }, 68.0);
+      entra("#s6 .caso p", 69.0);
+
+      // 7 · abrir: quatro slides, 4 s cada
+      entra("#s7 .passo, #s7 h2", 78.2);
+      tl.set("#s7 .sl", { opacity: 0 }, 78);
+      tl.fromTo("#s7 .tela", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 79.0);
+      [".sl1", ".sl2", ".sl4", ".sl7"].forEach((s, i) => tl.to("#s7 " + s, { opacity: 1, duration: 0.5 }, 79.0 + i * 4.5));
+      entra("#s7 .lado p", 80.0, { stagger: 2.5 });
+
+      // 8 · final
+      entra("#s8 h2", 98.2);
+      entra("#s8 .fim p", 99.5, { stagger: 1.5 });
+      entra("#s8 .url", 103.0);
+      entra("#s8 .aviso", 104.0);
+
+      // trilho: acende o passo da cena atual
+      [[18, ".t1"], [30, ".t2"], [47, ".t3"], [60, ".t4"], [78, ".t5"]].forEach(([t, s], i, a) => {
+        tl.set("#trilho " + s, { className: s.slice(1) + " on" }, t);
+        if (i > 0) tl.set("#trilho " + a[i - 1][1], { className: a[i - 1][1].slice(1) }, t);
+      });
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

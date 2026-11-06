@@ -294,6 +294,42 @@ def test_segmento_so_com_receita(cfg):
     assert seg["pct_ebitda"] is None and seg["pct_receita"] is not None
 
 
+def _com_por_t(ind: dict, escopo: str) -> dict:
+    """Indicadores por tonelada de um segmento, como o CASE-04 grava (um deles sem valor)."""
+    ind = copy.deepcopy(ind)
+    base = {"escopo": escopo, "unidade_var": "%",
+            "insumos": [{"chave": "volume_vendas", "periodo": TRI, "documento": "itr", "pagina": 33}]}
+    ind["indicadores"] += [
+        {**base, "chave": "volume_vendas", "unidade": "mil t", "valores": {TRI: 1000.0}, "var_aa": -5.0,
+         "status": "ok"},
+        {**base, "chave": "ebitda_por_t_ajustado", "unidade": "R$/t", "valores": {TRI: 500.0}, "var_aa": 10.0,
+         "status": "ok"},
+        {**base, "chave": "receita_por_t", "unidade": "R$/t", "valores": {TRI: None}, "var_aa": None,
+         "status": "ausente"},
+    ]
+    return ind
+
+
+def test_segmento_traz_metricas_por_tonelada_do_proprio_negocio(cfg):
+    b = _com_por_t(_ind("empresa_b"), "segmento:siderurgia")
+    comp = comparar.montar_comparativo(_ind("empresa_a"), b, cfg, TRI)
+    assert comp["criterio_ebitda"] == "ajustado"
+    sid = next(s for s in comp["segmentos"]["b"] if s["segmento"] == "siderurgia")
+    assert set(sid["por_t"]) == {"volume_vendas", "ebitda_por_t"}  # sem valor fica de fora
+    assert sid["por_t"]["ebitda_por_t"]["texto"] == "R$ 500/t"
+    assert sid["por_t"]["ebitda_por_t"]["var_aa"] == 10.0
+    assert sid["por_t"]["volume_vendas"]["fontes"] == ["ITR p.33"]
+    assert "por_t" not in next(s for s in comp["segmentos"]["b"] if s["segmento"] == "mineracao")
+    assert contrato.validar(comp, "comparativo") == []
+
+
+def test_segmento_sem_criterio_comum_nao_traz_ebitda_por_t():
+    ind = _com_por_t(_ind("empresa_b"), "segmento:siderurgia")
+    segs = comparar._segmentos(ind, TRI, None, criterio=None)
+    sid = next(s for s in segs if s["segmento"] == "siderurgia")
+    assert set(sid["por_t"]) == {"volume_vendas"}
+
+
 # --------------------------------------------------------------------------- insights
 
 def test_insights(comp_ab, cfg):

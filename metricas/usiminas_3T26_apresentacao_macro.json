@@ -1,0 +1,14 @@
+[
+  {
+    "chave": "qualitativo",
+    "id": "rota_integrada",
+    "tema": "contexto_macro",
+    "assunto": "exposicao",
+    "metrica": "Rota de produção da siderurgia",
+    "resumo": "A siderurgia da Usiminas usa alto-forno a coque (rota integrada), que depende de minério e carvão.",
+    "empresa": "usiminas",
+    "documento": "apresentacao",
+    "pagina": 22,
+    "trecho": "substituição ao Coque no Alto-Forno"
+  }
+]

@@ -175,7 +175,23 @@
         "segmento": {"type": "string", "minLength": 1},
         "pct_receita": {"type": ["number", "null"]},
         "pct_ebitda": {"type": ["number", "null"]},
-        "fontes": {"$ref": "#/$defs/fontes"}
+        "fontes": {"$ref": "#/$defs/fontes"},
+        "por_t": {
+          "description": "Opcional: volume, receita/t e EBITDA/t do próprio segmento (numerador e denominador do mesmo negócio), só com o que tem valor.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["valor", "texto", "fontes"],
+            "properties": {
+              "valor": {"type": "number"},
+              "texto": {"type": "string", "minLength": 1},
+              "var_aa": {"type": ["number", "null"]},
+              "unidade": {"type": ["string", "null"]},
+              "unidade_var": {"type": ["string", "null"]},
+              "fontes": {"$ref": "#/$defs/fontes"}
+            }
+          }
+        }
       }
     }
   }

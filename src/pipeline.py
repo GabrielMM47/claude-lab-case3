@@ -459,9 +459,18 @@ def calcular_indicadores(ctx: Contexto, aprovados: dict[str, list[dict]], dest: 
         if status != "aprovado":
             resultado["verificacao_status"] = status
             # o slide de perfil/riscos lê o qualitativo de --metricas: só os fatos aprovados
-            quali = [f for f in aprovados[slug] if f.get("chave") == "qualitativo"]
+            quali = [f for f in aprovados[slug] if f.get("chave") == "qualitativo"
+                     and f.get("tema") != "contexto_macro"]
             gravar_se_mudou(dest.metricas / f"{slug}_{ctx.tri}_apresentacao_qualitativo.json",
                             json.dumps(quali, ensure_ascii=False, indent=2) + "\n")
+            # contexto macro (slides de setor e cenários): só os fatos aprovados, por documento
+            macro: dict[str, list[dict]] = {}
+            for f in aprovados[slug]:
+                if f.get("chave") == "contexto_macro" or f.get("tema") == "contexto_macro":
+                    macro.setdefault(f.get("documento") or "itr", []).append(f)
+            for doc, fatos in sorted(macro.items()):
+                gravar_se_mudou(dest.metricas / f"{slug}_{ctx.tri}_{doc}_macro.json",
+                                json.dumps(fatos, ensure_ascii=False, indent=2) + "\n")
         destino = dest.metricas / f"{slug}_{ctx.tri}_indicadores.json"
         # mesma serialização do CLI do CASE-04: com os mesmos fatos, o arquivo sai byte a byte igual
         gravou = gravar_se_mudou(destino, json.dumps(resultado, ensure_ascii=False, indent=2))
@@ -601,6 +610,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="segue com pendências/erros e gera apenas um RASCUNHO identificado")
     ap.add_argument("--raiz", type=Path, default=RAIZ_PADRAO, help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
+    for fluxo in (sys.stdout, sys.stderr):  # console do Windows (cp1252) não quebra com '→' e acentos
+        if hasattr(fluxo, "reconfigure"):
+            fluxo.reconfigure(errors="replace")
     for s in (a.a, a.b):
         if not _SLUG.match(s):
             ap.error(f"slug inválido: {s!r} (use minúsculo, sem acento, ex.: gerdau)")

@@ -226,12 +226,19 @@ CATALOGO_FATOS: dict[str, dict] = {
     "participacao_exportacao": _f("Participação da exportação", "fluxo", None, "CASE-03"),
     # Qualitativo (CASE-03, *_apresentacao_qualitativo.json)
     "qualitativo": _f("Tema qualitativo", None, None, "CASE-03"),
+    # Contexto macro e setorial citado pela própria empresa (*_<doc>_macro.json): importações,
+    # defesa comercial, tarifas, demanda, preços de insumos. Número com `id` estável, que a
+    # narrativa cita como {a.macro.<id>}. Afirmação sem número vai como `qualitativo` com tema
+    # `contexto_macro` no mesmo arquivo. Fica fora dos indicadores (não é resultado da empresa).
+    "contexto_macro": _f("Contexto macro/setorial citado pela empresa", None, None, "macro"),
 }
 
 DOCUMENTOS = ("itr", "apresentacao")
 TEMAS_QUALITATIVOS = ("perfil", "capacidade_footprint", "mercados_produtos", "estrategia",
                       "capex_investimentos", "guidance_perspectivas", "riscos", "esg",
-                      "destaques_trimestre")
+                      "destaques_trimestre", "contexto_macro")
+# chaves que só alimentam os slides (texto e contexto); os indicadores (CASE-04) ignoram
+CHAVES_SO_CONTEXTO = ("qualitativo", "contexto_macro")
 RE_PERIODO = re.compile(r"^(?:([1-4])T|(\d{1,2})M)(\d{2})$")
 
 _FATOR_MILHOES = {"r$ mil": 1e-3, "r$ milhões": 1.0, "r$ milhoes": 1.0, "r$ milhão": 1.0,

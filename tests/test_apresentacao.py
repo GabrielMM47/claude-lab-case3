@@ -8,6 +8,7 @@ Quando o CASE-01/05 publicarem a fixture oficial, acrescentar o caminho dela em 
 from __future__ import annotations
 
 import copy
+import html
 import json
 import re
 import sys
@@ -295,6 +296,107 @@ def test_cli_recusa_narrativa_reprovada(tmp_path, capsys):
                       "--metricas", str(FIXTURE / "metricas"), "--saida", str(saida)])
     assert codigo == 1 and not saida.exists()
     assert "reprovada" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------- contexto macro e cenários
+MACRO_A = {"chave": "contexto_macro", "id": "tarifa", "tema": "contexto_macro", "metrica": "Tarifa",
+           "resumo": "Tarifa fictícia.", "empresa": "empresa_a", "documento": "apresentacao",
+           "escopo": "consolidado", "periodo": "3T26", "unidade": "%", "valor": 50,
+           "valor_como_aparece": "50%", "pagina": 9, "trecho": "Tarifa de 50% (FICTÍCIO)"}
+QUALI_B = {"chave": "qualitativo", "id": "origens", "tema": "contexto_macro", "metrica": "Origens",
+           "resumo": "Origens fictícias.", "empresa": "empresa_b", "documento": "itr", "pagina": 23,
+           "trecho": "origens (FICTÍCIO)"}
+POR_T = {"volume_vendas": {"valor": 1000.0, "texto": "1.000 mil t", "var_aa": -5.0, "unidade": "mil t",
+                           "unidade_var": "%", "fontes": ["Apresentação p.18"]},
+         "ebitda_por_t": {"valor": 500.0, "texto": "R$ 500/t", "var_aa": 10.0, "unidade": "R$/t",
+                          "unidade_var": "%", "fontes": ["ITR p.72", "Apresentação p.18"]}}
+CENARIO = {"nome": "Base", "gatilho": "tarifa mantida",
+           "a": {"efeito": "++", "texto": "ganha com tarifa de {a.macro.tarifa}"},
+           "b": {"efeito": "-", "texto": "sofre com importação", "cita": ["b.origens"]},
+           "vantagem": "a", "nota": "na margem"}
+
+
+@pytest.fixture
+def com_macro(dados):
+    d = copy.deepcopy(dados)
+    d.macro = {"a": {"tarifa": copy.deepcopy(MACRO_A)}, "b": {"origens": copy.deepcopy(QUALI_B)}}
+    d.comp["segmentos"]["a"][0]["por_t"] = copy.deepcopy(POR_T)
+    return d
+
+
+def narrativa_macro(**extra_destaques) -> dict:
+    n = copy.deepcopy(ler(NARRATIVA))
+    for s in n["slides"]:
+        if s["id"] == "setor":
+            s["contexto"] = [{"titulo": "EUA", "texto": "Seção 232 a {a.macro.tarifa}"},
+                             {"titulo": "Brasil", "texto": "novas origens", "cita": ["b.origens"]}]
+        if s["id"] == "destaques_riscos":
+            s["cenarios"] = [copy.deepcopy(CENARIO)]
+            s["monitorar"] = {"texto": "importações e tarifas", "cita": ["b.origens"]}
+            s.update(extra_destaques)
+    return n
+
+
+def test_carregar_le_contexto_macro_pelo_id(tmp_path):
+    (tmp_path / "empresa_a_3T26_apresentacao_macro.json").write_text(json.dumps([MACRO_A]), encoding="utf-8")
+    (tmp_path / "empresa_b_3T26_itr_macro.json").write_text(json.dumps([QUALI_B]), encoding="utf-8")
+    d = ap.carregar(PASTAS_COMPARATIVO[0], tmp_path)
+    assert set(d.macro["a"]) == {"tarifa"} and set(d.macro["b"]) == {"origens"}
+
+
+def test_resolver_macro_e_segmento(com_macro):
+    fontes = ap.Fontes()
+    texto = ap.resolver("{a.macro.tarifa}; {a.seg.brasil.ebitda_por_t} ({a.seg.brasil.ebitda_por_t.var_aa} A/A), "
+                        "{a.seg.brasil.pct_ebitda} do EBITDA", com_macro, fontes)
+    assert texto == "50%; R$ 500/t (+10,0% A/A), 55% do EBITDA"
+    assert fontes.texto(com_macro.nomes) == "Empresa A — Apresentação p. 9, 18; ITR p. 72"
+
+
+@pytest.mark.parametrize("item, trecho_do_erro", [
+    ("{a.macro.nao_existe}", "não existe em metricas/*_macro.json"),
+    ("{b.macro.origens}", "não tem número"),
+    ("{a.seg.marte.pct_ebitda}", "segmento 'marte'"),
+    ("{a.seg.brasil.receita_por_t}", "não tem receita_por_t"),
+    ("{a.seg.brasil.lucro}", "campo 'lucro' inválido"),
+    ({"texto": "sem número", "cita": ["b.nao_existe"]}, "cita 'b.nao_existe'"),
+    ("Lei 123 em vigor", "número escrito à mão"),
+])
+def test_verificador_reprova_contexto_errado(com_macro, item, trecho_do_erro):
+    narrativa = {"slides": [{"id": "resumo", "titulo": "ok", "bullets": [item]}]}
+    problemas = ap.verificar_narrativa(narrativa, com_macro)
+    assert any(trecho_do_erro in p for p in problemas), problemas
+
+
+def test_narrativa_com_cenarios_passa_e_vira_slide(com_macro):
+    narrativa = narrativa_macro()
+    assert ap.verificar_narrativa(narrativa, com_macro) == []  # "Seção 232" é nome, não dado
+    slides = {re.search(r'id="(\w+)"', s).group(1): s for s in secoes(ap.gerar_html(com_macro, narrativa))}
+    setor, destaques = slides["setor"], slides["destaques_riscos"]
+    assert 'class="tabela segs"' in setor and 'class="tiles"' not in setor  # por negócio substitui o consolidado
+    assert "Seção 232 a 50%" in setor and 'class="contexto"' in setor
+    assert "Apresentação p. 9" in setor and "Empresa B — ITR p. 23" in setor  # número e citação no rodapé
+    assert 'class="cenarios"' in destaques and "▲▲" in destaques and "ganha com tarifa de 50%" in destaques
+    assert "O que acompanhar:" in destaques and "Riscos:" not in destaques  # tabela no lugar do genérico
+    assert re.search(r"Empresa B — ITR p\. [\d, ]*\b23\b", destaques)  # citação do cenário
+
+
+def test_destaques_sem_alerta_de_indisponivel(com_macro):
+    destaques = next(s for s in secoes(ap.gerar_html(com_macro, narrativa_macro())) if 'id="destaques_riscos"' in s)
+    indisponivel = next(a for a in com_macro.comp["alertas"] if a["tipo"] == "indisponivel")
+    pontual = next(a for a in com_macro.comp["alertas"] if a["tipo"] == "efeito_pontual")
+    assert html.escape(indisponivel["texto"]) not in destaques
+    assert html.escape(pontual["texto"]) in destaques
+
+
+@pytest.mark.parametrize("mudanca, trecho_do_erro", [
+    ({"a": {"efeito": "+++", "texto": "x"}}, "efeito de 'a'"),
+    ({"vantagem": "c"}, "vantagem deve ser"),
+])
+def test_cenario_mal_formado_reprova(com_macro, mudanca, trecho_do_erro):
+    narrativa = narrativa_macro()
+    destaques = next(s for s in narrativa["slides"] if s["id"] == "destaques_riscos")
+    destaques["cenarios"][0].update(mudanca)
+    assert any(trecho_do_erro in p for p in ap.verificar_narrativa(narrativa, com_macro))
 
 
 def test_cli_gera_arquivo(tmp_path):

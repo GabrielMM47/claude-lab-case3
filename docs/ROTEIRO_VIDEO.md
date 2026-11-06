@@ -1,46 +1,21 @@
-# Roteiro do vídeo — 2 minutos
+# Roteiro do vídeo — 1:52, só texto
 
-## 0:00–0:20 · O problema
+O vídeo mostra a jornada de quem vai usar o projeto, do clone à apresentação. Não tem narração nem
+som: tudo está escrito na tela. Arquivo: `entrega/video_jornada_gerdau_x_usiminas_3T26.mp4`.
+Fonte editável em `video/index.html` (HyperFrames); para renderizar de novo:
+`cd video && npx hyperframes@0.9.19 render -o ../entrega/video_jornada_gerdau_x_usiminas_3T26.mp4`.
 
-**Tela:** título do projeto e dois PDFs lado a lado.
+| Tempo | Cena | O que aparece |
+|---|---|---|
+| 0:00 | Abertura | Gerdau e Usiminas nas cores do design system; "Do ITR em PDF à apresentação do comitê, com um comando" |
+| 0:07 | Problema | Os quatro riscos: período, unidade, escopo e critério de EBITDA |
+| 0:18 | 1 · Instalar | `git clone`, `python3 -m venv`, `pip install -r requirements.txt`; os PDFs já vêm em `data/` |
+| 0:30 | 2 · Rodar | `python src/pipeline.py --a gerdau --b usiminas --tri 3T26` e as 8 etapas até "ENTREGUE" |
+| 0:47 | 3 · Rastrear | Um fato real: EBITDA da Usiminas, ITR p. 28, com `pagina` e `trecho` |
+| 1:00 | 4 · Verificar | 233 conferidos, 39 para revisar, 0 com erro; o caso do "156" de "Instrução CVM 156" |
+| 1:18 | 5 · Abrir | Capa, resumo, tabela e destaques da apresentação |
+| 1:38 | Outro par | Mesmo comando com outros PDFs; o pipeline imprime o prompt quando falta um arquivo de fatos; link do repositório e aviso |
 
-**Fala:**
-
-> Comparar Gerdau e Usiminas não é apenas copiar números. É garantir que cada valor pertence ao mesmo período, unidade, escopo e critério de EBITDA. Um erro de coluna ou de unidade muda a conclusão do slide.
-
-## 0:20–1:20 · A solução na tela
-
-**Tela:** mostrar o fluxo do README, depois `saida/`, um ranking do `localizar_paginas.py` e um JSON de métricas.
-
-**Fala:**
-
-> O fluxo começa nos PDFs oficiais de RI e CVM. Extraímos as páginas, localizamos as páginas candidatas por tema e usamos prompts para transformar evidências em JSON. Cada fato guarda a página, o trecho, a unidade e o escopo. Depois, o verificador procura o token literalmente no texto e só então os indicadores são calculados.
-
-**Tela:** abrir `docs/ERROS_ENCONTRADOS.md` e destacar os erros documentados.
-
-> Quando a automação não prova a coluna, registramos revisão manual. Quando uma página não tem texto, ela não vira fonte numérica.
-
-## 1:20–1:40 · Um número conferido na fonte
-
-**Tela:** Usiminas, ITR p. 28, linha do EBITDA com cabeçalhos de período.
-
-**Fala:**
-
-> Um caso real foi o número 156, que fazia parte do texto “Instrução CVM 156”. O parser poderia tratá-lo como EBITDA. A reconciliação e a conferência do cabeçalho mostraram o erro; o verificador passou a exigir a coluna e o período corretos.
-
-## 1:40–2:00 · Impacto e próximos passos
-
-**Tela:** comparativo final ou, enquanto ele não existe, o painel de status dos CASEs.
-
-**Fala:**
-
-> O resultado é uma análise auditável: cada número tem uma origem e cada limitação fica visível. O próximo passo é conectar os indicadores ao comparativo, gerar os oito slides e publicar o artefato para teste em aba anônima.
-
-## Organização da gravação
-
-- Pessoa 1: problema e contexto — 20 segundos.
-- Pessoa 2: demonstração do fluxo — 60 segundos.
-- Pessoa 3: erro real e conferência na fonte — 20 segundos.
-- Pessoa 4: impacto, limitações e próximos passos — 20 segundos.
-
-Se o artefato final ainda não estiver publicado, usar o fluxo documental e os JSONs verificados como demonstração provisória; substituir essa tela antes do envio.
+Testado num clone limpo: o pipeline vai do zero à entrega em menos de um minuto.
+Os números da cena 4 vêm de `saida/verificacao_gerdau_x_usiminas_3T26.json`; se a verificação mudar,
+atualize `video/index.html` e renderize de novo.

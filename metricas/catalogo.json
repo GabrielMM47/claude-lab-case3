@@ -316,6 +316,55 @@
       }
     },
     {
+      "caminho": "metricas/gerdau_3T26_apresentacao_macro.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "a7b80cff06dc4f0f583d61b24168829dc35ff3469451ebd93f106bfab4123794",
+      "n_registros": 23,
+      "fonte": "gerdau_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "%"
+      ],
+      "escala_original": null,
+      "paginas": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        18,
+        19,
+        26
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/23 conferem, 23 com erro",
+        "ok": 0,
+        "total": 23,
+        "revisar": 0,
+        "erro": 23,
+        "texto": "saida/gerdau_ITR_3T26",
+        "json_sha256": "a7b80cff06dc4f0f583d61b24168829dc35ff3469451ebd93f106bfab4123794"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
       "caminho": "metricas/gerdau_3T26_apresentacao_operacional.json",
       "tipo": "fato",
       "schema": "fato",
@@ -567,6 +616,44 @@
       "criterio_ebitda": "não informado"
     },
     {
+      "caminho": "metricas/usiminas_3T26_apresentacao_macro.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "ff7eeb242424d00c11c6f9f58a68b82006f7beb164065a28c833f6a407d0abdd",
+      "n_registros": 1,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [],
+      "escala_original": null,
+      "paginas": [
+        22
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "0/1 conferem, 1 com erro",
+        "ok": 0,
+        "total": 1,
+        "revisar": 0,
+        "erro": 1,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "ff7eeb242424d00c11c6f9f58a68b82006f7beb164065a28c833f6a407d0abdd"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
       "caminho": "metricas/usiminas_3T26_apresentacao_operacional.json",
       "tipo": "fato",
       "schema": "fato",
@@ -775,6 +862,47 @@
         "erro": 0,
         "texto": "saida/usiminas_ITR_3T26",
         "json_sha256": "2a6e7fa4564aff1e2a9f100b040d4f040935b15bcba510862931de8ee4a2aa2a"
+      },
+      "criterio_ebitda": "não informado"
+    },
+    {
+      "caminho": "metricas/usiminas_3T26_itr_macro.json",
+      "tipo": "fato",
+      "schema": "fato",
+      "contrato": {
+        "valido": true,
+        "n_erros": 0
+      },
+      "sha256": "4494d2e8eed517131613d715f42151a11a02b486815b8447e5066af36f1988b1",
+      "n_registros": 9,
+      "fonte": "usiminas_ITR_3T26",
+      "fonte_defasada": null,
+      "meta": null,
+      "gerado_por": "sem meta (JSON do time/Claude)",
+      "empresa": null,
+      "visao": [],
+      "unidade": [
+        "%"
+      ],
+      "escala_original": null,
+      "paginas": [
+        23,
+        37
+      ],
+      "data_atual": null,
+      "data_anterior": null,
+      "base_comparacao": [],
+      "n_contas": null,
+      "n_ambiguos": null,
+      "autovalidacao": null,
+      "verificador": {
+        "status": "9/9 conferem",
+        "ok": 9,
+        "total": 9,
+        "revisar": 0,
+        "erro": 0,
+        "texto": "saida/usiminas_ITR_3T26",
+        "json_sha256": "4494d2e8eed517131613d715f42151a11a02b486815b8447e5066af36f1988b1"
       },
       "criterio_ebitda": "não informado"
     },
